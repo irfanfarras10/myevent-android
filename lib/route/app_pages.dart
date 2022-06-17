@@ -11,12 +11,12 @@ class AppPages {
       page: () => SignInScreen(),
     ),
     GetPage(
+      name: RouteName.signUpScreen,
+      page: () => SignUpScreen(),
+    ),
+    GetPage(
       name: RouteName.mainScreen,
       page: () => MainScreen(),
     ),
-    GetPage(
-      name: RouteName.signUpScreen,
-      page: () => SignUpScreen(),
-    )
   ];
 }

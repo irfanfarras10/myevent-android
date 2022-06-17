@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: alice.getNavigatorKey(),
       getPages: AppPages.pages,
+      defaultTransition: Transition.rightToLeftWithFade,
     );
   }
 }
