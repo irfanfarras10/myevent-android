@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:myevent_android/controller/main_controller.dart';
 import 'package:myevent_android/route/app_pages.dart';
 import 'package:myevent_android/screen/main_screen.dart';
+import 'package:myevent_android/screen/onboarding_screen.dart';
 import 'package:myevent_android/screen/signin_screen.dart';
 import 'package:myevent_android/screen/splash_screen.dart';
 import 'package:myevent_android/util/api_util.dart';
@@ -39,8 +40,9 @@ class MyEventApp extends StatelessWidget {
         if (snapshot.hasData == false) {
           return SplashScreen();
         }
-
-        if (snapshot.data == AuthState.unauthorized) {
+        if (snapshot.data == AuthState.init) {
+          return OnboardingScreen();
+        } else if (snapshot.data == AuthState.unauthorized) {
           return SignInScreen();
         } else {
           return MainScreen();
