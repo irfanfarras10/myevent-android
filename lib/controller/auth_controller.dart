@@ -238,4 +238,10 @@ class AuthController extends ViewController {
     Get.delete<AuthController>();
     Get.offAllNamed(RouteName.signInScreen);
   }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('myevent.auth.token');
+    Get.offAllNamed(RouteName.signInScreen);
+  }
 }
