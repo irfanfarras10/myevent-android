@@ -143,7 +143,7 @@ class SignInScreen extends StatelessWidget {
                       height: 60.0,
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed: controller.isFormValid &&
+                        onPressed: controller.isSignInFormValid &&
                                 !controller.isLoading.value
                             ? controller.signIn
                             : null,
@@ -164,7 +164,7 @@ class SignInScreen extends StatelessWidget {
                               : 'Masuk',
                           style: TextStyle(
                             fontSize: 20.0,
-                            color: controller.isFormValid
+                            color: controller.isSignInFormValid
                                 ? MyEventColor.secondaryColor
                                 : Colors.black26,
                             fontWeight: FontWeight.bold,

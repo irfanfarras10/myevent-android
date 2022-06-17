@@ -229,7 +229,7 @@ class SignUpScreen extends StatelessWidget {
                       height: 60.0,
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed: controller.isFormValid &&
+                        onPressed: controller.isSignUpFormValid &&
                                 !controller.isLoading.value
                             ? controller.signUp
                             : null,
@@ -250,7 +250,7 @@ class SignUpScreen extends StatelessWidget {
                               : 'Daftar',
                           style: TextStyle(
                             fontSize: 20.0,
-                            color: controller.isFormValid
+                            color: controller.isSignUpFormValid
                                 ? MyEventColor.secondaryColor
                                 : Colors.black26,
                             fontWeight: FontWeight.bold,
