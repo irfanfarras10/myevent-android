@@ -165,6 +165,7 @@ class AuthController extends ViewController {
         } else {
           final pref = await SharedPreferences.getInstance();
           pref.setString('myevent.auth.token', signInApiResponse.token!);
+          Get.back();
           Get.offAllNamed(RouteName.mainScreen);
         }
 
@@ -232,18 +233,10 @@ class AuthController extends ViewController {
   }
 
   void gotoSignUpScreen() {
-    Get.delete<AuthController>();
     Get.offAllNamed(RouteName.signUpScreen);
   }
 
   void gotoSignInScreen() {
-    Get.delete<AuthController>();
-    Get.offAllNamed(RouteName.signInScreen);
-  }
-
-  Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.remove('myevent.auth.token');
     Get.offAllNamed(RouteName.signInScreen);
   }
 }

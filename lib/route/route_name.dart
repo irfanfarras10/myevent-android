@@ -1,5 +1,7 @@
 class RouteName {
-  static const mainScreen = '/events';
+  static const splashScreen = '/';
+  static const onboardingScreen = '/onboarding';
   static const signInScreen = '/auth/signin';
   static const signUpScreen = '/auth/signup';
+  static const mainScreen = '/events';
 }

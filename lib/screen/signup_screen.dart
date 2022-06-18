@@ -8,7 +8,7 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AuthController());
+    final controller = Get.find<AuthController>(tag: 'signUp');
     return Obx(
       () => Scaffold(
         body: GestureDetector(

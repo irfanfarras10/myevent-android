@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/main_controller.dart';
@@ -7,7 +8,7 @@ import 'package:myevent_android/controller/main_controller.dart';
 class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = MainController();
+    final controller = Get.find<MainController>();
     return IntroductionScreen(
       showSkipButton: true,
       showDoneButton: true,
