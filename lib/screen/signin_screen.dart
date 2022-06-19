@@ -91,7 +91,7 @@ class SignInScreen extends StatelessWidget {
                       onChanged: (password) {
                         controller.validatePassword(password);
                       },
-                      obscureText: controller.showPassword.value,
+                      obscureText: controller.hidePassword.value,
                       obscuringCharacter: '●',
                       decoration: InputDecoration(
                         labelText: 'Kata Sandi',
@@ -114,10 +114,10 @@ class SignInScreen extends StatelessWidget {
                         ),
                         suffixIcon: IconButton(
                           onPressed: () {
-                            controller.showPassword.value =
-                                !controller.showPassword.value;
+                            controller.hidePassword.value =
+                                !controller.hidePassword.value;
                           },
-                          icon: controller.showPassword.value
+                          icon: controller.hidePassword.value
                               ? Icon(Icons.visibility)
                               : Icon(Icons.visibility_off),
                         ),
@@ -163,7 +163,7 @@ class SignInScreen extends StatelessWidget {
                               ? 'Sedang Masuk...'
                               : 'Masuk',
                           style: TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 17.0,
                             color: controller.isSignInFormValid
                                 ? MyEventColor.secondaryColor
                                 : Colors.black26,

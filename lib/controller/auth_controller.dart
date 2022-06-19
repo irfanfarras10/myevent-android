@@ -35,7 +35,7 @@ class AuthController extends ViewController {
   bool isPasswordValid = false;
   bool isPhoneNumberValid = false;
 
-  RxBool showPassword = RxBool(true);
+  RxBool hidePassword = RxBool(true);
   RxBool isLoading = false.obs;
 
   bool get isSignInFormValid => isUsernameValid && isPasswordValid;

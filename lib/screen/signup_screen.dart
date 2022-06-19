@@ -145,7 +145,7 @@ class SignUpScreen extends StatelessWidget {
                       onChanged: (password) {
                         controller.validatePassword(password);
                       },
-                      obscureText: controller.showPassword.value,
+                      obscureText: controller.hidePassword.value,
                       obscuringCharacter: '●',
                       decoration: InputDecoration(
                         labelText: 'Kata Sandi',
@@ -168,10 +168,10 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         suffixIcon: IconButton(
                           onPressed: () {
-                            controller.showPassword.value =
-                                !controller.showPassword.value;
+                            controller.hidePassword.value =
+                                !controller.hidePassword.value;
                           },
-                          icon: controller.showPassword.value
+                          icon: controller.hidePassword.value
                               ? Icon(Icons.visibility)
                               : Icon(Icons.visibility_off),
                         ),
@@ -279,7 +279,7 @@ class SignUpScreen extends StatelessWidget {
                           child: Text(
                             'Masuk',
                             style: TextStyle(
-                              fontSize: 20.0,
+                              fontSize: 17.0,
                               fontWeight: FontWeight.bold,
                               color: MyEventColor.primaryColor,
                             ),
