@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
-import 'package:myevent_android/controller/view_controller.dart';
+import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/view_profile_api_response.model.dart';
 import 'package:myevent_android/provider/api_profile.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileController extends ViewController {
+class ProfileController extends ApiController {
   final usernameController = TextEditingController();
   final organizerNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -159,17 +159,22 @@ class ProfileController extends ViewController {
   }
 
   Future<void> loadData() async {
-    await apiProfile.viewProfile().then((response) {
-      profileData = ViewProfileApiResponse.fromJson(response);
+    isLoadProfileData.value = true;
+    await apiProfile.viewProfile().then(
+      (response) {
+        checkApResponse(response);
 
-      checkApResponse(response);
+        isLoadProfileData.value = false;
 
-      usernameController.text = profileData!.username!;
-      organizerNameController.text = profileData!.organizerName!;
-      emailController.text = profileData!.email!;
-      phoneNumberController.text = profileData!.phoneNumber!;
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          profileData = ViewProfileApiResponse.fromJson(response);
 
-      isLoadProfileData.value = false;
-    });
+          usernameController.text = profileData!.username!;
+          organizerNameController.text = profileData!.organizerName!;
+          emailController.text = profileData!.email!;
+          phoneNumberController.text = profileData!.phoneNumber!;
+        }
+      },
+    );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
-import 'package:myevent_android/controller/view_controller.dart';
+import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/signin_api_request_model.dart';
 import 'package:myevent_android/model/api_request/signup_api_request_model.dart';
 import 'package:myevent_android/model/api_response/api_response_model.dart';
@@ -10,7 +10,7 @@ import 'package:myevent_android/provider/api_auth.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthController extends ViewController {
+class AuthController extends ApiController {
   final usernameController = TextEditingController();
   final organizerNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -199,8 +199,6 @@ class AuthController extends ViewController {
             usernameErrorMessage.value = signUpApiResponse.message;
           } else if (signUpApiResponse.message == 'E-mail sudah digunakan') {
             emailErrorMessage.value = signUpApiResponse.message;
-          } else {
-            errorMessage = response['message'];
           }
         } else {
           Get.defaultDialog(
