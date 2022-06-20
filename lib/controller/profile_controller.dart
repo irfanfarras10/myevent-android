@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/view_controller.dart';
+import 'package:myevent_android/model/api_response/view_profile_api_response.model.dart';
+import 'package:myevent_android/provider/api_profile.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,37 +11,43 @@ class ProfileController extends ViewController {
   final usernameController = TextEditingController();
   final organizerNameController = TextEditingController();
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
   final phoneNumberController = TextEditingController();
 
   final usernameErrorMessage = RxnString();
   final organizerNameErrorMessage = RxnString();
   final emailErrorMessage = RxnString();
-  final passwordErrorMessage = RxnString();
   final phoneNumberErrorMessage = RxnString();
 
   final usernameFocusNode = FocusNode();
   final organizerNameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
-  final passwordFocusNode = FocusNode();
   final phoneNumberFocusNode = FocusNode();
 
   bool isUsernameValid = false;
   bool isOrganizerNameValid = false;
   bool isEmailValid = false;
-  bool isPasswordValid = false;
   bool isPhoneNumberValid = false;
 
   final editMode = false.obs;
 
-  RxBool hidePassword = RxBool(true);
+  final hidePassword = true.obs;
+
+  final isLoadProfileData = true.obs;
+  final isLoadUpdateData = true.obs;
+
+  ViewProfileApiResponse? profileData;
 
   bool get isFormValid =>
       isUsernameValid &&
       isOrganizerNameValid &&
       isEmailValid &&
-      isPasswordValid &&
       isPhoneNumberValid;
+
+  @override
+  void onInit() {
+    loadData();
+    super.onInit();
+  }
 
   @override
   void resetState() {
@@ -48,13 +56,11 @@ class ProfileController extends ViewController {
     usernameErrorMessage.value = null;
     organizerNameErrorMessage.value = null;
     emailErrorMessage.value = null;
-    passwordErrorMessage.value = null;
     phoneNumberErrorMessage.value = null;
 
     usernameFocusNode.unfocus();
     organizerNameFocusNode.unfocus();
     emailFocusNode.unfocus();
-    passwordFocusNode.unfocus();
     phoneNumberFocusNode.unfocus();
   }
 
@@ -107,22 +113,6 @@ class ProfileController extends ViewController {
     }
   }
 
-  void validatePassword(String password) {
-    errorMessage = null;
-    isPasswordValid = false;
-    if (password.isEmpty) {
-      passwordErrorMessage.value = 'Kata sandi harus diisi';
-    } else if (password.length < 8) {
-      passwordErrorMessage.value = 'Kata sandi minimal 8 karakter';
-    } else if (!RegExp('(?=.*?[A-Z][a-z])').hasMatch(password)) {
-      passwordErrorMessage.value =
-          'Kata sandi harus terdapat huruf besar dan huruf kecil';
-    } else {
-      passwordErrorMessage.value = null;
-      isPasswordValid = true;
-    }
-  }
-
   void validatePhoneNumber(String phoneNumber) {
     errorMessage = null;
     isPhoneNumberValid = false;
@@ -139,7 +129,6 @@ class ProfileController extends ViewController {
   }
 
   void Function()? onPressedEditButton() {
-    print(isFormValid);
     if (editMode.value && !isFormValid) {
       return null;
     }
@@ -167,5 +156,20 @@ class ProfileController extends ViewController {
         Get.offAllNamed(RouteName.signInScreen);
       },
     );
+  }
+
+  Future<void> loadData() async {
+    await apiProfile.viewProfile().then((response) {
+      profileData = ViewProfileApiResponse.fromJson(response);
+
+      checkApResponse(response);
+
+      usernameController.text = profileData!.username!;
+      organizerNameController.text = profileData!.organizerName!;
+      emailController.text = profileData!.email!;
+      phoneNumberController.text = profileData!.phoneNumber!;
+
+      isLoadProfileData.value = false;
+    });
   }
 }

@@ -18,7 +18,9 @@ class MainScreen extends StatelessWidget {
           selectedItemColor: MyEventColor.primaryColor,
           unselectedItemColor: MyEventColor.secondaryColor,
           elevation: 20.0,
-          onTap: (index) => controller.currentMenuIndex.value = index,
+          onTap: (index) {
+            controller.onPressedMenuItem(index);
+          },
           currentIndex: controller.currentMenuIndex.value,
           items: [
             BottomNavigationBarItem(
