@@ -55,6 +55,19 @@ class ApiUtil {
     }
   }
 
+  Future<Map<String, dynamic>> apiRequestPut(
+    String url,
+    Map<String, dynamic> requestBody,
+  ) async {
+    try {
+      final httpClient = await _getDioClient();
+      final response = await httpClient.put(url, data: requestBody);
+      return response.data;
+    } on DioError catch (error) {
+      return _handleDioError(error);
+    }
+  }
+
   Future<Map<String, dynamic>> apiRequestGet(String url) async {
     try {
       final httpClient = await _getDioClient();

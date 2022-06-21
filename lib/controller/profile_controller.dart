@@ -2,38 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
+import 'package:myevent_android/model/api_request/update_profile_api_request_model.dart';
+import 'package:myevent_android/model/api_response/api_response_model.dart';
 import 'package:myevent_android/model/api_response/view_profile_api_response.model.dart';
 import 'package:myevent_android/provider/api_profile.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileController extends ApiController {
-  final usernameController = TextEditingController();
   final organizerNameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
 
-  final usernameErrorMessage = RxnString();
   final organizerNameErrorMessage = RxnString();
   final emailErrorMessage = RxnString();
   final phoneNumberErrorMessage = RxnString();
 
-  final usernameFocusNode = FocusNode();
   final organizerNameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
   final phoneNumberFocusNode = FocusNode();
 
-  bool isUsernameValid = false;
-  bool isOrganizerNameValid = false;
-  bool isEmailValid = false;
-  bool isPhoneNumberValid = false;
+  bool isUsernameValid = true;
+  bool isOrganizerNameValid = true;
+  bool isEmailValid = true;
+  bool isPhoneNumberValid = true;
 
   final editMode = false.obs;
 
   final hidePassword = true.obs;
 
   final isLoadProfileData = true.obs;
-  final isLoadUpdateData = true.obs;
+  final isLoadUpdateData = false.obs;
 
   ViewProfileApiResponse? profileData;
 
@@ -42,6 +41,13 @@ class ProfileController extends ApiController {
       isOrganizerNameValid &&
       isEmailValid &&
       isPhoneNumberValid;
+
+  bool get isUpdateBtnEnable {
+    if ((editMode.value && !isFormValid) || isLoadUpdateData.value) {
+      return false;
+    }
+    return true;
+  }
 
   @override
   void onInit() {
@@ -53,37 +59,16 @@ class ProfileController extends ApiController {
   void resetState() {
     errorMessage = null;
 
-    usernameErrorMessage.value = null;
     organizerNameErrorMessage.value = null;
     emailErrorMessage.value = null;
     phoneNumberErrorMessage.value = null;
 
-    usernameFocusNode.unfocus();
     organizerNameFocusNode.unfocus();
     emailFocusNode.unfocus();
     phoneNumberFocusNode.unfocus();
-  }
 
-  void validateUsername(String username) {
-    errorMessage = null;
-    isUsernameValid = false;
-    if (username.isEmpty) {
-      usernameErrorMessage.value = 'Username harus diisi';
-    } else if (username.contains(' ')) {
-      usernameErrorMessage.value = 'Username tidak boleh mengandung spasi';
-    } else if (RegExp('[A-Z]').hasMatch(username)) {
-      usernameErrorMessage.value = 'Username tidak boleh kapital';
-    } else if (username.length < 8) {
-      usernameErrorMessage.value = 'Username minimal 8 karakter';
-    } else if (username.length > 20) {
-      usernameErrorMessage.value = 'Username maksimal 20 karakter';
-    } else if (!RegExp(r'^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$')
-        .hasMatch(username)) {
-      usernameErrorMessage.value = 'Format username tidak valid';
-    } else {
-      usernameErrorMessage.value = null;
-      isUsernameValid = true;
-    }
+    isLoadUpdateData.value = false;
+    editMode.value = false;
   }
 
   void validateOrganizerName(String organizerName) {
@@ -128,18 +113,50 @@ class ProfileController extends ApiController {
     }
   }
 
-  void Function()? onPressedEditButton() {
-    if (editMode.value && !isFormValid) {
-      return null;
+  Future<void> updateProfile() async {
+    if (!editMode.value) {
+      editMode.value = true;
+      Future.delayed(Duration(milliseconds: 100)).then(
+        (_) => organizerNameFocusNode.requestFocus(),
+      );
+    } else if (editMode.value) {
+      isLoadUpdateData.value = true;
+
+      final updateProfileApiRequest = UpdateProfileApiRequestModel.fromJson({
+        'organizerName': organizerNameController.text,
+        'email': emailController.text,
+        'phoneNumber': phoneNumberController.text
+      });
+
+      apiProfile.updateProfile(requestBody: updateProfileApiRequest).then(
+        (response) {
+          checkApResponse(response);
+
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            final updateProfileApiResponse = ApiResponseModel.fromJson(
+              response,
+            );
+
+            Get.defaultDialog(
+              title: updateProfileApiResponse.message!,
+              content: Icon(
+                Icons.check,
+                size: 50.0,
+                color: Colors.green,
+              ),
+              textConfirm: 'OK',
+              confirmTextColor: MyEventColor.secondaryColor,
+              barrierDismissible: false,
+              onConfirm: () async {
+                Get.back();
+                resetState();
+                await loadData();
+              },
+            );
+          }
+        },
+      );
     }
-    return () {
-      if (!editMode.value) {
-        editMode.value = true;
-        Future.delayed(Duration(milliseconds: 100)).then(
-          (_) => usernameFocusNode.requestFocus(),
-        );
-      }
-    };
   }
 
   Future<void> logout() async {
@@ -164,12 +181,10 @@ class ProfileController extends ApiController {
       (response) {
         checkApResponse(response);
 
-        isLoadProfileData.value = false;
-
-        if (apiResponseState.value == ApiResponseState.http2xx) {
+        if (apiResponseState.value != ApiResponseState.http401) {
+          isLoadProfileData.value = false;
           profileData = ViewProfileApiResponse.fromJson(response);
 
-          usernameController.text = profileData!.username!;
           organizerNameController.text = profileData!.organizerName!;
           emailController.text = profileData!.email!;
           phoneNumberController.text = profileData!.phoneNumber!;

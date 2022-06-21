@@ -13,39 +13,6 @@ class ProfileScreenDataWidget extends StatelessWidget {
       () => Column(
         children: [
           TextFormField(
-            controller: controller.usernameController,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.name,
-            enabled: controller.editMode.value,
-            focusNode: controller.usernameFocusNode,
-            onChanged: (String username) {
-              controller.validateUsername(username);
-            },
-            decoration: InputDecoration(
-              labelText: 'Username',
-              errorText: controller.usernameErrorMessage.value,
-              fillColor: MyEventColor.primaryColor,
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: MyEventColor.secondaryColor,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: MyEventColor.secondaryColor,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: MyEventColor.primaryColor,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 30.0,
-          ),
-          TextFormField(
             controller: controller.organizerNameController,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.name,
@@ -148,7 +115,9 @@ class ProfileScreenDataWidget extends StatelessWidget {
             height: 60.0,
             width: MediaQuery.of(context).size.width,
             child: ElevatedButton(
-              onPressed: controller.onPressedEditButton(),
+              onPressed: controller.isUpdateBtnEnable
+                  ? controller.updateProfile
+                  : null,
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color>(
                   (states) {
@@ -163,12 +132,14 @@ class ProfileScreenDataWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    controller.editMode.value ? 'Simpan Data' : 'Ubah Data',
+                    controller.editMode.value &&
+                            controller.isLoadUpdateData.value
+                        ? 'Memperbarui Data..'
+                        : controller.editMode.value
+                            ? 'Simpan Data'
+                            : 'Ubah Data',
                     style: TextStyle(
                       fontSize: 17.0,
-                      // color: controller.isSignUpFormValid
-                      //     ? MyEventColor.secondaryColor
-                      //     : Colors.black26,
                       color: MyEventColor.secondaryColor,
                       fontWeight: FontWeight.bold,
                     ),
