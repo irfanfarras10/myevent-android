@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
-import 'package:myevent_android/controller/view_controller.dart';
+import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/signin_api_request_model.dart';
 import 'package:myevent_android/model/api_request/signup_api_request_model.dart';
 import 'package:myevent_android/model/api_response/api_response_model.dart';
@@ -10,7 +10,7 @@ import 'package:myevent_android/provider/api_auth.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthController extends ViewController {
+class AuthController extends ApiController {
   final usernameController = TextEditingController();
   final organizerNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -35,10 +35,12 @@ class AuthController extends ViewController {
   bool isPasswordValid = false;
   bool isPhoneNumberValid = false;
 
-  RxBool showPassword = RxBool(true);
+  RxBool hidePassword = RxBool(true);
   RxBool isLoading = false.obs;
 
-  bool get isFormValid =>
+  bool get isSignInFormValid => isUsernameValid && isPasswordValid;
+
+  bool get isSignUpFormValid =>
       isUsernameValid &&
       isOrganizerNameValid &&
       isEmailValid &&
@@ -163,6 +165,7 @@ class AuthController extends ViewController {
         } else {
           final pref = await SharedPreferences.getInstance();
           pref.setString('myevent.auth.token', signInApiResponse.token!);
+          Get.back();
           Get.offAllNamed(RouteName.mainScreen);
         }
 
@@ -196,8 +199,6 @@ class AuthController extends ViewController {
             usernameErrorMessage.value = signUpApiResponse.message;
           } else if (signUpApiResponse.message == 'E-mail sudah digunakan') {
             emailErrorMessage.value = signUpApiResponse.message;
-          } else {
-            errorMessage = response['message'];
           }
         } else {
           Get.defaultDialog(
@@ -230,18 +231,10 @@ class AuthController extends ViewController {
   }
 
   void gotoSignUpScreen() {
-    Get.delete<AuthController>();
     Get.offAllNamed(RouteName.signUpScreen);
   }
 
   void gotoSignInScreen() {
-    Get.delete<AuthController>();
-    Get.offAllNamed(RouteName.signInScreen);
-  }
-
-  Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.remove('myevent.auth.token');
     Get.offAllNamed(RouteName.signInScreen);
   }
 }

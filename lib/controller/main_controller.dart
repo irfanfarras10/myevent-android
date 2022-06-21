@@ -8,7 +8,23 @@ enum AuthState {
   unauthorized,
 }
 
-class MainController {
+class MainController extends GetxController {
+  String? initRoute;
+
+  @override
+  void onInit() async {
+    final authState = await getAuthState;
+    if (authState == AuthState.init) {
+      initRoute = RouteName.onboardingScreen;
+    } else if (authState == AuthState.unauthorized) {
+      initRoute = RouteName.signInScreen;
+    } else {
+      initRoute = RouteName.mainScreen;
+    }
+    Get.offAllNamed(initRoute!);
+    super.onInit();
+  }
+
   Future<AuthState> get getAuthState async {
     final pref = await SharedPreferences.getInstance();
     if (pref.getBool('myevent.init') == null) {
