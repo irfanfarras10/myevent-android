@@ -8,12 +8,16 @@ class ApiAuth {
   Future<Map<String, dynamic>> signIn({
     required SignInApiRequestModel apiRequest,
   }) {
-    return apiUtil.apiRequestPost('auth/signin', apiRequest.toJson());
+    return apiUtil.apiRequestPost(
+        'https://myevent-android-api.herokuapp.com/api/auth/signin',
+        apiRequest.toJson());
   }
 
   Future<Map<String, dynamic>> signUp({
     required SignUpApiRequestModel apiRequest,
   }) {
-    return apiUtil.apiRequestPost('auth/signup', apiRequest.toJson());
+    return apiUtil.apiRequestPost(
+        'https://myevent-android-api.herokuapp.com/api/auth/signup',
+        apiRequest.toJson());
   }
 }

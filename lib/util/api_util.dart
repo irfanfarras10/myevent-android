@@ -1,6 +1,5 @@
 import 'package:alice/alice.dart';
 import 'package:dio/dio.dart';
-import 'package:myevent_android/config/myevent_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final ApiUtil apiUtil = ApiUtil();
@@ -14,12 +13,12 @@ class ApiUtil {
 
   Future<Dio> _getDioClient() async {
     final dio = Dio();
-    dio.options.baseUrl = MyEventConfig.baseUrl;
     dio.options.connectTimeout = 15000;
     dio.options.receiveTimeout = 15000;
     dio.options.headers['Authorization'] = 'Bearer ${await _getAuthToken()}';
     dio.options.headers['Content-Type'] = 'application/json';
-    dio.options.headers['Accept-Encoding'] = 'gzip, deflate, br';
+    dio.options.headers['Accept'] = 'application/json';
+    // dio.options.headers['Accept-Encoding'] = 'gzip, deflate, br';
     dio.interceptors.add(alice.getDioInterceptor());
     return dio;
   }

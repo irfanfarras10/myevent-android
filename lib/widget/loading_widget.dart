@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height -
+          AppBar().preferredSize.height -
+          90.0,
+      width: MediaQuery.of(context).size.width,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}
