@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
+import 'package:myevent_android/model/api_response/api_response_model.dart';
 import 'package:myevent_android/model/api_response/location_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/model/api_response/event_category_api_response_model.dart';
@@ -71,9 +73,16 @@ class EventController extends ApiController {
   void resetState() {
     nameErrorMessage.value = null;
     descriptionErrorMessage.value = null;
+    dateTimeEventErrorMessage.value = null;
+    locationErrorMessage.value = null;
 
     nameFocusNode.unfocus();
     descriptionFocusNode.unfocus();
+    dateEventStartFocusNode.unfocus();
+    dateEventEndFocusNode.unfocus();
+    timeEventStartFocusNode.unfocus();
+    timeEventEndFocusNode.unfocus();
+    locationFocusNode.unfocus();
   }
 
   RxBool isDataValid = RxBool(false);
@@ -328,6 +337,7 @@ class EventController extends ApiController {
   }
 
   Future<void> createEvent() async {
+    resetState();
     final pref = await SharedPreferences.getInstance();
     apiRequest = {
       'name': nameController.text,
@@ -335,12 +345,72 @@ class EventController extends ApiController {
       'dateTimeEventStart': dateTimeEventStart!.millisecondsSinceEpoch,
       'dateTimeEventEnd': dateTimeEventEnd!.millisecondsSinceEpoch,
       'location': venue,
-      'bannerPhoto': dio.MultipartFile.fromFile(bannerImage.value!.path),
+      'bannerPhoto': await dio.MultipartFile.fromFile(bannerImage.value!.path),
       'eventStatusId': eventStatusId,
       'eventCategoryId': eventCategoryId,
       'eventVenueCategoryId': eventVenueCategoryId,
-      'eventOrganizerId': pref.getString('myevent.auth.token.subject'),
+      'eventOrganizerId': int.parse(
+        pref.getString('myevent.auth.token.subject')!,
+      ),
     };
-    print(apiRequest);
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Menyimpan data...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+    apiEvent.createEvent(data: apiRequest).then(
+      (response) {
+        Get.back();
+        checkApResponse(response);
+        ApiResponseModel? createEventApiResponse;
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          createEventApiResponse = ApiResponseModel.fromJson(response);
+        }
+        Get.defaultDialog(
+          titleStyle: TextStyle(
+            fontSize: 0.0,
+          ),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                apiResponseState.value == ApiResponseState.http2xx
+                    ? createEventApiResponse!.message!
+                    : response['message'],
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: MyEventColor.secondaryColor,
+                ),
+              ),
+              response['code'] != null
+                  ? Icon(
+                      Icons.close,
+                      size: 50.0,
+                      color: Colors.red,
+                    )
+                  : Icon(
+                      Icons.check,
+                      size: 50.0,
+                      color: Colors.green,
+                    ),
+            ],
+          ),
+          textConfirm: 'OK',
+          confirmTextColor: MyEventColor.secondaryColor,
+          barrierDismissible: false,
+          onConfirm: () => Get.back(),
+        );
+      },
+    );
   }
 }

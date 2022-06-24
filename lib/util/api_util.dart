@@ -78,8 +78,8 @@ class ApiUtil {
   }
 
   Future<Map<String, dynamic>> apiRequestMultipartPost({
-    required Map<String, dynamic> data,
     required String url,
+    required Map<String, dynamic> data,
   }) async {
     try {
       final formData = FormData.fromMap(data);

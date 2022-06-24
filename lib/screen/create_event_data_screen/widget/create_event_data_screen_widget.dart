@@ -76,7 +76,19 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                                 Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Get.dialog(
+                                        SizedBox(
+                                          child: Image.file(
+                                            File(
+                                              controller
+                                                  .bannerImage.value!.path,
+                                            ),
+                                          ),
+                                        ),
+                                        barrierDismissible: true,
+                                      );
+                                    },
                                     child: Text(
                                       'Lihat',
                                       style: TextStyle(
