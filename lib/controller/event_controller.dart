@@ -13,6 +13,13 @@ import 'package:myevent_android/provider/api_location.dart';
 class EventController extends ApiController {
   XFile? bannerImage;
   final isBannerImageUploaded = false.obs;
+  DateTime? dateEventStart;
+  DateTime? dateEventEnd;
+  TimeOfDay? timeEventStart;
+  TimeOfDay? timeEventEnd;
+  DateTime? dateTimeEventStart;
+  DateTime? dateTimeEventEnd;
+
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final dateEventStartController = TextEditingController();
@@ -27,7 +34,22 @@ class EventController extends ApiController {
 
   RxnBool isOnsiteEvent = RxnBool();
 
+  final nameFocusNode = FocusNode();
+  final descriptionFocusNode = FocusNode();
+  final dateEventStartFocusNode = FocusNode();
+  final dateEventEndFocusNode = FocusNode();
+  final timeEventStartFocusNode = FocusNode();
+  final timeEventEndFocusNode = FocusNode();
+
+  RxBool isNameValid = false.obs;
+  RxBool isDescriptionValid = false.obs;
+  RxBool isDateTimeEventValid = false.obs;
+
   RxBool isFormValid = false.obs;
+
+  RxnString nameErrorMessage = RxnString();
+  RxnString descriptionErrorMessage = RxnString();
+  RxnString dateTimeEventErrorMessage = RxnString();
 
   @override
   onInit() {
@@ -37,7 +59,11 @@ class EventController extends ApiController {
 
   @override
   void resetState() {
-    // TODO: implement resetState
+    nameErrorMessage.value = null;
+    descriptionErrorMessage.value = null;
+
+    nameFocusNode.unfocus();
+    descriptionFocusNode.unfocus();
   }
 
   Future<void> pickBannerPhoto() async {
@@ -49,25 +75,29 @@ class EventController extends ApiController {
   Future<void> setEventDateStart() async {
     showDatePicker(
       context: Get.key.currentContext!,
-      initialDate: DateTime.now(),
+      initialDate: dateEventStart == null ? DateTime.now() : dateEventStart!,
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
-    ).then(
-      (date) => dateEventStartController.text =
-          DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(date!),
-    );
+    ).then((date) {
+      dateEventStart = date;
+      dateEventStartController.text =
+          '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(dateEventStart!)}';
+      setEventDateTimeStart();
+    });
   }
 
   Future<void> setEventDateEnd() async {
     showDatePicker(
       context: Get.key.currentContext!,
-      initialDate: DateTime.now(),
+      initialDate: dateEventEnd == null ? DateTime.now() : dateEventEnd!,
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
-    ).then(
-      (date) => dateEventEndController.text =
-          DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(date!),
-    );
+    ).then((date) {
+      dateEventEnd = date;
+      dateEventEndController.text =
+          '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(dateEventEnd!)}';
+      setEventDateTimeEnd();
+    });
   }
 
   Future<void> setEventTimeStart() async {
@@ -76,9 +106,12 @@ class EventController extends ApiController {
       initialTime: TimeOfDay.now(),
     ).then(
       (time) {
+        timeEventStart = time;
         timeEventStartController.text =
             MaterialLocalizations.of(Get.key.currentContext!)
                 .formatTimeOfDay(time!);
+
+        setEventDateTimeStart();
       },
     );
   }
@@ -89,9 +122,12 @@ class EventController extends ApiController {
       initialTime: TimeOfDay.now(),
     ).then(
       (time) {
+        timeEventEnd = time;
         timeEventEndController.text =
             MaterialLocalizations.of(Get.key.currentContext!)
                 .formatTimeOfDay(time!);
+
+        setEventDateTimeEnd();
       },
     );
   }
@@ -136,5 +172,60 @@ class EventController extends ApiController {
       isOnsiteEvent.value = false;
       locationController.text = '';
     }
+  }
+
+  void validateName(String organizerName) {
+    errorMessage = null;
+    isNameValid.value = false;
+    if (organizerName.isEmpty) {
+      nameErrorMessage.value = 'Nama event harus diisi';
+    } else {
+      nameErrorMessage.value = null;
+      isNameValid.value = true;
+    }
+  }
+
+  void validateDescription(String description) {
+    errorMessage = null;
+    isDescriptionValid.value = false;
+    if (description.isEmpty) {
+      descriptionErrorMessage.value = 'Deskripsi event harus diisi';
+    } else if (description.length < 50) {
+      descriptionErrorMessage.value = 'Deskripsi event minimal 50 karakter';
+    } else {
+      nameErrorMessage.value = null;
+      isNameValid.value = true;
+    }
+  }
+
+  void validateDateTime() {
+    if (dateTimeEventStart != null && dateTimeEventEnd != null) {
+      if (dateTimeEventEnd!.difference(dateTimeEventStart!).isNegative) {
+        dateTimeEventErrorMessage.value =
+            'Tanggal dan waktu mulai tidak boleh melebihi tanggal dan waktu selesai';
+        isDateTimeEventValid.value = false;
+      } else {
+        dateTimeEventErrorMessage.value = null;
+        isDateTimeEventValid.value = true;
+      }
+    }
+  }
+
+  void setEventDateTimeStart() {
+    if (dateEventStart != null && timeEventStart != null) {
+      String dateStart = DateFormat('yyyy-MM-dd').format(dateEventStart!);
+      String timeStart = timeEventStartController.text;
+      dateTimeEventStart = DateTime.parse('$dateStart $timeStart');
+    }
+    validateDateTime();
+  }
+
+  void setEventDateTimeEnd() {
+    if (dateEventEnd != null && timeEventEnd != null) {
+      String dateEnd = DateFormat('yyyy-MM-dd').format(dateEventEnd!);
+      String timeEnd = timeEventEndController.text;
+      dateTimeEventEnd = DateTime.parse('$dateEnd $timeEnd');
+    }
+    validateDateTime();
   }
 }

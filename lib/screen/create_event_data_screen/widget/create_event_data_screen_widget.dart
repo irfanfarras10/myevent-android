@@ -56,16 +56,16 @@ class CreateEventDataScreenWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
-                  // controller: controller.organizerNameController,
+                  controller: controller.nameController,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.name,
-                  // focusNode: controller.organizerNameFocusNode,
-                  onChanged: (String organizerName) {
-                    // controller.validateOrganizerName(organizerName);
+                  focusNode: controller.nameFocusNode,
+                  onChanged: (String name) {
+                    controller.validateName(name);
                   },
                   decoration: InputDecoration(
                     labelText: 'Nama Event',
-                    // errorText: controller.organizerNameErrorMessage.value,
+                    errorText: controller.nameErrorMessage.value,
                     fillColor: MyEventColor.primaryColor,
                     labelStyle: TextStyle(
                       color: MyEventColor.secondaryColor,
@@ -91,16 +91,16 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                   height: 15.0,
                 ),
                 TextFormField(
-                  // controller: controller.organizerNameController,
+                  controller: controller.descriptionController,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.name,
-                  // focusNode: controller.organizerNameFocusNode,
-                  onChanged: (String organizerName) {
-                    // controller.validateOrganizerName(organizerName);
+                  focusNode: controller.descriptionFocusNode,
+                  onChanged: (String description) {
+                    controller.validateDescription(description);
                   },
                   decoration: InputDecoration(
                     labelText: 'Deskripsi Event',
-                    // errorText: controller.organizerNameErrorMessage.value,
+                    errorText: controller.descriptionErrorMessage.value,
                     fillColor: MyEventColor.primaryColor,
                     labelStyle: TextStyle(
                       color: MyEventColor.secondaryColor,
@@ -127,18 +127,17 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                   height: 15.0,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
+                      flex: 2,
                       child: TextFormField(
                         controller: controller.dateEventStartController,
                         textInputAction: TextInputAction.next,
-                        // focusNode: controller.organizerNameFocusNode,
+                        focusNode: controller.dateEventStartFocusNode,
                         onTap: controller.setEventDateStart,
                         readOnly: true,
                         decoration: InputDecoration(
-                          labelText: 'Tanggal Mulai Event',
-                          // errorText: controller.organizerNameErrorMessage.value,
+                          labelText: 'Tanggal Mulai',
                           fillColor: MyEventColor.primaryColor,
                           labelStyle: TextStyle(
                             color: MyEventColor.secondaryColor,
@@ -162,81 +161,19 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                      child: Text('-'),
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        controller: controller.dateEventEndController,
-                        textInputAction: TextInputAction.next,
-                        // focusNode: controller.organizerNameFocusNode,
-                        onTap: controller.setEventDateEnd,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          labelText: 'Tanggal Selesai Event',
-                          // errorText: controller.organizerNameErrorMessage.value,
-                          fillColor: MyEventColor.primaryColor,
-                          labelStyle: TextStyle(
-                            color: MyEventColor.secondaryColor,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: MyEventColor.primaryColor,
-                            ),
-                          ),
-                          suffixIcon: Icon(Icons.calendar_today),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 15.0,
-                ),
-                Row(
-                  children: [
                     SizedBox(
-                      height: 24.0,
                       width: 15.0,
-                      child: Checkbox(
-                        value: true,
-                        onChanged: (bool) {},
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
                     ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    Text('Untuk Satu Hari'),
-                  ],
-                ),
-                SizedBox(
-                  height: 15.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
                     Expanded(
+                      flex: 1,
                       child: TextFormField(
                         controller: controller.timeEventStartController,
                         textInputAction: TextInputAction.next,
-                        // focusNode: controller.organizerNameFocusNode,
+                        focusNode: controller.timeEventStartFocusNode,
                         onTap: controller.setEventTimeStart,
                         readOnly: true,
                         decoration: InputDecoration(
-                          labelText: 'Jam Mulai Event',
-                          // errorText: controller.organizerNameErrorMessage.value,
+                          labelText: 'Waktu Mulai',
                           fillColor: MyEventColor.primaryColor,
                           labelStyle: TextStyle(
                             color: MyEventColor.secondaryColor,
@@ -260,20 +197,75 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                      child: Text('-'),
+                  ],
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Visibility(
+                  visible: controller.dateTimeEventErrorMessage.value != null,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 12.0,
+                      bottom: 15.0,
+                    ),
+                    child: Text(
+                      controller.dateTimeEventErrorMessage.value ?? '',
+                      style: TextStyle(
+                        color: Colors.red.shade800,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        controller: controller.dateEventEndController,
+                        textInputAction: TextInputAction.next,
+                        focusNode: controller.dateEventEndFocusNode,
+                        onTap: controller.setEventDateEnd,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Tanggal Selesai',
+                          fillColor: MyEventColor.primaryColor,
+                          labelStyle: TextStyle(
+                            color: MyEventColor.secondaryColor,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.primaryColor,
+                            ),
+                          ),
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15.0,
                     ),
                     Expanded(
+                      flex: 1,
                       child: TextFormField(
                         controller: controller.timeEventEndController,
                         textInputAction: TextInputAction.next,
-                        // focusNode: controller.organizerNameFocusNode,
+                        focusNode: controller.timeEventEndFocusNode,
                         onTap: controller.setEventTimeEnd,
                         readOnly: true,
                         decoration: InputDecoration(
-                          labelText: 'Jam Selesai Event',
-                          // errorText: controller.organizerNameErrorMessage.value,
+                          labelText: 'Waktu Selesai',
                           fillColor: MyEventColor.primaryColor,
                           labelStyle: TextStyle(
                             color: MyEventColor.secondaryColor,
