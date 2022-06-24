@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +10,7 @@ import 'package:myevent_android/model/api_response/location_api_response_model.d
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/model/api_response/event_category_api_response_model.dart';
 import 'package:myevent_android/provider/api_location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EventController extends ApiController {
   XFile? bannerImage;
@@ -50,11 +52,14 @@ class EventController extends ApiController {
   RxBool isDateTimeEventValid = false.obs;
   RxBool isLocationValid = false.obs;
   RxBool isCategoryValid = false.obs;
+  RxBool isVenueCategoryValid = false.obs;
 
   RxnString nameErrorMessage = RxnString();
   RxnString descriptionErrorMessage = RxnString();
   RxnString dateTimeEventErrorMessage = RxnString();
   RxnString locationErrorMessage = RxnString();
+
+  Map<String, dynamic> apiRequest = {};
 
   @override
   onInit() {
@@ -194,7 +199,7 @@ class EventController extends ApiController {
 
   void setEventVenueCategory(int id) {
     eventVenueCategoryId = id;
-    isCategoryValid.value = true;
+    isVenueCategoryValid.value = true;
     if (id == 1) {
       isOnsiteEvent.value = true;
       locationController.text = '';
@@ -206,6 +211,7 @@ class EventController extends ApiController {
 
   void setEventCategory(int id) {
     eventCategoryId = id;
+    isCategoryValid.value = true;
   }
 
   void validateName(String organizerName) {
@@ -233,6 +239,8 @@ class EventController extends ApiController {
   }
 
   void validateDateTime() {
+    dateTimeEventErrorMessage.value = null;
+    isDateTimeEventValid.value = true;
     if (dateTimeEventStart != null && dateTimeEventEnd != null) {
       if (dateTimeEventEnd!.difference(dateTimeEventStart!).isNegative) {
         dateTimeEventErrorMessage.value =
@@ -280,11 +288,29 @@ class EventController extends ApiController {
         } else {
           isLocationValid.value = true;
           locationErrorMessage.value = null;
+          venue = location;
         }
       } else {
         isLocationValid.value = true;
         locationErrorMessage.value = null;
       }
     }
+  }
+
+  Future<void> createEvent() async {
+    final pref = await SharedPreferences.getInstance();
+    apiRequest = {
+      'name': nameController.text,
+      'description': descriptionController.text,
+      'dateTimeEventStart': dateTimeEventStart!.millisecondsSinceEpoch,
+      'dateTimeEventEnd': dateTimeEventEnd!.millisecondsSinceEpoch,
+      'location': venue,
+      'bannerPhoto': dio.MultipartFile.fromFile(bannerImage!.path),
+      'eventStatusId': eventStatusId,
+      'eventCategoryId': eventCategoryId,
+      'eventVenueCategoryId': eventVenueCategoryId,
+      'eventOrganizerId': pref.getString('myevent.auth.token.subject'),
+    };
+    print(apiRequest);
   }
 }

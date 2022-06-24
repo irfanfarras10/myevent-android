@@ -59,7 +59,9 @@ class CreateEventDataScreen extends StatelessWidget {
                   child: SizedBox(
                     height: 60.0,
                     child: ElevatedButton(
-                      onPressed: controller.isFormValid ? () {} : null,
+                      onPressed: controller.isFormValid
+                          ? controller.createEvent
+                          : null,
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.resolveWith<Color>(

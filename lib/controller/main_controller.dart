@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:myevent_android/route/route_name.dart';
+import 'package:myevent_android/util/jwt_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AuthState {
@@ -13,12 +14,17 @@ class MainController extends GetxController {
 
   @override
   void onInit() async {
+    final pref = await SharedPreferences.getInstance();
     final authState = await getAuthState;
     if (authState == AuthState.init) {
       initRoute = RouteName.onboardingScreen;
     } else if (authState == AuthState.unauthorized) {
       initRoute = RouteName.signInScreen;
     } else {
+      String eventOrganizerId = JwtUtil().parseJwt(
+        pref.getString('myevent.auth.token')!,
+      )['sub'];
+      pref.setString('myevent.auth.token.subject', eventOrganizerId);
       initRoute = RouteName.mainScreen;
     }
     Get.offAllNamed(initRoute!);

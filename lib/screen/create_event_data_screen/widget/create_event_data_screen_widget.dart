@@ -473,6 +473,7 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                         )
                         .toList(),
                     onChanged: (category) {
+                      print('kategori di pilih');
                       controller.setEventCategory(category!);
                     },
                     hint: Text(
