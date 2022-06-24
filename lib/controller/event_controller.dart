@@ -13,7 +13,7 @@ import 'package:myevent_android/provider/api_location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventController extends ApiController {
-  XFile? bannerImage;
+  Rxn<XFile> bannerImage = Rxn();
   final isBannerImageUploaded = false.obs;
   DateTime? dateEventStart;
   DateTime? dateEventEnd;
@@ -76,25 +76,43 @@ class EventController extends ApiController {
     descriptionFocusNode.unfocus();
   }
 
-  bool get isFormValid =>
-      isBannerImageUploaded.value &&
-      isNameValid.value &&
-      isDescriptionValid.value &&
-      isDateTimeEventValid.value &&
-      dateEventStart != null &&
-      timeEventStart != null &&
-      dateEventEnd != null &&
-      timeEventEnd != null &&
-      isLocationValid.value &&
-      venue != null &&
-      eventVenueCategoryId != null &&
-      eventCategoryId != null &&
-      isCategoryValid.value;
+  RxBool isDataValid = RxBool(false);
+
+  // bool get isFormValid =>
+  //     isBannerImageUploaded.value &&
+  //     isNameValid.value &&
+  //     isDescriptionValid.value &&
+  //     isDateTimeEventValid.value &&
+  //     dateEventStart != null &&
+  //     timeEventStart != null &&
+  //     dateEventEnd != null &&
+  //     timeEventEnd != null &&
+  //     isLocationValid.value &&
+  //     venue != null &&
+  //     eventVenueCategoryId != null &&
+  //     eventCategoryId != null &&
+  //     isCategoryValid.value &&
+  //     locationController.text.isNotEmpty;
+
+  void validateAllData() {
+    if (isBannerImageUploaded.value &&
+        isNameValid.value &&
+        isDescriptionValid.value &&
+        isDateTimeEventValid.value &&
+        isLocationValid.value &&
+        isCategoryValid.value &&
+        isVenueCategoryValid.value) {
+      isDataValid.value = true;
+    } else {
+      isDataValid.value = false;
+    }
+  }
 
   Future<void> pickBannerPhoto() async {
     final ImagePicker _picker = ImagePicker();
-    bannerImage = await _picker.pickImage(source: ImageSource.gallery);
+    bannerImage.value = await _picker.pickImage(source: ImageSource.gallery);
     isBannerImageUploaded.value = true;
+    update();
   }
 
   Future<void> setEventDateStart() async {
@@ -198,23 +216,29 @@ class EventController extends ApiController {
   }
 
   void setEventVenueCategory(int id) {
-    eventVenueCategoryId = id;
-    isVenueCategoryValid.value = true;
+    validateAllData();
     if (id == 1) {
+      isVenueCategoryValid.value = false;
       isOnsiteEvent.value = true;
       locationController.text = '';
+      locationErrorMessage.value = null;
     } else {
+      isVenueCategoryValid.value = false;
       isOnsiteEvent.value = false;
       locationController.text = '';
+      locationErrorMessage.value = null;
     }
+    eventVenueCategoryId = id;
   }
 
   void setEventCategory(int id) {
+    validateAllData();
     eventCategoryId = id;
     isCategoryValid.value = true;
   }
 
   void validateName(String organizerName) {
+    validateAllData();
     errorMessage = null;
     isNameValid.value = false;
     if (organizerName.isEmpty) {
@@ -226,6 +250,7 @@ class EventController extends ApiController {
   }
 
   void validateDescription(String description) {
+    validateAllData();
     errorMessage = null;
     isDescriptionValid.value = true;
     if (description.isEmpty) {
@@ -239,6 +264,7 @@ class EventController extends ApiController {
   }
 
   void validateDateTime() {
+    validateAllData();
     dateTimeEventErrorMessage.value = null;
     isDateTimeEventValid.value = true;
     if (dateTimeEventStart != null && dateTimeEventEnd != null) {
@@ -272,6 +298,8 @@ class EventController extends ApiController {
   }
 
   void validateLocation(String location) {
+    validateAllData();
+    isVenueCategoryValid.value = true;
     isLocationValid.value = true;
     locationErrorMessage.value = null;
     if (isOnsiteEvent.value != null) {
@@ -287,11 +315,13 @@ class EventController extends ApiController {
           locationErrorMessage.value = 'Link tidak valid';
         } else {
           isLocationValid.value = true;
+          isVenueCategoryValid.value = true;
           locationErrorMessage.value = null;
           venue = location;
         }
       } else {
         isLocationValid.value = true;
+        isVenueCategoryValid.value = true;
         locationErrorMessage.value = null;
       }
     }
@@ -305,7 +335,7 @@ class EventController extends ApiController {
       'dateTimeEventStart': dateTimeEventStart!.millisecondsSinceEpoch,
       'dateTimeEventEnd': dateTimeEventEnd!.millisecondsSinceEpoch,
       'location': venue,
-      'bannerPhoto': dio.MultipartFile.fromFile(bannerImage!.path),
+      'bannerPhoto': dio.MultipartFile.fromFile(bannerImage.value!.path),
       'eventStatusId': eventStatusId,
       'eventCategoryId': eventCategoryId,
       'eventVenueCategoryId': eventVenueCategoryId,

@@ -46,8 +46,50 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                   width: double.infinity,
                   height: 200,
                   color: Colors.grey,
-                  child: Image.file(
-                    File(controller.bannerImage!.path),
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Image.file(
+                        File(controller.bannerImage.value!.path),
+                      ),
+                      Container(
+                          height: 70.0,
+                          color: Colors.black.withOpacity(0.5),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: controller.pickBannerPhoto,
+                                    child: Text(
+                                      'Ubah',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: Text(
+                                      'Lihat',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ))
+                    ],
                   ),
                 ),
           Padding(
@@ -473,7 +515,6 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                         )
                         .toList(),
                     onChanged: (category) {
-                      print('kategori di pilih');
                       controller.setEventCategory(category!);
                     },
                     hint: Text(

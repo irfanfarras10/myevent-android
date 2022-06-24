@@ -15,6 +15,20 @@ class CreateEventDataScreen extends StatelessWidget {
     final controller = Get.find<EventController>();
     return Obx(
       () {
+        // print(
+        //     'isBannerImageUploaded.value ${controller.isBannerImageUploaded.value}');
+        // print('isNameValid.value ${controller.isNameValid.value}');
+        // print(
+        //     'isDescriptionValid.value ${controller.isDescriptionValid.value}');
+        // print(
+        //     'isDateTimeEventValid.value  ${controller.isDateTimeEventValid.value}');
+        // print('isLocationValid.value ${controller.isLocationValid.value}');
+        // print('venue != null ${controller.venue != null}');
+        // print(
+        //     'eventVenueCategoryId != null ${controller.eventVenueCategoryId != null}');
+        // print('eventCategoryId != null ${controller.eventCategoryId != null}');
+        // print('isCategoryValid.value ${controller.isCategoryValid.value}');
+
         Widget body;
         if (controller.isLoadingEventCategoryData.value) {
           body = LoadingWidget();
@@ -59,7 +73,7 @@ class CreateEventDataScreen extends StatelessWidget {
                   child: SizedBox(
                     height: 60.0,
                     child: ElevatedButton(
-                      onPressed: controller.isFormValid
+                      onPressed: controller.isDataValid.value
                           ? controller.createEvent
                           : null,
                       style: ButtonStyle(
