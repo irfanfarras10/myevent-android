@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:myevent_android/route/route_name.dart';
 
 class EventScreen extends StatelessWidget {
   const EventScreen({Key? key}) : super(key: key);
@@ -8,6 +10,11 @@ class EventScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Text('Event List Screen'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.toNamed(RouteName.createEventScreen),
+        child: Icon(Icons.add),
+        tooltip: 'Buat Event',
       ),
     );
   }

@@ -5,14 +5,15 @@ final apiProfile = ApiProfile();
 
 class ApiProfile {
   Future<Map<String, dynamic>> viewProfile() {
-    return apiUtil.apiRequestGet('organizer');
+    return apiUtil.apiRequestGet(
+        'https://myevent-android-api.herokuapp.com/api/organizer');
   }
 
   Future<Map<String, dynamic>> updateProfile({
     required UpdateProfileApiRequestModel requestBody,
   }) {
     return apiUtil.apiRequestPut(
-      'organizer',
+      'https://myevent-android-api.herokuapp.com/api/organizer',
       requestBody.toJson(),
     );
   }

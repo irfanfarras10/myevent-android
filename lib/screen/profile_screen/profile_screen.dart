@@ -4,8 +4,8 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/profile_controller.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/screen/profile_screen/widget/profile_screen_data_widget.dart';
-import 'package:myevent_android/screen/profile_screen/widget/profile_screen_loading_widget.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
+import 'package:myevent_android/widget/loading_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
     return Obx(
       () {
         if (controller.isLoadProfileData.value) {
-          profileScreenBody = ProfileScreenLoadingWidget();
+          profileScreenBody = LoadingWidget();
         } else {
           if (controller.apiResponseState.value != ApiResponseState.http2xx &&
               controller.apiResponseState.value != ApiResponseState.http401) {

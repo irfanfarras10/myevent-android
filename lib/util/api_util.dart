@@ -1,6 +1,5 @@
 import 'package:alice/alice.dart';
 import 'package:dio/dio.dart';
-import 'package:myevent_android/config/myevent_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final ApiUtil apiUtil = ApiUtil();
@@ -14,12 +13,12 @@ class ApiUtil {
 
   Future<Dio> _getDioClient() async {
     final dio = Dio();
-    dio.options.baseUrl = MyEventConfig.baseUrl;
     dio.options.connectTimeout = 15000;
     dio.options.receiveTimeout = 15000;
     dio.options.headers['Authorization'] = 'Bearer ${await _getAuthToken()}';
     dio.options.headers['Content-Type'] = 'application/json';
-    dio.options.headers['Accept-Encoding'] = 'gzip, deflate, br';
+    dio.options.headers['Accept'] = 'application/json';
+    // dio.options.headers['Accept-Encoding'] = 'gzip, deflate, br';
     dio.interceptors.add(alice.getDioInterceptor());
     return dio;
   }
@@ -72,6 +71,20 @@ class ApiUtil {
     try {
       final httpClient = await _getDioClient();
       final response = await httpClient.get(url);
+      return response.data;
+    } on DioError catch (error) {
+      return _handleDioError(error);
+    }
+  }
+
+  Future<Map<String, dynamic>> apiRequestMultipartPost({
+    required String url,
+    required Map<String, dynamic> data,
+  }) async {
+    try {
+      final formData = FormData.fromMap(data);
+      final httpClient = await _getDioClient();
+      final response = await httpClient.post(url, data: formData);
       return response.data;
     } on DioError catch (error) {
       return _handleDioError(error);
