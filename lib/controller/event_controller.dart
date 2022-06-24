@@ -40,16 +40,20 @@ class EventController extends ApiController {
   final dateEventEndFocusNode = FocusNode();
   final timeEventStartFocusNode = FocusNode();
   final timeEventEndFocusNode = FocusNode();
+  final locationFocusNode = FocusNode();
 
   RxBool isNameValid = false.obs;
   RxBool isDescriptionValid = false.obs;
   RxBool isDateTimeEventValid = false.obs;
+  RxBool isLocationValid = false.obs;
+  RxBool isCategoryValid = false.obs;
 
   RxBool isFormValid = false.obs;
 
   RxnString nameErrorMessage = RxnString();
   RxnString descriptionErrorMessage = RxnString();
   RxnString dateTimeEventErrorMessage = RxnString();
+  RxnString locationErrorMessage = RxnString();
 
   @override
   onInit() {
@@ -162,6 +166,7 @@ class EventController extends ApiController {
   }) {
     venue = '$lon|$lat';
     locationController.text = location;
+    validateLocation(location);
   }
 
   void selectVenueType(String venue) {
@@ -227,5 +232,31 @@ class EventController extends ApiController {
       dateTimeEventEnd = DateTime.parse('$dateEnd $timeEnd');
     }
     validateDateTime();
+  }
+
+  void validateLocation(String location) {
+    print('di hut');
+    isLocationValid.value = true;
+    locationErrorMessage.value = null;
+    if (isOnsiteEvent.value != null) {
+      if (isOnsiteEvent.value! && venue == null) {
+        isLocationValid.value = false;
+        locationErrorMessage.value = 'Lokasi harus dipilih';
+      } else if (!isOnsiteEvent.value!) {
+        if (location.isEmpty) {
+          isLocationValid.value = false;
+          locationErrorMessage.value = 'Link video conference harus diisi';
+        } else if (!Uri.parse(location).isAbsolute) {
+          isLocationValid.value = false;
+          locationErrorMessage.value = 'Link tidak valid';
+        } else {
+          isLocationValid.value = true;
+          locationErrorMessage.value = null;
+        }
+      } else {
+        isLocationValid.value = true;
+        locationErrorMessage.value = null;
+      }
+    }
   }
 }

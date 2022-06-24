@@ -365,8 +365,13 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                                   labelStyle: TextStyle(
                                     color: MyEventColor.secondaryColor,
                                   ),
+                                  errorText:
+                                      controller.locationErrorMessage.value,
                                 ),
                                 controller: controller.locationController,
+                                onChanged: (String location) {
+                                  controller.validateLocation(location);
+                                },
                               ),
                               suggestionsCallback: (location) async {
                                 return await controller.findLocation(location);
@@ -405,16 +410,17 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                         : Padding(
                             padding: const EdgeInsets.only(bottom: 15.0),
                             child: TextFormField(
-                              // controller: controller.organizerNameController,
+                              controller: controller.locationController,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.name,
-                              // focusNode: controller.organizerNameFocusNode,
-                              onChanged: (String organizerName) {
-                                // controller.validateOrganizerName(organizerName);
+                              focusNode: controller.locationFocusNode,
+                              onChanged: (String location) {
+                                controller.validateLocation(location);
                               },
                               decoration: InputDecoration(
                                 labelText: 'Link Video Conference',
-                                // errorText: controller.organizerNameErrorMessage.value,
+                                errorText:
+                                    controller.locationErrorMessage.value,
                                 fillColor: MyEventColor.primaryColor,
                                 labelStyle: TextStyle(
                                   color: MyEventColor.secondaryColor,
