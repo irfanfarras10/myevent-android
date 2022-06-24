@@ -296,19 +296,19 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                 ),
                 ButtonTheme(
                   alignedDropdown: true,
-                  child: DropdownButtonFormField<String>(
+                  child: DropdownButtonFormField<int>(
                     items: [
                       DropdownMenuItem(
-                        value: 'Onsite',
+                        value: 1,
                         child: Text('Onsite'),
                       ),
                       DropdownMenuItem(
-                        value: 'Online',
+                        value: 2,
                         child: Text('Online'),
                       ),
                     ],
                     onChanged: (venue) {
-                      controller.selectVenueType(venue!);
+                      controller.setEventVenueCategory(venue!);
                     },
                     hint: Text(
                       'Jenis Tempat Event',
@@ -374,15 +374,33 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                                 },
                               ),
                               suggestionsCallback: (location) async {
-                                return await controller.findLocation(location);
+                                var data =
+                                    await controller.findLocation(location);
+                                // if (data['code'] != 400) {
+                                //   return [];
+                                // }
+                                return data;
                               },
                               itemBuilder: (context, Features location) {
-                                return ListTile(
-                                  leading: Icon(Icons.location_on),
-                                  title: Text(location.properties!.name == null
-                                      ? location.properties!.city!
-                                      : location.properties!.name!),
-                                );
+                                try {
+                                  return ListTile(
+                                    leading: Icon(Icons.location_on),
+                                    title: Text(
+                                      location.properties!.name != null
+                                          ? location.properties!.name!
+                                          : location.properties!.city != null
+                                              ? location.properties!.city!
+                                              : location.properties!.street !=
+                                                      null
+                                                  ? location.properties!.street!
+                                                  : location.properties!
+                                                      .addressLine1!,
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                                  throw e;
+                                }
                               },
                               onSuggestionSelected: (location) {
                                 controller.setVenue(
@@ -445,16 +463,18 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                           ),
                 ButtonTheme(
                   alignedDropdown: true,
-                  child: DropdownButtonFormField(
+                  child: DropdownButtonFormField<int>(
                     items: controller.eventCategoryList
                         .map(
                           (category) => DropdownMenuItem(
-                            value: category,
+                            value: category.id,
                             child: Text(category.name!),
                           ),
                         )
                         .toList(),
-                    onChanged: (value) {},
+                    onChanged: (category) {
+                      controller.setEventCategory(category!);
+                    },
                     hint: Text(
                       'Kategori Event',
                       style: TextStyle(

@@ -29,6 +29,9 @@ class EventController extends ApiController {
   List<EventCategories> eventCategoryList = [];
   final locationController = TextEditingController();
   String? venue;
+  int? eventVenueCategoryId;
+  int eventStatusId = 1;
+  int? eventCategoryId;
 
   RxBool isLoadingEventCategoryData = true.obs;
 
@@ -47,8 +50,6 @@ class EventController extends ApiController {
   RxBool isDateTimeEventValid = false.obs;
   RxBool isLocationValid = false.obs;
   RxBool isCategoryValid = false.obs;
-
-  RxBool isFormValid = false.obs;
 
   RxnString nameErrorMessage = RxnString();
   RxnString descriptionErrorMessage = RxnString();
@@ -69,6 +70,21 @@ class EventController extends ApiController {
     nameFocusNode.unfocus();
     descriptionFocusNode.unfocus();
   }
+
+  bool get isFormValid =>
+      isBannerImageUploaded.value &&
+      isNameValid.value &&
+      isDescriptionValid.value &&
+      isDateTimeEventValid.value &&
+      dateEventStart != null &&
+      timeEventStart != null &&
+      dateEventEnd != null &&
+      timeEventEnd != null &&
+      isLocationValid.value &&
+      venue != null &&
+      eventVenueCategoryId != null &&
+      eventCategoryId != null &&
+      isCategoryValid.value;
 
   Future<void> pickBannerPhoto() async {
     final ImagePicker _picker = ImagePicker();
@@ -155,8 +171,15 @@ class EventController extends ApiController {
       keyword = ' ';
     }
     return await apiLocation.getLocation(keyword).then(
-          (response) => LocationApiResponseModel.fromJson(response).features,
-        );
+      (response) {
+        print(response['code']);
+        print(response);
+        if (response['code'] != null) {
+          return [];
+        }
+        return LocationApiResponseModel.fromJson(response).features;
+      },
+    );
   }
 
   void setVenue({
@@ -169,14 +192,20 @@ class EventController extends ApiController {
     validateLocation(location);
   }
 
-  void selectVenueType(String venue) {
-    if (venue == 'Onsite') {
+  void setEventVenueCategory(int id) {
+    eventVenueCategoryId = id;
+    isCategoryValid.value = true;
+    if (id == 1) {
       isOnsiteEvent.value = true;
       locationController.text = '';
     } else {
       isOnsiteEvent.value = false;
       locationController.text = '';
     }
+  }
+
+  void setEventCategory(int id) {
+    eventCategoryId = id;
   }
 
   void validateName(String organizerName) {
@@ -192,13 +221,13 @@ class EventController extends ApiController {
 
   void validateDescription(String description) {
     errorMessage = null;
-    isDescriptionValid.value = false;
+    isDescriptionValid.value = true;
     if (description.isEmpty) {
       descriptionErrorMessage.value = 'Deskripsi event harus diisi';
     } else if (description.length < 50) {
       descriptionErrorMessage.value = 'Deskripsi event minimal 50 karakter';
     } else {
-      nameErrorMessage.value = null;
+      descriptionErrorMessage.value = null;
       isNameValid.value = true;
     }
   }
@@ -235,7 +264,6 @@ class EventController extends ApiController {
   }
 
   void validateLocation(String location) {
-    print('di hut');
     isLocationValid.value = true;
     locationErrorMessage.value = null;
     if (isOnsiteEvent.value != null) {
