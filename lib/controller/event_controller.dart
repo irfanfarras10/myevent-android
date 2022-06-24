@@ -216,7 +216,6 @@ class EventController extends ApiController {
   }
 
   void setEventVenueCategory(int id) {
-    validateAllData();
     if (id == 1) {
       isVenueCategoryValid.value = false;
       isOnsiteEvent.value = true;
@@ -229,16 +228,16 @@ class EventController extends ApiController {
       locationErrorMessage.value = null;
     }
     eventVenueCategoryId = id;
+    validateAllData();
   }
 
   void setEventCategory(int id) {
-    validateAllData();
     eventCategoryId = id;
     isCategoryValid.value = true;
+    validateAllData();
   }
 
   void validateName(String organizerName) {
-    validateAllData();
     errorMessage = null;
     isNameValid.value = false;
     if (organizerName.isEmpty) {
@@ -247,10 +246,10 @@ class EventController extends ApiController {
       nameErrorMessage.value = null;
       isNameValid.value = true;
     }
+    validateAllData();
   }
 
   void validateDescription(String description) {
-    validateAllData();
     errorMessage = null;
     isDescriptionValid.value = true;
     if (description.isEmpty) {
@@ -261,10 +260,10 @@ class EventController extends ApiController {
       descriptionErrorMessage.value = null;
       isNameValid.value = true;
     }
+    validateAllData();
   }
 
   void validateDateTime() {
-    validateAllData();
     dateTimeEventErrorMessage.value = null;
     isDateTimeEventValid.value = true;
     if (dateTimeEventStart != null && dateTimeEventEnd != null) {
@@ -277,6 +276,7 @@ class EventController extends ApiController {
         isDateTimeEventValid.value = true;
       }
     }
+    validateAllData();
   }
 
   void setEventDateTimeStart() {
@@ -298,7 +298,6 @@ class EventController extends ApiController {
   }
 
   void validateLocation(String location) {
-    validateAllData();
     isVenueCategoryValid.value = true;
     isLocationValid.value = true;
     locationErrorMessage.value = null;
@@ -324,6 +323,7 @@ class EventController extends ApiController {
         isVenueCategoryValid.value = true;
         locationErrorMessage.value = null;
       }
+      validateAllData();
     }
   }
 
