@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:myevent_android/model/api_request/create_ticket_api_request_model.dart';
 import 'package:myevent_android/screen/create_event_ticket_screen/widget/create_event_ticket_screen_card_widget.dart';
 
 class TicketController extends GetxController {
@@ -22,6 +23,8 @@ class TicketController extends GetxController {
   List<RxBool> isQuotaValid = RxList();
   List<RxnString> priceErrorMessage = RxList();
   List<RxBool> isPriceValid = RxList();
+
+  List<CreateTicketApiRequestModel> _apiRequest = [];
 
   bool get isDataValid {
     if (isPayedTicket.value) {
@@ -75,6 +78,7 @@ class TicketController extends GetxController {
   }
 
   void addTicket() {
+    _apiRequest.clear();
     ticketList.add(CreateEventTicketScreenCardWidget());
     ticketData.add(
       RxMap({
@@ -98,6 +102,7 @@ class TicketController extends GetxController {
   }
 
   void initTicket() {
+    _apiRequest.clear();
     ticketQuotaTotal.value = 0;
     ticketList.clear();
     ticketData.clear();
@@ -210,5 +215,21 @@ class TicketController extends GetxController {
     }
 
     ticketData[index]['price'] = int.parse(priceController[index].text);
+  }
+
+  Future<void> createTicket() async {
+    ticketList.asMap().forEach((key, value) {
+      _apiRequest.add(
+        CreateTicketApiRequestModel.fromJson({
+          'name': ticketData[key]['name'],
+          'price': ticketData[key]['price'],
+          'dateTimeRegistrationStart':
+              registrationPeriod.value!.start.toUtc().millisecondsSinceEpoch,
+          'dateTimeRegistrationEnd':
+              registrationPeriod.value!.end.toUtc().millisecondsSinceEpoch,
+          'quotaTotal': ticketData[key]['quota'],
+        }),
+      );
+    });
   }
 }

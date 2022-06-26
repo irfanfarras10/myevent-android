@@ -371,6 +371,7 @@ class CreateEventTicketScreen extends StatelessWidget {
                     onPressed: controller.isDataValid
                         ? () {
                             FocusManager.instance.primaryFocus?.unfocus();
+                            controller.createTicket();
                           }
                         : null,
                     style: ButtonStyle(
