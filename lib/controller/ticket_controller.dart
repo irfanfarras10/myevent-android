@@ -234,14 +234,19 @@ class TicketController extends GetxController {
   }
 
   void removeTicket(int index) {
-    ticketList.removeAt(index);
+    print(index);
     ticketData.removeAt(index);
+    ticketList.removeAt(index);
     nameErrorMessage.removeAt(index);
     quotaErrorMessage.removeAt(index);
     priceErrorMessage.removeAt(index);
     isNameValid.removeAt(index);
     isQuotaValid.removeAt(index);
     isPriceValid.removeAt(index);
+    nameController.removeAt(index);
+    quotaController.removeAt(index);
+    priceController.removeAt(index);
     _calculateTicketPriceTotal();
+    print(ticketData[0]);
   }
 }
