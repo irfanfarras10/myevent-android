@@ -4,6 +4,7 @@ import 'package:myevent_android/controller/event_controller.dart';
 import 'package:myevent_android/controller/main_controller.dart';
 import 'package:myevent_android/controller/navigation_controller.dart';
 import 'package:myevent_android/controller/profile_controller.dart';
+import 'package:myevent_android/controller/ticket_controller.dart';
 
 class MainBinding implements Bindings {
   @override
@@ -31,6 +32,10 @@ class MainBinding implements Bindings {
     );
     Get.lazyPut<EventController>(
       () => EventController(),
+      fenix: true,
+    );
+    Get.lazyPut(
+      () => TicketController(),
       fenix: true,
     );
   }

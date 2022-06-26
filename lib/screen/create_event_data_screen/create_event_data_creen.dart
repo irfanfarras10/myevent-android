@@ -34,7 +34,8 @@ class CreateEventDataScreen extends StatelessWidget {
           body = LoadingWidget();
         } else {
           if (controller.apiResponseState.value != ApiResponseState.http2xx &&
-              controller.apiResponseState.value != ApiResponseState.http401) {
+              controller.apiResponseState.value != ApiResponseState.http401 &&
+              controller.apiResponseState.value != ApiResponseState.http409) {
             return HttpErrorWidget(
               errorMessage: controller.errorMessage,
               refreshAction: controller.getEventCategory,
