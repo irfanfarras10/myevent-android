@@ -158,7 +158,7 @@ class AuthController extends ApiController {
       (response) async {
         final signInApiResponse = SignInApiResponseModel.fromJson(response);
 
-        checkApResponse(response);
+        checkApiResponse(response);
 
         if (apiResponseState.value != ApiResponseState.http2xx) {
           errorMessage = response['message'];
@@ -193,7 +193,7 @@ class AuthController extends ApiController {
       (response) async {
         final signUpApiResponse = ApiResponseModel.fromJson(response);
 
-        checkApResponse(response);
+        checkApiResponse(response);
         if (apiResponseState.value != ApiResponseState.http2xx) {
           if (signUpApiResponse.message == 'Username sudah digunakan') {
             usernameErrorMessage.value = signUpApiResponse.message;

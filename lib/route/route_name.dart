@@ -5,4 +5,5 @@ class RouteName {
   static const signUpScreen = '/auth/signup';
   static const mainScreen = '/events';
   static const createEventScreen = '/events/create';
+  static const createEventTicketScreen = '/events/:id/ticket/create';
 }

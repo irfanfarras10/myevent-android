@@ -10,12 +10,13 @@ enum ApiResponseState {
   http2xx,
   http401,
   http403,
+  http409,
 }
 
 abstract class ApiController extends GetxController {
   Rxn<ApiResponseState> apiResponseState = Rxn<ApiResponseState>();
   String? errorMessage;
-  void checkApResponse(Map<String, dynamic> response) {
+  void checkApiResponse(Map<String, dynamic> response) {
     if (response['code'] != null) {
       if (response['code'] == 401) {
         apiResponseState.value = ApiResponseState.http401;
@@ -41,6 +42,9 @@ abstract class ApiController extends GetxController {
       }
       if (response['code'] == 5000) {
         apiResponseState.value = ApiResponseState.offline;
+      }
+      if (response['code'] == 409) {
+        apiResponseState.value = ApiResponseState.http409;
       }
       errorMessage = response['message'];
     } else {

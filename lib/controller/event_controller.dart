@@ -7,11 +7,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
-import 'package:myevent_android/model/api_response/api_response_model.dart';
+import 'package:myevent_android/model/api_response/create_event_api_response_model.dart';
 import 'package:myevent_android/model/api_response/location_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/model/api_response/event_category_api_response_model.dart';
 import 'package:myevent_android/provider/api_location.dart';
+import 'package:myevent_android/route/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventController extends ApiController {
@@ -187,7 +188,7 @@ class EventController extends ApiController {
   Future<void> getEventCategory() async {
     await apiEvent.getEventCategory().then(
       (response) {
-        checkApResponse(response);
+        checkApiResponse(response);
         if (apiResponseState.value != ApiResponseState.http401) {
           isLoadingEventCategoryData.value = false;
           final eventCategoryApiResponse =
@@ -370,10 +371,11 @@ class EventController extends ApiController {
     apiEvent.createEvent(data: apiRequest).then(
       (response) {
         Get.back();
-        checkApResponse(response);
-        ApiResponseModel? createEventApiResponse;
+        checkApiResponse(response);
+        CreateEventApiResponseModel? createEventApiResponse;
         if (apiResponseState.value == ApiResponseState.http2xx) {
-          createEventApiResponse = ApiResponseModel.fromJson(response);
+          createEventApiResponse =
+              CreateEventApiResponseModel.fromJson(response);
         }
         Get.defaultDialog(
           titleStyle: TextStyle(
@@ -408,7 +410,18 @@ class EventController extends ApiController {
           textConfirm: 'OK',
           confirmTextColor: MyEventColor.secondaryColor,
           barrierDismissible: false,
-          onConfirm: () => Get.back(),
+          onConfirm: () {
+            if (apiResponseState.value == ApiResponseState.http2xx) {
+              Get.back();
+              Get.back();
+              Get.toNamed(RouteName.createEventTicketScreen.replaceAll(
+                ':id',
+                createEventApiResponse!.eventId.toString(),
+              ));
+            } else {
+              Get.back();
+            }
+          },
         );
       },
     );
