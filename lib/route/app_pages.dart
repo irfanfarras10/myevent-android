@@ -39,7 +39,6 @@ class AppPages {
     GetPage(
       name: RouteName.createEventTicketScreen,
       page: () => CreateEventTicketScreen(),
-      transition: Transition.leftToRight,
     )
   ];
 }

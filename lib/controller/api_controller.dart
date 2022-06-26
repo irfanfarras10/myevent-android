@@ -16,7 +16,7 @@ enum ApiResponseState {
 abstract class ApiController extends GetxController {
   Rxn<ApiResponseState> apiResponseState = Rxn<ApiResponseState>();
   String? errorMessage;
-  void checkApResponse(Map<String, dynamic> response) {
+  void checkApiResponse(Map<String, dynamic> response) {
     if (response['code'] != null) {
       if (response['code'] == 401) {
         apiResponseState.value = ApiResponseState.http401;

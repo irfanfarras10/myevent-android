@@ -188,7 +188,7 @@ class EventController extends ApiController {
   Future<void> getEventCategory() async {
     await apiEvent.getEventCategory().then(
       (response) {
-        checkApResponse(response);
+        checkApiResponse(response);
         if (apiResponseState.value != ApiResponseState.http401) {
           isLoadingEventCategoryData.value = false;
           final eventCategoryApiResponse =
@@ -371,7 +371,7 @@ class EventController extends ApiController {
     apiEvent.createEvent(data: apiRequest).then(
       (response) {
         Get.back();
-        checkApResponse(response);
+        checkApiResponse(response);
         CreateEventApiResponseModel? createEventApiResponse;
         if (apiResponseState.value == ApiResponseState.http2xx) {
           createEventApiResponse =
@@ -412,15 +412,13 @@ class EventController extends ApiController {
           barrierDismissible: false,
           onConfirm: () {
             if (apiResponseState.value == ApiResponseState.http2xx) {
-              print('ini');
               Get.back();
               Get.back();
-              Get.toNamed(
-                RouteName.createEventTicketScreen,
-                arguments: createEventApiResponse!.eventId,
-              );
+              Get.toNamed(RouteName.createEventTicketScreen.replaceAll(
+                ':id',
+                createEventApiResponse!.eventId.toString(),
+              ));
             } else {
-              print('tasdas');
               Get.back();
             }
           },

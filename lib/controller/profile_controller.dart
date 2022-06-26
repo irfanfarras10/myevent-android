@@ -130,7 +130,7 @@ class ProfileController extends ApiController {
 
       apiProfile.updateProfile(requestBody: updateProfileApiRequest).then(
         (response) {
-          checkApResponse(response);
+          checkApiResponse(response);
 
           if (apiResponseState.value == ApiResponseState.http2xx) {
             final updateProfileApiResponse = ApiResponseModel.fromJson(
@@ -179,7 +179,7 @@ class ProfileController extends ApiController {
     isLoadProfileData.value = true;
     await apiProfile.viewProfile().then(
       (response) {
-        checkApResponse(response);
+        checkApiResponse(response);
 
         if (apiResponseState.value != ApiResponseState.http401) {
           isLoadProfileData.value = false;

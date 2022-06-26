@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:myevent_android/colors/myevent_color.dart';
+import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/create_ticket_api_request_model.dart';
+import 'package:myevent_android/provider/api_ticket.dart';
 import 'package:myevent_android/screen/create_event_ticket_screen/widget/create_event_ticket_screen_card_widget.dart';
 
-class TicketController extends GetxController {
+class TicketController extends ApiController {
   RxBool isDailyTicket = false.obs;
   RxBool isPayedTicket = false.obs;
   RxList<Widget> ticketList = RxList();
@@ -26,6 +29,8 @@ class TicketController extends GetxController {
 
   List<CreateTicketApiRequestModel> _apiRequest = [];
 
+  final eventId = Get.parameters['id'];
+
   bool get isDataValid {
     if (isPayedTicket.value) {
       return !isNameValid.contains(false) &&
@@ -39,7 +44,11 @@ class TicketController extends GetxController {
   }
 
   @override
+  void resetState() {}
+
+  @override
   void onInit() {
+    print(eventId);
     initTicket();
     super.onInit();
   }
@@ -198,7 +207,6 @@ class TicketController extends GetxController {
     ever(
       ticketData[index],
       (_) {
-        print('cek cek cek');
         _calculateTicketPriceTotal();
       },
     );
@@ -231,6 +239,99 @@ class TicketController extends GetxController {
         }),
       );
     });
+
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Menyimpan data...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    for (int i = 0; i < _apiRequest.length; i++) {
+      await apiTicket
+          .createTicket(eventId: eventId!, requestBody: _apiRequest[i])
+          .then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http2xx) {
+            Get.defaultDialog(
+              titleStyle: TextStyle(
+                fontSize: 0.0,
+              ),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Tiket Tersimpan',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: MyEventColor.secondaryColor,
+                    ),
+                  ),
+                  Icon(
+                    Icons.check,
+                    size: 50.0,
+                    color: Colors.green,
+                  ),
+                ],
+              ),
+              textConfirm: 'OK',
+              confirmTextColor: MyEventColor.secondaryColor,
+              barrierDismissible: false,
+              onConfirm: () {
+                Get.back();
+              },
+            );
+            return;
+          }
+        },
+      );
+    }
+
+    Get.defaultDialog(
+      titleStyle: TextStyle(
+        fontSize: 0.0,
+      ),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Tiket Tersimpan',
+            style: TextStyle(
+              fontSize: 15.0,
+              color: MyEventColor.secondaryColor,
+            ),
+          ),
+          Icon(
+            Icons.check,
+            size: 50.0,
+            color: Colors.green,
+          ),
+        ],
+      ),
+      textConfirm: 'OK',
+      confirmTextColor: MyEventColor.secondaryColor,
+      barrierDismissible: false,
+      onConfirm: () {
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          Get.back();
+          Get.back();
+          //GOING TO SETTING PAYMENT SCREEN
+        } else {
+          Get.back();
+        }
+      },
+    );
   }
 
   void removeTicket(int index) {
@@ -247,6 +348,5 @@ class TicketController extends GetxController {
     quotaController.removeAt(index);
     priceController.removeAt(index);
     _calculateTicketPriceTotal();
-    print(ticketData[0]);
   }
 }
