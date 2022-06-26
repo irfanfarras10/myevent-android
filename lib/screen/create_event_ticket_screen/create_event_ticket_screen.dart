@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
@@ -125,7 +126,6 @@ class CreateEventTicketScreen extends StatelessWidget {
                     padding: EdgeInsets.all(15.0),
                     child: Column(
                       children: [
-                        //card widget
                         Column(
                           children: List.generate(
                             controller.ticketList.length,
@@ -137,7 +137,7 @@ class CreateEventTicketScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 15.0,
+                          height: 10.0,
                         ),
                         Visibility(
                           visible: controller.ticketList.length == 4,
@@ -180,6 +180,9 @@ class CreateEventTicketScreen extends StatelessWidget {
                               ),
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
                         ),
                       ],
                     ),
@@ -242,7 +245,7 @@ class CreateEventTicketScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 15.0,
+                  height: 5.0,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -272,7 +275,7 @@ class CreateEventTicketScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 15.0,
+                  height: 5.0,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -302,7 +305,7 @@ class CreateEventTicketScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 15.0,
+                  height: 5.0,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -332,7 +335,7 @@ class CreateEventTicketScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 15.0,
+                  height: 5.0,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

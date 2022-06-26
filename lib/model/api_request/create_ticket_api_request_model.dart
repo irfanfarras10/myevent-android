@@ -5,12 +5,13 @@ class CreateTicketApiRequestModel {
   int? dateTimeRegistrationEnd;
   int? quotaTotal;
 
-  CreateTicketApiRequestModel(
-      {this.name,
-      this.price,
-      this.dateTimeRegistrationStart,
-      this.dateTimeRegistrationEnd,
-      this.quotaTotal});
+  CreateTicketApiRequestModel({
+    this.name,
+    this.price,
+    this.dateTimeRegistrationStart,
+    this.dateTimeRegistrationEnd,
+    this.quotaTotal,
+  });
 
   CreateTicketApiRequestModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];

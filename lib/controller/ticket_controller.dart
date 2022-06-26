@@ -232,4 +232,16 @@ class TicketController extends GetxController {
       );
     });
   }
+
+  void removeTicket(int index) {
+    ticketList.removeAt(index);
+    ticketData.removeAt(index);
+    nameErrorMessage.removeAt(index);
+    quotaErrorMessage.removeAt(index);
+    priceErrorMessage.removeAt(index);
+    isNameValid.removeAt(index);
+    isQuotaValid.removeAt(index);
+    isPriceValid.removeAt(index);
+    _calculateTicketPriceTotal();
+  }
 }

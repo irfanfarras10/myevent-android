@@ -23,12 +23,21 @@ class CreateEventTicketScreenCardWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(15.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                Visibility(
+                  visible: controller.ticketList.length > 1,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () => controller.removeTicket(index!),
+                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 15.0),
+                    constraints: BoxConstraints(),
+                  ),
+                ),
                 TextFormField(
                   controller: controller.nameController[index!],
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.name,
-                  // focusNode: controller.nameFocusNode,
                   onChanged: (String name) {
                     controller.setTicketName(index!, name);
                   },
@@ -62,7 +71,6 @@ class CreateEventTicketScreenCardWidget extends StatelessWidget {
                     controller: controller.quotaController[index!],
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.number,
-                    // focusNode: controller.nameFocusNode,
                     onChanged: (String quota) {
                       controller.setTicketQuota(index!, quota);
                     },
@@ -99,7 +107,6 @@ class CreateEventTicketScreenCardWidget extends StatelessWidget {
                       controller: controller.priceController[index!],
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.number,
-                      // focusNode: controller.nameFocusNode,
                       textAlign: TextAlign.right,
                       onChanged: (String price) {
                         controller.setTicketPrice(index!, price);
