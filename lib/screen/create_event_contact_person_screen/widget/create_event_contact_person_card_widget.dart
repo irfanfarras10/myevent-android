@@ -31,8 +31,7 @@ class CreateEventContactPersonCardWidget extends StatelessWidget {
                   visible: controller.contactPersonList.length > 1,
                   child: IconButton(
                     icon: Icon(Icons.close),
-                    // onPressed: () => controller.removePayment(index),
-                    onPressed: () {},
+                    onPressed: () => controller.removeContactPerson(index!),
                     padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 15.0),
                     constraints: BoxConstraints(),
                   ),

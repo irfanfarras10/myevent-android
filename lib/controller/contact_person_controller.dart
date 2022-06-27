@@ -70,6 +70,16 @@ class ContactPersonController extends ApiController {
     isContactPersonSocialMediaIdValid.add(RxBool(false));
   }
 
+  void removeContactPerson(int index) {
+    contactPersonList.removeAt(index);
+    contactPersonData.removeAt(index);
+    contactPersonNameErrorMessage.removeAt(index);
+    contactPersonNumberErrorMessage.removeAt(index);
+    isContactPersonNameValid.removeAt(index);
+    isContactPersonNumberValid.removeAt(index);
+    isContactPersonSocialMediaIdValid.removeAt(index);
+  }
+
   void setContactPersonName(int index, String name) {
     if (name.isEmpty) {
       isContactPersonNameValid[index].value = false;

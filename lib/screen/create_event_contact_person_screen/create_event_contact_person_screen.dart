@@ -19,13 +19,42 @@ class CreateEventContactPersonScreen extends StatelessWidget {
           body = LoadingWidget();
         } else {
           body = SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
-              children: List.generate(
-                controller.contactPersonList.length,
-                (index) {
-                  return CreateEventContactPersonCardWidget(index: index);
-                },
-              ),
+              children: [
+                Column(
+                  children: List.generate(
+                    controller.contactPersonList.length,
+                    (index) {
+                      return CreateEventContactPersonCardWidget(index: index);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 60.0,
+                  child: TextButton(
+                    onPressed: controller.addContactPerson,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Tambahkan Tiket',
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            color: MyEventColor.secondaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 10.0),
+                        Icon(
+                          Icons.add,
+                          color: MyEventColor.secondaryColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         }
