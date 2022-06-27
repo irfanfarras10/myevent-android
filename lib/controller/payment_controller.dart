@@ -4,6 +4,7 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/create_payment_api_request_mode.dart';
 import 'package:myevent_android/provider/api_payment.dart';
+import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/screen/create_event_payment_screen/widget/create_event_payment_screen_card_widget.dart';
 
 class PaymentController extends ApiController {
@@ -186,7 +187,12 @@ class PaymentController extends ApiController {
             Get.back();
             Get.back();
             Get.back();
-            //GOING TO SET CONTACT PERSON SCREEN
+            Get.toNamed(
+              RouteName.createEventContactPersonScreen.replaceAll(
+                ':id',
+                _eventId!,
+              ),
+            );
           } else {
             Get.back();
           }

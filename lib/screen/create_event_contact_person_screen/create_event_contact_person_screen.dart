@@ -38,7 +38,7 @@ class CreateEventContactPersonScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Tambahkan Tiket',
+                          'Tambahkan Contact Person',
                           style: TextStyle(
                             fontSize: 17.0,
                             color: MyEventColor.secondaryColor,
@@ -54,6 +54,9 @@ class CreateEventContactPersonScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 20.0,
+                )
               ],
             ),
           );
@@ -86,7 +89,9 @@ class CreateEventContactPersonScreen extends StatelessWidget {
                   child: SizedBox(
                     height: 60.0,
                     child: ElevatedButton(
-                      onPressed: controller.isAllDataValid ? () {} : null,
+                      onPressed: controller.isAllDataValid
+                          ? controller.createContactPerson
+                          : null,
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.resolveWith<Color>(

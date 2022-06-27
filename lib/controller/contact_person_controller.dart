@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
+import 'package:myevent_android/model/api_request/create_contact_person_api_request_model.dart';
 import 'package:myevent_android/model/api_response/contact_person_social_media_api_response_model.dart';
 import 'package:myevent_android/provider/api_contact_person.dart';
 import 'package:myevent_android/screen/create_event_contact_person_screen/widget/create_event_contact_person_card_widget.dart';
@@ -19,6 +21,8 @@ class ContactPersonController extends ApiController {
   List<RxBool> isContactPersonNameValid = [];
   List<RxBool> isContactPersonNumberValid = [];
   List<RxBool> isContactPersonSocialMediaIdValid = [];
+
+  final _eventId = Get.parameters['id'];
 
   bool get isAllDataValid {
     return !isContactPersonNameValid.contains(false) &&
@@ -107,5 +111,111 @@ class ContactPersonController extends ApiController {
   void setContactPersonSocialMeda(int index, int id) {
     contactPersonData[index]['eventSocialMediaId'] = id;
     isContactPersonSocialMediaIdValid[index].value = true;
+  }
+
+  Future<void> createContactPerson() async {
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Menyimpan data...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    for (int i = 0; i < contactPersonList.length; i++) {
+      await apiContactPerson
+          .createPayment(
+        eventId: _eventId!,
+        requestBody: CreateContactPersonApiRequestModel.fromJson(
+          contactPersonData[i],
+        ),
+      )
+          .then(
+        (response) {
+          checkApiResponse(response);
+
+          if (apiResponseState.value != ApiResponseState.http2xx) {
+            Get.defaultDialog(
+              titleStyle: TextStyle(
+                fontSize: 0.0,
+              ),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Terjadi Kesalahan',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: MyEventColor.secondaryColor,
+                    ),
+                  ),
+                  Icon(
+                    Icons.close,
+                    size: 50.0,
+                    color: Colors.red,
+                  ),
+                ],
+              ),
+              textConfirm: 'OK',
+              confirmTextColor: MyEventColor.secondaryColor,
+              barrierDismissible: false,
+              onConfirm: () {
+                Get.back();
+                if (apiResponseState.value != ApiResponseState.http401) {
+                  Get.back();
+                }
+              },
+            );
+            return;
+          }
+        },
+      );
+    }
+
+    if (apiResponseState.value == ApiResponseState.http2xx) {
+      Get.defaultDialog(
+        titleStyle: TextStyle(
+          fontSize: 0.0,
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Contact Person Tersimpan',
+              style: TextStyle(
+                fontSize: 15.0,
+                color: MyEventColor.secondaryColor,
+              ),
+            ),
+            Icon(
+              Icons.check,
+              size: 50.0,
+              color: Colors.green,
+            ),
+          ],
+        ),
+        textConfirm: 'OK',
+        confirmTextColor: MyEventColor.secondaryColor,
+        barrierDismissible: false,
+        onConfirm: () {
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            Get.back();
+            Get.back();
+            Get.back();
+          } else {
+            Get.back();
+          }
+        },
+      );
+    }
   }
 }

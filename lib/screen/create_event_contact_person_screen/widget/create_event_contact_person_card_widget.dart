@@ -13,9 +13,7 @@ class CreateEventContactPersonCardWidget extends StatelessWidget {
     final controller = Get.find<ContactPersonController>();
     return Obx(
       () => Padding(
-        padding: EdgeInsets.all(
-          15.0,
-        ),
+        padding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
         child: Card(
           elevation: 3.0,
           shape: RoundedRectangleBorder(
