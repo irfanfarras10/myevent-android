@@ -353,7 +353,10 @@ class TicketController extends ApiController {
                 RouteName.createEventPaymentScreen.replaceAll(':id', _eventId!),
               );
             } else {
-              //going to create contact person
+              Get.toNamed(
+                RouteName.createEventContactPersonScreen
+                    .replaceAll(':id', _eventId!),
+              );
             }
           } else {
             Get.back();

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:myevent_android/screen/create_event_contact_person_screen/create_event_contact_person_screen.dart';
 import 'package:myevent_android/screen/create_event_data_screen/create_event_data_creen.dart';
 import 'package:myevent_android/screen/create_event_payment_screen/create_event_payment_screen.dart';
 import 'package:myevent_android/screen/create_event_ticket_screen/create_event_ticket_screen.dart';
@@ -45,5 +46,9 @@ class AppPages {
       name: RouteName.createEventPaymentScreen,
       page: () => CreateEventPaymentScreen(),
     ),
+    GetPage(
+      name: RouteName.createEventContactPersonScreen,
+      page: () => CreateEventContactPersonScreen(),
+    )
   ];
 }
