@@ -106,6 +106,48 @@ class CreateEventContactPersonCardWidget extends StatelessWidget {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: ButtonTheme(
+                  alignedDropdown: true,
+                  child: DropdownButtonFormField<int>(
+                    items: controller.contactPersonSocialMedia
+                        .map(
+                          (category) => DropdownMenuItem(
+                            value: category.id,
+                            child: Text(category.name!),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (category) {
+                      // controller.setEventCategory(category!);
+                    },
+                    hint: Text(
+                      'Pilih Media Sosial',
+                      style: TextStyle(
+                        color: MyEventColor.secondaryColor,
+                      ),
+                    ),
+                    icon: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: 27.0,
+                    ),
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: MyEventColor.secondaryColor,
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(
+                        0.0,
+                        18.0,
+                        10.0,
+                        18.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
