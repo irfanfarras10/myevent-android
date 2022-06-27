@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DraftEventScreen extends StatelessWidget {
@@ -5,6 +6,47 @@ class DraftEventScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
+            height: 100.0,
+            color: Colors.green,
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
+            height: 100.0,
+            color: Colors.green,
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
+            height: 100.0,
+            color: Colors.green,
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
+            height: 100.0,
+            color: Colors.green,
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
+            height: 100.0,
+            color: Colors.green,
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
+            height: 100.0,
+            color: Colors.green,
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
+            height: 100.0,
+            color: Colors.green,
+          )
+        ],
+      ),
+    );
   }
 }
