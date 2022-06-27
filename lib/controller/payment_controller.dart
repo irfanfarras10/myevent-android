@@ -91,9 +91,9 @@ class PaymentController extends ApiController {
   Future<void> createPayment() async {
     resetState();
 
-    paymentList.asMap().forEach((key, value) {
-      _apiRequest.add(CreatePaymentApiRequestModel.fromJson(paymentData[key]));
-    });
+    for (int i = 0; i < paymentList.length; i++) {
+      _apiRequest.add(CreatePaymentApiRequestModel.fromJson(paymentData[i]));
+    }
 
     Get.dialog(
       AlertDialog(
@@ -183,6 +183,7 @@ class PaymentController extends ApiController {
         barrierDismissible: false,
         onConfirm: () {
           if (apiResponseState.value == ApiResponseState.http2xx) {
+            Get.back();
             Get.back();
             Get.back();
             //GOING TO SET CONTACT PERSON SCREEN
