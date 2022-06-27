@@ -16,7 +16,7 @@ class CreateEventTicketScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              'Membuat Tiket',
+              'Pengaturan Tiket',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: MyEventColor.secondaryColor,

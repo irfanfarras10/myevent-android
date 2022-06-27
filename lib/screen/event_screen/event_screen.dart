@@ -12,7 +12,7 @@ class EventScreen extends StatelessWidget {
         child: Text('Event List Screen'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(RouteName.createEventScreen),
+        onPressed: () => Get.toNamed(RouteName.createEventPaymentScreen),
         child: Icon(Icons.add),
         tooltip: 'Buat Event',
       ),

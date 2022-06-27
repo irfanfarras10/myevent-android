@@ -6,4 +6,5 @@ class RouteName {
   static const mainScreen = '/events';
   static const createEventScreen = '/events/create';
   static const createEventTicketScreen = '/events/:id/ticket/create';
+  static const createEventPaymentScreen = '/events/:id/payment/create';
 }
