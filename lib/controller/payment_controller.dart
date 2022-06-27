@@ -90,7 +90,7 @@ class PaymentController extends ApiController {
 
   Future<void> createPayment() async {
     resetState();
-
+    _apiRequest.clear();
     for (int i = 0; i < paymentList.length; i++) {
       _apiRequest.add(CreatePaymentApiRequestModel.fromJson(paymentData[i]));
     }

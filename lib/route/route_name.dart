@@ -7,4 +7,6 @@ class RouteName {
   static const createEventScreen = '/events/create';
   static const createEventTicketScreen = '/events/:id/ticket/create';
   static const createEventPaymentScreen = '/events/:id/payment/create';
+  static const createEventContactPersonScreen =
+      '/events/:id/contact-person/create';
 }
