@@ -3,6 +3,7 @@ class CreateTicketApiRequestModel {
   int? price;
   int? dateTimeRegistrationStart;
   int? dateTimeRegistrationEnd;
+  int? quotaPerDay;
   int? quotaTotal;
 
   CreateTicketApiRequestModel({
@@ -10,6 +11,7 @@ class CreateTicketApiRequestModel {
     this.price,
     this.dateTimeRegistrationStart,
     this.dateTimeRegistrationEnd,
+    this.quotaPerDay,
     this.quotaTotal,
   });
 
@@ -18,6 +20,7 @@ class CreateTicketApiRequestModel {
     price = json['price'];
     dateTimeRegistrationStart = json['dateTimeRegistrationStart'];
     dateTimeRegistrationEnd = json['dateTimeRegistrationEnd'];
+    quotaPerDay = json['quotaPerDay'];
     quotaTotal = json['quotaTotal'];
   }
 
@@ -27,6 +30,7 @@ class CreateTicketApiRequestModel {
     data['price'] = this.price;
     data['dateTimeRegistrationStart'] = this.dateTimeRegistrationStart;
     data['dateTimeRegistrationEnd'] = this.dateTimeRegistrationEnd;
+    data['quotaPerDay'] = this.quotaPerDay;
     data['quotaTotal'] = this.quotaTotal;
     return data;
   }

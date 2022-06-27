@@ -5,6 +5,7 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/create_ticket_api_request_model.dart';
 import 'package:myevent_android/provider/api_ticket.dart';
+import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/screen/create_event_ticket_screen/widget/create_event_ticket_screen_card_widget.dart';
 
 class TicketController extends ApiController {
@@ -29,7 +30,7 @@ class TicketController extends ApiController {
 
   List<CreateTicketApiRequestModel> _apiRequest = [];
 
-  final eventId = Get.parameters['id'];
+  final _eventId = Get.parameters['id'];
 
   bool get isDataValid {
     if (isPayedTicket.value) {
@@ -48,7 +49,6 @@ class TicketController extends ApiController {
 
   @override
   void onInit() {
-    print(eventId);
     initTicket();
     super.onInit();
   }
@@ -56,9 +56,19 @@ class TicketController extends ApiController {
   void _calculateTicketPriceTotal() {
     ticketQuotaTotal.value = 0;
     if (registrationPeriod.value != null) {
-      ticketData.forEach((data) {
-        ticketQuotaTotal.value += data['quota'] as int;
-      });
+      for (int i = 0; i < ticketList.length; i++) {
+        if (isDailyTicket.value) {
+          ticketQuotaTotal.value += ticketData[i]['quotaTotal'] as int;
+          ticketData[i]['quotaPerDay'] = int.parse(quotaController[i].text);
+
+          ticketData[i]['quotaTotal'] *=
+              registrationPeriod.value!.duration.inDays + 1;
+        } else {
+          ticketData[i]['quotaPerDay'] = 0;
+          ticketData[i]['quotaTotal'] = int.parse(quotaController[i].text);
+          ticketQuotaTotal.value += ticketData[i]['quotaTotal'] as int;
+        }
+      }
 
       if (isDailyTicket.value) {
         ticketQuotaTotal.value *= registrationPeriod.value!.duration.inDays + 1;
@@ -69,9 +79,7 @@ class TicketController extends ApiController {
   void setIsDailyTicket(bool value) {
     isDailyTicket.value = value;
 
-    ever(isDailyTicket, (_) {
-      _calculateTicketPriceTotal();
-    });
+    _calculateTicketPriceTotal();
   }
 
   void setIsPayedTicket(bool value) {
@@ -92,7 +100,8 @@ class TicketController extends ApiController {
     ticketData.add(
       RxMap({
         'name': '',
-        'quota': 0,
+        'quotaPerDay': 0,
+        'quotaTotal': 0,
         'price': 0,
       }),
     );
@@ -125,28 +134,32 @@ class TicketController extends ApiController {
     ticketData.add(
       RxMap({
         'name': '',
-        'quota': 0,
+        'quotaPerDay': 0,
+        'quotaTotal': 0,
         'price': 0,
       }),
     );
     ticketData.add(
       RxMap({
         'name': '',
-        'quota': 0,
+        'quotaPerDay': 0,
+        'quotaTotal': 0,
         'price': 0,
       }),
     );
     ticketData.add(
       RxMap({
         'name': '',
-        'quota': 0,
+        'quotaPerDay': 0,
+        'quotaTotal': 0,
         'price': 0,
       }),
     );
     ticketData.add(
       RxMap({
         'name': '',
-        'quota': 0,
+        'quotaPerDay': 0,
+        'quotaTotal': 0,
         'price': 0,
       }),
     );
@@ -202,14 +215,9 @@ class TicketController extends ApiController {
       isQuotaValid[index].value = true;
     }
 
-    ticketData[index]['quota'] = int.parse(quotaController[index].text);
+    ticketData[index]['quotaTotal'] = int.parse(quotaController[index].text);
 
-    ever(
-      ticketData[index],
-      (_) {
-        _calculateTicketPriceTotal();
-      },
-    );
+    _calculateTicketPriceTotal();
   }
 
   void setTicketPrice(int index, String price) {
@@ -226,19 +234,29 @@ class TicketController extends ApiController {
   }
 
   Future<void> createTicket() async {
-    ticketList.asMap().forEach((key, value) {
+    _apiRequest.clear();
+    for (int i = 0; i < ticketList.length; i++) {
       _apiRequest.add(
         CreateTicketApiRequestModel.fromJson({
-          'name': ticketData[key]['name'],
-          'price': ticketData[key]['price'],
+          'name': ticketData[i]['name'],
+          'price': ticketData[i]['price'],
           'dateTimeRegistrationStart':
               registrationPeriod.value!.start.toUtc().millisecondsSinceEpoch,
           'dateTimeRegistrationEnd':
               registrationPeriod.value!.end.toUtc().millisecondsSinceEpoch,
-          'quotaTotal': ticketData[key]['quota'],
+          'quotaPerDay': ticketData[i]['quotaPerDay'],
+          'quotaTotal': ticketData[i]['quotaTotal'],
         }),
       );
-    });
+
+      print(ticketData[i]);
+
+      print(_apiRequest[i].name);
+      print(_apiRequest[i].dateTimeRegistrationStart);
+      print(_apiRequest[i].dateTimeRegistrationEnd);
+      print(_apiRequest[i].quotaPerDay);
+      print(_apiRequest[i].quotaTotal);
+    }
 
     Get.dialog(
       AlertDialog(
@@ -257,7 +275,7 @@ class TicketController extends ApiController {
 
     for (int i = 0; i < _apiRequest.length; i++) {
       await apiTicket
-          .createTicket(eventId: eventId!, requestBody: _apiRequest[i])
+          .createTicket(eventId: _eventId!, requestBody: _apiRequest[i])
           .then(
         (response) {
           checkApiResponse(response);
@@ -271,16 +289,16 @@ class TicketController extends ApiController {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Tiket Tersimpan',
+                    'Terjadi Kesalahan',
                     style: TextStyle(
                       fontSize: 15.0,
                       color: MyEventColor.secondaryColor,
                     ),
                   ),
                   Icon(
-                    Icons.check,
+                    Icons.close,
                     size: 50.0,
-                    color: Colors.green,
+                    color: Colors.red,
                   ),
                 ],
               ),
@@ -289,53 +307,59 @@ class TicketController extends ApiController {
               barrierDismissible: false,
               onConfirm: () {
                 Get.back();
+                if (apiResponseState.value != ApiResponseState.http401) {
+                  Get.back();
+                }
               },
             );
-            return;
           }
         },
       );
     }
 
-    Get.defaultDialog(
-      titleStyle: TextStyle(
-        fontSize: 0.0,
-      ),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Tiket Tersimpan',
-            style: TextStyle(
-              fontSize: 15.0,
-              color: MyEventColor.secondaryColor,
+    if (apiResponseState.value == ApiResponseState.http2xx) {
+      Get.defaultDialog(
+        titleStyle: TextStyle(
+          fontSize: 0.0,
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Tiket Tersimpan',
+              style: TextStyle(
+                fontSize: 15.0,
+                color: MyEventColor.secondaryColor,
+              ),
             ),
-          ),
-          Icon(
-            Icons.check,
-            size: 50.0,
-            color: Colors.green,
-          ),
-        ],
-      ),
-      textConfirm: 'OK',
-      confirmTextColor: MyEventColor.secondaryColor,
-      barrierDismissible: false,
-      onConfirm: () {
-        if (apiResponseState.value == ApiResponseState.http2xx) {
-          Get.back();
-          Get.back();
-          //GOING TO SETTING PAYMENT SCREEN
-        } else {
-          Get.back();
-        }
-      },
-    );
+            Icon(
+              Icons.check,
+              size: 50.0,
+              color: Colors.green,
+            ),
+          ],
+        ),
+        textConfirm: 'OK',
+        confirmTextColor: MyEventColor.secondaryColor,
+        barrierDismissible: false,
+        onConfirm: () {
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            Get.back();
+            Get.back();
+            Get.back();
+            Get.toNamed(
+              RouteName.createEventPaymentScreen,
+            );
+          } else {
+            Get.back();
+          }
+        },
+      );
+    }
   }
 
   void removeTicket(int index) {
-    print(index);
     ticketData.removeAt(index);
     ticketList.removeAt(index);
     nameErrorMessage.removeAt(index);

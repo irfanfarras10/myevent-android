@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myevent_android/colors/myevent_color.dart';
+import 'package:myevent_android/controller/api_controller.dart';
+import 'package:myevent_android/model/api_request/create_payment_api_request_mode.dart';
+import 'package:myevent_android/provider/api_payment.dart';
 import 'package:myevent_android/screen/create_event_payment_screen/widget/create_event_payment_screen_card_widget.dart';
 
-class PaymentController extends GetxController {
+class PaymentController extends ApiController {
   RxList<CreateEventPaymentScreenCardWidget> paymentList = RxList();
 
   RxList<TextEditingController> paymentTypeController = RxList();
@@ -15,11 +19,19 @@ class PaymentController extends GetxController {
   RxList<RxnString> paymentNumberErrorMessage = RxList();
 
   List<Map<String, dynamic>> paymentData = [];
+  List<CreatePaymentApiRequestModel> _apiRequest = [];
+
+  final _eventId = Get.parameters['id'];
 
   @override
   void onInit() {
     addPayment();
     super.onInit();
+  }
+
+  @override
+  void resetState() {
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   bool get isDataValid {
@@ -77,9 +89,108 @@ class PaymentController extends GetxController {
   }
 
   Future<void> createPayment() async {
-    for (int i = 0; i < paymentList.length; i++) {
-      print(paymentData[i]['type']);
-      print(paymentData[i]['information']);
+    resetState();
+
+    paymentList.asMap().forEach((key, value) {
+      _apiRequest.add(CreatePaymentApiRequestModel.fromJson(paymentData[key]));
+    });
+
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Menyimpan data...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    for (int i = 0; i < _apiRequest.length; i++) {
+      await apiPayment
+          .createPayment(eventId: _eventId!, requestBody: _apiRequest[i])
+          .then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http2xx) {
+            Get.defaultDialog(
+              titleStyle: TextStyle(
+                fontSize: 0.0,
+              ),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Terjadi Kesalahan',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: MyEventColor.secondaryColor,
+                    ),
+                  ),
+                  Icon(
+                    Icons.close,
+                    size: 50.0,
+                    color: Colors.red,
+                  ),
+                ],
+              ),
+              textConfirm: 'OK',
+              confirmTextColor: MyEventColor.secondaryColor,
+              barrierDismissible: false,
+              onConfirm: () {
+                Get.back();
+                if (apiResponseState.value != ApiResponseState.http401) {
+                  Get.back();
+                }
+              },
+            );
+            return;
+          }
+        },
+      );
+    }
+
+    if (apiResponseState.value == ApiResponseState.http2xx) {
+      Get.defaultDialog(
+        titleStyle: TextStyle(
+          fontSize: 0.0,
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Pembayaran Tersimpan',
+              style: TextStyle(
+                fontSize: 15.0,
+                color: MyEventColor.secondaryColor,
+              ),
+            ),
+            Icon(
+              Icons.check,
+              size: 50.0,
+              color: Colors.green,
+            ),
+          ],
+        ),
+        textConfirm: 'OK',
+        confirmTextColor: MyEventColor.secondaryColor,
+        barrierDismissible: false,
+        onConfirm: () {
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            Get.back();
+            Get.back();
+            //GOING TO SET CONTACT PERSON SCREEN
+          } else {
+            Get.back();
+          }
+        },
+      );
     }
   }
 }
