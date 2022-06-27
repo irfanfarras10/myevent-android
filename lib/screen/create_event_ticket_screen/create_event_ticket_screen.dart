@@ -16,7 +16,7 @@ class CreateEventTicketScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              'Membuat Tiket',
+              'Pengaturan Tiket',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: MyEventColor.secondaryColor,
@@ -262,9 +262,9 @@ class CreateEventTicketScreen extends StatelessWidget {
                     SizedBox(
                       width: 5.0,
                     ),
-                    controller.ticketData[0]['quota'] != 0
+                    controller.ticketData[0]['quotaTotal'] != 0
                         ? Text(
-                            controller.ticketData[0]['quota'].toString(),
+                            controller.ticketData[0]['quotaTotal'].toString(),
                             style: TextStyle(
                               color: MyEventColor.secondaryColor,
                               fontWeight: FontWeight.bold,
@@ -292,9 +292,9 @@ class CreateEventTicketScreen extends StatelessWidget {
                     SizedBox(
                       width: 5.0,
                     ),
-                    controller.ticketData[1]['quota'] != 0
+                    controller.ticketData[1]['quotaTotal'] != 0
                         ? Text(
-                            controller.ticketData[1]['quota'].toString(),
+                            controller.ticketData[1]['quotaTotal'].toString(),
                             style: TextStyle(
                               color: MyEventColor.secondaryColor,
                               fontWeight: FontWeight.bold,
@@ -322,9 +322,9 @@ class CreateEventTicketScreen extends StatelessWidget {
                     SizedBox(
                       width: 5.0,
                     ),
-                    controller.ticketData[2]['quota'] != 0
+                    controller.ticketData[2]['quotaTotal'] != 0
                         ? Text(
-                            controller.ticketData[2]['quota'].toString(),
+                            controller.ticketData[2]['quotaTotal'].toString(),
                             style: TextStyle(
                               color: MyEventColor.secondaryColor,
                               fontWeight: FontWeight.bold,
@@ -352,9 +352,9 @@ class CreateEventTicketScreen extends StatelessWidget {
                     SizedBox(
                       width: 5.0,
                     ),
-                    controller.ticketData[3]['quota'] != 0
+                    controller.ticketData[3]['quotaTotal'] != 0
                         ? Text(
-                            controller.ticketData[3]['quota'].toString(),
+                            controller.ticketData[3]['quotaTotal'].toString(),
                             style: TextStyle(
                               color: MyEventColor.secondaryColor,
                               fontWeight: FontWeight.bold,
