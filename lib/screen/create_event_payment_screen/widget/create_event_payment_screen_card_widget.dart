@@ -81,7 +81,7 @@ class CreateEventPaymentScreenCardWidget extends StatelessWidget {
                       labelText: 'No Rekening / No HP',
                       errorText:
                           controller.paymentNumberErrorMessage[index!].value,
-                      helperText: 'Nomor Rekening / Nomo Tujuan',
+                      helperText: 'Nomor Rekening / Nomor Tujuan',
                       fillColor: MyEventColor.primaryColor,
                       labelStyle: TextStyle(
                         color: MyEventColor.secondaryColor,

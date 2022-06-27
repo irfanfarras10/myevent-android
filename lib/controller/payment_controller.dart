@@ -14,6 +14,8 @@ class PaymentController extends GetxController {
   RxList<RxnString> paymentTypeErrorMessage = RxList();
   RxList<RxnString> paymentNumberErrorMessage = RxList();
 
+  List<Map<String, dynamic>> paymentData = [];
+
   @override
   void onInit() {
     addPayment();
@@ -33,6 +35,10 @@ class PaymentController extends GetxController {
     isPaymentNumberValid.add(RxBool(false));
     paymentTypeErrorMessage.add(RxnString());
     paymentNumberErrorMessage.add(RxnString());
+    paymentData.add({
+      'type': '',
+      'information': '',
+    });
   }
 
   void removePayment(index) {
@@ -43,6 +49,7 @@ class PaymentController extends GetxController {
     isPaymentNumberValid.removeAt(index);
     paymentTypeErrorMessage.removeAt(index);
     paymentNumberErrorMessage.removeAt(index);
+    paymentData.removeAt(index);
   }
 
   void setPaymentType(int index, String name) {
@@ -53,6 +60,8 @@ class PaymentController extends GetxController {
       isPaymentTypeValid[index].value = true;
       paymentTypeErrorMessage[index].value = null;
     }
+
+    paymentData[index]['type'] = name;
   }
 
   void setPaymentNumber(int index, String number) {
@@ -63,7 +72,14 @@ class PaymentController extends GetxController {
       isPaymentNumberValid[index].value = true;
       paymentNumberErrorMessage[index].value = null;
     }
+
+    paymentData[index]['information'] = number;
   }
 
-  Future<void> createPayment() async {}
+  Future<void> createPayment() async {
+    for (int i = 0; i < paymentList.length; i++) {
+      print(paymentData[i]['type']);
+      print(paymentData[i]['information']);
+    }
+  }
 }
