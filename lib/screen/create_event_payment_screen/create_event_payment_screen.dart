@@ -85,13 +85,8 @@ class CreateEventPaymentScreen extends StatelessWidget {
             height: 60.0,
             width: MediaQuery.of(context).size.width,
             child: ElevatedButton(
-              // onPressed: controller.isDataValid
-              //     ? () async {
-              //         FocusManager.instance.primaryFocus?.unfocus();
-              //         await controller.createTicket();
-              //       }
-              //     : null,
-              onPressed: () {},
+              onPressed:
+                  controller.isDataValid ? controller.createPayment : null,
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color>(
                   (states) {
