@@ -11,79 +11,42 @@ class CreateEventContactPersonCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ContactPersonController>();
-    return Padding(
-      padding: EdgeInsets.all(
-        15.0,
-      ),
-      child: Card(
-        elevation: 3.0,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.white70, width: 1),
-          borderRadius: BorderRadius.circular(10),
+    return Obx(
+      () => Padding(
+        padding: EdgeInsets.all(
+          15.0,
         ),
-        child: Padding(
-          padding: EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Visibility(
-                visible: controller.contactPersonList.length > 1,
-                child: IconButton(
-                  icon: Icon(Icons.close),
-                  // onPressed: () => controller.removePayment(index),
-                  onPressed: () {},
-                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 15.0),
-                  constraints: BoxConstraints(),
-                ),
-              ),
-              TextFormField(
-                // controller: controller.paymentTypeController[index!],
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.name,
-                // onChanged: (String name) {
-                //   controller.setPaymentType(index!, name);
-                // },
-                decoration: InputDecoration(
-                  labelText: 'Nama',
-                  // errorText:
-                  //     controller.paymentTypeErrorMessage[index!].value,
-
-                  fillColor: MyEventColor.primaryColor,
-                  labelStyle: TextStyle(
-                    color: MyEventColor.secondaryColor,
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: MyEventColor.secondaryColor,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: MyEventColor.secondaryColor,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: MyEventColor.primaryColor,
-                    ),
+        child: Card(
+          elevation: 3.0,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white70, width: 1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Visibility(
+                  visible: controller.contactPersonList.length > 1,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    // onPressed: () => controller.removePayment(index),
+                    onPressed: () {},
+                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 15.0),
+                    constraints: BoxConstraints(),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: TextFormField(
-                  // controller:
-                  //     controller.paymentNumberController[index!],
+                TextFormField(
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  // onChanged: (String number) {
-                  //   controller.setPaymentNumber(index!, number);
-                  // },
+                  keyboardType: TextInputType.name,
+                  onChanged: (String name) {
+                    controller.setContactPersonName(index!, name);
+                  },
                   decoration: InputDecoration(
-                    labelText: 'ID Media Sosial',
-                    // errorText: controller
-                    //     .paymentNumberErrorMessage[index!].value,
-
+                    labelText: 'Nama',
+                    errorText:
+                        controller.contactPersonNameErrorMessage[index!].value,
                     fillColor: MyEventColor.primaryColor,
                     labelStyle: TextStyle(
                       color: MyEventColor.secondaryColor,
@@ -105,50 +68,86 @@ class CreateEventContactPersonCardWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: ButtonTheme(
-                  alignedDropdown: true,
-                  child: DropdownButtonFormField<int>(
-                    items: controller.contactPersonSocialMedia
-                        .map(
-                          (category) => DropdownMenuItem(
-                            value: category.id,
-                            child: Text(category.name!),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (category) {
-                      // controller.setEventCategory(category!);
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: TextFormField(
+                    textInputAction: TextInputAction.next,
+                    onChanged: (String number) {
+                      controller.setContactPersonNumber(index!, number);
                     },
-                    hint: Text(
-                      'Pilih Media Sosial',
-                      style: TextStyle(
+                    decoration: InputDecoration(
+                      labelText: 'ID / Nomor Media Sosial',
+                      errorText: controller
+                          .contactPersonNumberErrorMessage[index!].value,
+                      fillColor: MyEventColor.primaryColor,
+                      labelStyle: TextStyle(
                         color: MyEventColor.secondaryColor,
                       ),
-                    ),
-                    icon: Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      size: 27.0,
-                    ),
-                    decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(
                           color: MyEventColor.secondaryColor,
                         ),
                       ),
-                      contentPadding: EdgeInsets.fromLTRB(
-                        0.0,
-                        18.0,
-                        10.0,
-                        18.0,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: MyEventColor.secondaryColor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: MyEventColor.primaryColor,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButtonFormField<int>(
+                      items: controller.contactPersonSocialMedia
+                          .map(
+                            (category) => DropdownMenuItem(
+                              value: category.id,
+                              child: Text(category.name!),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (socialMediaId) {
+                        controller.setContactPersonSocialMeda(
+                          index!,
+                          socialMediaId!,
+                        );
+                      },
+                      hint: Text(
+                        'Pilih Media Sosial',
+                        style: TextStyle(
+                          color: MyEventColor.secondaryColor,
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 27.0,
+                      ),
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: MyEventColor.secondaryColor,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.fromLTRB(
+                          0.0,
+                          18.0,
+                          10.0,
+                          18.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

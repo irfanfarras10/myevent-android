@@ -11,11 +11,31 @@ class ContactPersonController extends ApiController {
 
   RxBool isLoading = true.obs;
 
+  List<Map<String, dynamic>> contactPersonData = [];
+
+  List<RxnString> contactPersonNameErrorMessage = [];
+  List<RxnString> contactPersonNumberErrorMessage = [];
+
+  List<RxBool> isContactPersonNameValid = [];
+  List<RxBool> isContactPersonNumberValid = [];
+  List<RxBool> isContactPersonSocialMediaIdValid = [];
+
+  bool get isAllDataValid {
+    return !isContactPersonNameValid.contains(false) &&
+        !isContactPersonNumberValid.contains(false) &&
+        !isContactPersonSocialMediaIdValid.contains(false);
+  }
+
   @override
   void onInit() {
     getContactPersonSocialMedia();
     addContactPerson();
     super.onInit();
+  }
+
+  @override
+  void resetState() {
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   Future<void> getContactPersonSocialMedia() async {
@@ -38,10 +58,44 @@ class ContactPersonController extends ApiController {
 
   void addContactPerson() {
     contactPersonList.add(CreateEventContactPersonCardWidget());
+    contactPersonData.add({
+      'name': '',
+      'contact': '',
+      'eventSocialMediaId': null,
+    });
+    contactPersonNameErrorMessage.add(RxnString());
+    contactPersonNumberErrorMessage.add(RxnString());
+    isContactPersonNameValid.add(RxBool(false));
+    isContactPersonNumberValid.add(RxBool(false));
+    isContactPersonSocialMediaIdValid.add(RxBool(false));
   }
 
-  @override
-  void resetState() {
-    FocusManager.instance.primaryFocus?.unfocus();
+  void setContactPersonName(int index, String name) {
+    if (name.isEmpty) {
+      isContactPersonNameValid[index].value = false;
+      contactPersonNameErrorMessage[index].value = 'Nama harus diisi';
+    } else {
+      isContactPersonNameValid[index].value = true;
+      contactPersonNameErrorMessage[index].value = null;
+    }
+    contactPersonData[index]['name'] = name;
+  }
+
+  void setContactPersonNumber(int index, String number) {
+    if (number.isEmpty) {
+      isContactPersonNumberValid[index].value = false;
+      contactPersonNumberErrorMessage[index].value =
+          'ID / nomor media sosial harus diisi';
+    } else {
+      isContactPersonNumberValid[index].value = true;
+      contactPersonNumberErrorMessage[index].value = null;
+    }
+
+    contactPersonData[index]['contact'] = number;
+  }
+
+  void setContactPersonSocialMeda(int index, int id) {
+    contactPersonData[index]['eventSocialMediaId'] = id;
+    isContactPersonSocialMediaIdValid[index].value = true;
   }
 }
