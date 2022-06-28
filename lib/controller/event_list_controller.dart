@@ -17,6 +17,7 @@ class EventListController extends ApiController {
   @override
   void resetState() {
     eventList.clear();
+    isLoading.value = true;
   }
 
   Future<void> getData() async {

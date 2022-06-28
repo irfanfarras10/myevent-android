@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
+import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/screen/draft_event_screen/draft_event_screen.dart';
 
@@ -10,6 +12,7 @@ class EventScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<EventListController>();
     return Scaffold(
       body: DefaultTabController(
         length: 5,
@@ -17,7 +20,7 @@ class EventScreen extends StatelessWidget {
           notificationPredicate: (notification) {
             return notification.depth == 2;
           },
-          onRefresh: () => Future.delayed(Duration(seconds: 5)),
+          onRefresh: controller.getData,
           child: NestedScrollView(
             headerSliverBuilder: (context, value) {
               return [
