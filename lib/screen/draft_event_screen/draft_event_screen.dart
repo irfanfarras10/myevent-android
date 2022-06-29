@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/screen/draft_event_screen/widget/draft_event_screen_card_widget.dart';
@@ -37,17 +38,28 @@ class DraftEventScreen extends StatelessWidget {
               },
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
-                child: Column(
-                  children: List.generate(
-                    // ignore: invalid_use_of_protected_member
-                    controller.searchEventList.value.length,
-                    (index) {
-                      return DraftEventScreenCardWidget(
-                        data: controller.searchEventList[index],
-                      );
-                    },
-                  ),
-                ),
+                // ignore: invalid_use_of_protected_member
+                child: controller.searchEventList.value.isNotEmpty
+                    ? Column(
+                        children: List.generate(
+                          // ignore: invalid_use_of_protected_member
+                          controller.searchEventList.value.length,
+                          (index) {
+                            return DraftEventScreenCardWidget(
+                              data: controller.searchEventList[index],
+                            );
+                          },
+                        ),
+                      )
+                    : Center(
+                        child: Text(
+                          'Tidak Ada Data',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: MyEventColor.secondaryColor,
+                          ),
+                        ),
+                      ),
               ),
             ),
           );
