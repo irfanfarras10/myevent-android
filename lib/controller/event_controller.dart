@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:mime/mime.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/create_event_api_response_model.dart';
@@ -14,6 +15,8 @@ import 'package:myevent_android/model/api_response/event_category_api_response_m
 import 'package:myevent_android/provider/api_location.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// ignore: unused_import
+import 'package:http_parser/http_parser.dart';
 
 class EventController extends ApiController {
   Rxn<XFile> bannerImage = Rxn();
@@ -340,13 +343,22 @@ class EventController extends ApiController {
   Future<void> createEvent() async {
     resetState();
     final pref = await SharedPreferences.getInstance();
+
+    final imageMediaType = lookupMimeType(bannerImage.value!.path)!.split('/');
+
     apiRequest = {
       'name': nameController.text,
       'description': descriptionController.text,
       'dateTimeEventStart': dateTimeEventStart!.millisecondsSinceEpoch,
       'dateTimeEventEnd': dateTimeEventEnd!.millisecondsSinceEpoch,
       'location': venue,
-      'bannerPhoto': await dio.MultipartFile.fromFile(bannerImage.value!.path),
+      'bannerPhoto': await dio.MultipartFile.fromFile(
+        bannerImage.value!.path,
+        contentType: MediaType(
+          imageMediaType[0],
+          imageMediaType[1],
+        ),
+      ),
       'eventStatusId': eventStatusId,
       'eventCategoryId': eventCategoryId,
       'eventVenueCategoryId': eventVenueCategoryId,

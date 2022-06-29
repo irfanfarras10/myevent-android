@@ -4,12 +4,10 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/navigation_controller.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  final controller = Get.find<NavigationController>();
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<NavigationController>();
-
     return Obx(
       () => Scaffold(
         body: controller.menuScreens[controller.currentMenuIndex.value],
