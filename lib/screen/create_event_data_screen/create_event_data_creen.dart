@@ -8,11 +8,10 @@ import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
 
 class CreateEventDataScreen extends StatelessWidget {
-  const CreateEventDataScreen({Key? key}) : super(key: key);
+  final controller = Get.find<EventController>();
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<EventController>();
     return Obx(
       () {
         Widget body;

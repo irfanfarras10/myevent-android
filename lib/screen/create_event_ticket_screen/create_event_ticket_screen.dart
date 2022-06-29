@@ -6,11 +6,10 @@ import 'package:myevent_android/controller/ticket_controller.dart';
 import 'package:myevent_android/screen/create_event_ticket_screen/widget/create_event_ticket_screen_card_widget.dart';
 
 class CreateEventTicketScreen extends StatelessWidget {
-  const CreateEventTicketScreen({Key? key}) : super(key: key);
+  final controller = Get.find<TicketController>();
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<TicketController>();
     return Obx(
       () {
         return Scaffold(

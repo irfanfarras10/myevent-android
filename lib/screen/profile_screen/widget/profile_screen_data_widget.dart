@@ -4,11 +4,10 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/profile_controller.dart';
 
 class ProfileScreenDataWidget extends StatelessWidget {
-  const ProfileScreenDataWidget({Key? key}) : super(key: key);
+  final controller = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProfileController>();
     return Obx(
       () => Column(
         children: [

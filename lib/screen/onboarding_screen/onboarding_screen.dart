@@ -6,9 +6,9 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/main_controller.dart';
 
 class OnboardingScreen extends StatelessWidget {
+  final controller = Get.find<MainController>();
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<MainController>();
     return IntroductionScreen(
       showSkipButton: true,
       showDoneButton: true,

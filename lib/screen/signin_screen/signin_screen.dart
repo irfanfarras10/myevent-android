@@ -4,11 +4,10 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/auth_controller.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  final controller = Get.find<AuthController>(tag: 'signIn');
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<AuthController>(tag: 'signIn');
     return Obx(
       () => Scaffold(
         body: GestureDetector(

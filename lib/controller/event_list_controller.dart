@@ -10,25 +10,28 @@ class EventListController extends ApiController {
 
   @override
   void onInit() {
-    getData();
+    loadData();
     super.onInit();
   }
 
   @override
   void resetState() {
+    apiResponseState.value = null;
     eventList.clear();
     isLoading.value = true;
   }
 
-  Future<void> getData() async {
+  Future<void> loadData() async {
     resetState();
     await apiEvent.getEventDraft().then(
       (response) {
         checkApiResponse(response);
+        if (apiResponseState.value != ApiResponseState.http401) {
+          isLoading.value = false;
+        }
         if (apiResponseState.value == ApiResponseState.http2xx) {
           final eventData = ViewEventApiResponseModel.fromJson(response);
           eventList = eventData.eventDataList!;
-          isLoading.value = false;
         }
       },
     );

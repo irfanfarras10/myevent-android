@@ -5,11 +5,9 @@ import 'package:myevent_android/controller/payment_controller.dart';
 import 'package:myevent_android/screen/create_event_payment_screen/widget/create_event_payment_screen_card_widget.dart';
 
 class CreateEventPaymentScreen extends StatelessWidget {
-  const CreateEventPaymentScreen({Key? key}) : super(key: key);
-
+  final controller = Get.find<PaymentController>();
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<PaymentController>();
     return Obx(
       () => Scaffold(
         appBar: AppBar(

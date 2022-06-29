@@ -13,8 +13,8 @@ class ApiUtil {
 
   Future<Dio> _getDioClient() async {
     final dio = Dio();
-    dio.options.connectTimeout = 15000;
-    dio.options.receiveTimeout = 15000;
+    dio.options.connectTimeout = 60000;
+    dio.options.receiveTimeout = 60000;
     dio.options.headers['Authorization'] = 'Bearer ${await _getAuthToken()}';
     dio.options.headers['Content-Type'] = 'application/json';
     dio.options.headers['Accept'] = 'application/json';
@@ -33,10 +33,16 @@ class ApiUtil {
     } else if (error.type == DioErrorType.other) {
       responseBody = {'code': 5000, 'message': 'Internet Offline'};
     } else {
-      responseBody = {
-        'code': error.response?.statusCode,
-        'message': error.response?.data['message'] as String,
-      };
+      if (error.response!.data['message'] != null) {
+        responseBody = {
+          'code': error.response?.statusCode,
+          'message': error.response!.data['message'],
+        };
+      } else {
+        responseBody = {
+          'code': error.response?.statusCode,
+        };
+      }
     }
     return responseBody;
   }

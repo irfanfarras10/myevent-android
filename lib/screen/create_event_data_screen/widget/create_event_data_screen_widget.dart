@@ -8,11 +8,10 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:myevent_android/model/api_response/location_api_response_model.dart';
 
 class CreateEventDataScreenWidget extends StatelessWidget {
-  const CreateEventDataScreenWidget({Key? key}) : super(key: key);
+  final controller = Get.find<EventController>();
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<EventController>();
     return Obx(
       () => Column(
         children: [

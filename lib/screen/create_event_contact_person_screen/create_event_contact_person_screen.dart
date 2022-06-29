@@ -6,11 +6,10 @@ import 'package:myevent_android/screen/create_event_contact_person_screen/widget
 import 'package:myevent_android/widget/loading_widget.dart';
 
 class CreateEventContactPersonScreen extends StatelessWidget {
-  const CreateEventContactPersonScreen({Key? key}) : super(key: key);
+  final controller = Get.find<ContactPersonController>();
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ContactPersonController>();
     return Obx(
       () {
         Widget body;
