@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
+import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
 
 class DraftEventScreenCardWidget extends StatelessWidget {
@@ -12,6 +15,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<EventListController>();
     return Container(
       margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
       child: Card(
@@ -21,9 +25,30 @@ class DraftEventScreenCardWidget extends StatelessWidget {
             Stack(
               alignment: Alignment.centerRight,
               children: [
-                Container(
+                SizedBox(
                   height: 200,
-                  color: Colors.black12,
+                  child: CachedNetworkImage(
+                    imageUrl: data!.bannerPhoto!,
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) => Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) => Center(
+                      child: Icon(
+                        Icons.image,
+                      ),
+                    ),
+                    httpHeaders: {
+                      'Authorization': controller.authToken!,
+                    },
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -33,10 +58,20 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          data!.eventVenueCategory!.name!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          padding: EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(
+                            color: MyEventColor.secondaryColor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4.0),
+                            ),
+                          ),
+                          child: Text(
+                            data!.eventVenueCategory!.name!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         Container(
