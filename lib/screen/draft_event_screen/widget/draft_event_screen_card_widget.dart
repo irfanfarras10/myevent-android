@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
+import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
 
 class DraftEventScreenCardWidget extends StatelessWidget {
-  const DraftEventScreenCardWidget({Key? key}) : super(key: key);
+  final EventDataList? data;
+  const DraftEventScreenCardWidget({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          'Onsite',
+                          data!.eventVenueCategory!.name!,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -42,7 +48,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Webinar',
+                            data!.eventCategory!.name!,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -66,7 +72,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Webinar Crypto asd ad asd asd asd ',
+                          data!.name!,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: MyEventColor.secondaryColor,
@@ -74,7 +80,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          'Event Organizer asdasdas das ada s d',
+                          data!.eventOrganizer!.organizerName!,
                           style: TextStyle(
                             color: MyEventColor.secondaryColor,
                           ),
@@ -92,7 +98,11 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                'Kamis, 2 Juli 2022',
+                                DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                    data!.dateTimeEventStart!,
+                                  ),
+                                ),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12.0,

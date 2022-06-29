@@ -32,7 +32,9 @@ class DraftEventScreen extends StatelessWidget {
               children: List.generate(
                 controller.eventList.length,
                 (index) {
-                  return DraftEventScreenCardWidget();
+                  return DraftEventScreenCardWidget(
+                    data: controller.eventList[index],
+                  );
                 },
               ),
             ),
