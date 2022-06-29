@@ -39,8 +39,21 @@ class DraftEventScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 // ignore: invalid_use_of_protected_member
-                child: controller.searchEventList.value.isNotEmpty
-                    ? Column(
+                child: controller.searchEventList.value.isEmpty
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height -
+                            AppBar().preferredSize.height,
+                        child: Center(
+                          child: Text(
+                            'Tidak Ada Data',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Column(
                         children: List.generate(
                           // ignore: invalid_use_of_protected_member
                           controller.searchEventList.value.length,
@@ -49,15 +62,6 @@ class DraftEventScreen extends StatelessWidget {
                               data: controller.searchEventList[index],
                             );
                           },
-                        ),
-                      )
-                    : Center(
-                        child: Text(
-                          'Tidak Ada Data',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: MyEventColor.secondaryColor,
-                          ),
                         ),
                       ),
               ),
