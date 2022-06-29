@@ -15,7 +15,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<EventListController>();
+    final controller = Get.find<EventListController>(tag: 'draft');
     return Container(
       margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
       child: Card(

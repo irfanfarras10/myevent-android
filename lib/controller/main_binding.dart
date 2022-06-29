@@ -52,6 +52,7 @@ class MainBinding implements Bindings {
     Get.lazyPut(
       () => EventListController(),
       fenix: true,
+      tag: 'draft',
     );
   }
 }
