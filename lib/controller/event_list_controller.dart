@@ -6,8 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class EventListController extends ApiController {
   final isLoading = true.obs;
+  RxBool isSearchMode = false.obs;
 
   List<EventDataList> eventList = [];
+  RxList<EventDataList> searchEventList = RxList();
   String? authToken;
 
   @override
@@ -22,6 +24,14 @@ class EventListController extends ApiController {
     apiResponseState.value = null;
     eventList.clear();
     isLoading.value = true;
+  }
+
+  void setSearchMode(bool mode) {
+    isSearchMode.value = mode;
+  }
+
+  void resetData() {
+    searchEventList.value = eventList;
   }
 
   Future<void> getToken() async {
@@ -40,8 +50,22 @@ class EventListController extends ApiController {
         if (apiResponseState.value == ApiResponseState.http2xx) {
           final eventData = ViewEventApiResponseModel.fromJson(response);
           eventList = eventData.eventDataList!;
+          searchEventList.value = eventList;
         }
       },
     );
+  }
+
+  void searchEvent(String keyword) {
+    if (keyword.isEmpty) {
+      searchEventList.value = eventList;
+    } else {
+      final searchEventData = eventList
+          .where(
+            (eventData) => eventData.name!.contains(keyword),
+          )
+          .toList();
+      searchEventList.value = searchEventData;
+    }
   }
 }

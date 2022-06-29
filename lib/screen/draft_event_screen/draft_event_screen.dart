@@ -26,21 +26,27 @@ class DraftEventScreen extends StatelessWidget {
             );
           }
 
-          body = RefreshIndicator(
-            onRefresh: controller.loadData,
-            notificationPredicate: (notification) {
-              return notification.depth == 0;
+          body = GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
             },
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: List.generate(
-                  controller.eventList.length,
-                  (index) {
-                    return DraftEventScreenCardWidget(
-                      data: controller.eventList[index],
-                    );
-                  },
+            child: RefreshIndicator(
+              onRefresh: controller.loadData,
+              notificationPredicate: (notification) {
+                return notification.depth == 0;
+              },
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  children: List.generate(
+                    // ignore: invalid_use_of_protected_member
+                    controller.searchEventList.value.length,
+                    (index) {
+                      return DraftEventScreenCardWidget(
+                        data: controller.searchEventList[index],
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
