@@ -61,7 +61,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(5.0),
                           decoration: BoxDecoration(
-                            color: MyEventColor.secondaryColor,
+                            color: MyEventColor.primaryColor,
                             borderRadius: BorderRadius.all(
                               Radius.circular(4.0),
                             ),
@@ -70,7 +70,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                             data!.eventVenueCategory!.name!,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: MyEventColor.secondaryColor,
                             ),
                           ),
                         ),

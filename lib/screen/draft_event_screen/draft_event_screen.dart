@@ -26,16 +26,22 @@ class DraftEventScreen extends StatelessWidget {
             );
           }
 
-          body = SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: List.generate(
-                controller.eventList.length,
-                (index) {
-                  return DraftEventScreenCardWidget(
-                    data: controller.eventList[index],
-                  );
-                },
+          body = RefreshIndicator(
+            onRefresh: controller.loadData,
+            notificationPredicate: (notification) {
+              return notification.depth == 0;
+            },
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: List.generate(
+                  controller.eventList.length,
+                  (index) {
+                    return DraftEventScreenCardWidget(
+                      data: controller.eventList[index],
+                    );
+                  },
+                ),
               ),
             ),
           );
