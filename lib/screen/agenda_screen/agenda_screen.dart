@@ -1,4 +1,6 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:myevent_android/colors/myevent_color.dart';
 
 class AgendaScreen extends StatelessWidget {
   const AgendaScreen({Key? key}) : super(key: key);
@@ -6,9 +8,16 @@ class AgendaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Agenda Screen'),
+      appBar: AppBar(
+        title: Text(
+          'Agenda',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: MyEventColor.secondaryColor,
+          ),
+        ),
       ),
+      body: MonthView(),
     );
   }
 }
