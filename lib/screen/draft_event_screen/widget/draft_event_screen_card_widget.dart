@@ -169,12 +169,29 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Text(
-                          'The Breeze',
-                          style: TextStyle(
-                            color: MyEventColor.secondaryColor,
-                            fontSize: 12.0,
+                        FutureBuilder<String>(
+                          future: controller.parseLocation(
+                            data!.eventVenueCategory!,
+                            data!.venue!,
                           ),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data.toString(),
+                                style: TextStyle(
+                                  color: MyEventColor.secondaryColor,
+                                  fontSize: 12.0,
+                                ),
+                              );
+                            } else {
+                              return Text(
+                                '',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ],
                     ),

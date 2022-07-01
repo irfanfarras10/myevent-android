@@ -34,7 +34,7 @@ class EventDataList {
   EventStatus? eventStatus;
   EventStatus? eventCategory;
   EventStatus? eventVenueCategory;
-  Null eventPaymentCategory;
+  EventStatus? eventPaymentCategory;
   EventOrganizer? eventOrganizer;
 
   EventDataList(
@@ -70,7 +70,9 @@ class EventDataList {
     eventVenueCategory = json['eventVenueCategory'] != null
         ? new EventStatus.fromJson(json['eventVenueCategory'])
         : null;
-    eventPaymentCategory = json['eventPaymentCategory'];
+    eventPaymentCategory = json['eventPaymentCategory'] != null
+        ? new EventStatus.fromJson(json['eventPaymentCategory'])
+        : null;
     eventOrganizer = json['eventOrganizer'] != null
         ? new EventOrganizer.fromJson(json['eventOrganizer'])
         : null;
@@ -95,7 +97,9 @@ class EventDataList {
     if (this.eventVenueCategory != null) {
       data['eventVenueCategory'] = this.eventVenueCategory!.toJson();
     }
-    data['eventPaymentCategory'] = this.eventPaymentCategory;
+    if (this.eventPaymentCategory != null) {
+      data['eventPaymentCategory'] = this.eventPaymentCategory!.toJson();
+    }
     if (this.eventOrganizer != null) {
       data['eventOrganizer'] = this.eventOrganizer!.toJson();
     }
