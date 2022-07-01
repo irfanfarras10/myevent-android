@@ -18,51 +18,64 @@ class CreateEventPaymentScreen extends StatelessWidget {
               color: MyEventColor.secondaryColor,
             ),
           ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_outlined),
+            onPressed: () {
+              Get.back(result: true);
+            },
+          ),
         ),
-        body: GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
+        body: WillPopScope(
+          onWillPop: () async {
+            Get.back(result: true);
+            return true;
           },
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                children: [
-                  //card widget
-                  Column(
-                    children: List.generate(
-                      controller.paymentList.length,
-                      (index) {
-                        return CreateEventPaymentScreenCardWidget(index: index);
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 60.0,
-                    child: TextButton(
-                      onPressed: controller.addPayment,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Tambahkan Pembayaran',
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              color: MyEventColor.secondaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(width: 10.0),
-                          Icon(
-                            Icons.add,
-                            color: MyEventColor.secondaryColor,
-                          ),
-                        ],
+          child: GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  children: [
+                    //card widget
+                    Column(
+                      children: List.generate(
+                        controller.paymentList.length,
+                        (index) {
+                          return CreateEventPaymentScreenCardWidget(
+                              index: index);
+                        },
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 60.0,
+                      child: TextButton(
+                        onPressed: controller.addPayment,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Tambahkan Pembayaran',
+                              style: TextStyle(
+                                fontSize: 17.0,
+                                color: MyEventColor.secondaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 10.0),
+                            Icon(
+                              Icons.add,
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

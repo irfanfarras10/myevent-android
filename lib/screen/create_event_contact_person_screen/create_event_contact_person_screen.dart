@@ -70,15 +70,27 @@ class CreateEventContactPersonScreen extends StatelessWidget {
                 color: MyEventColor.secondaryColor,
               ),
             ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_outlined),
+              onPressed: () {
+                Get.back(result: true);
+              },
+            ),
           ),
-          body: GestureDetector(
-            onTap: () {
-              FocusManager.instance.primaryFocus?.unfocus();
+          body: WillPopScope(
+            onWillPop: () async {
+              Get.back(result: true);
+              return true;
             },
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height,
-              child: body,
+            child: GestureDetector(
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height -
+                    AppBar().preferredSize.height,
+                child: body,
+              ),
             ),
           ),
           bottomNavigationBar: controller.isLoading.value

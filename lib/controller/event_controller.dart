@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
@@ -113,8 +112,9 @@ class EventController extends ApiController {
   Future<void> pickBannerPhoto() async {
     final ImagePicker _picker = ImagePicker();
     bannerImage.value = await _picker.pickImage(source: ImageSource.gallery);
-    isBannerImageUploaded.value = true;
-    update();
+    if (bannerImage.value != null) {
+      isBannerImageUploaded.value = true;
+    }
   }
 
   Future<void> setEventDateStart() async {
@@ -128,6 +128,7 @@ class EventController extends ApiController {
       dateEventStartController.text =
           '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(dateEventStart!)}';
       validateDateEvent();
+      setTimeEventStart();
     });
   }
 
@@ -157,6 +158,7 @@ class EventController extends ApiController {
                 .formatTimeOfDay(time!);
 
         validateTimeEvent();
+        setTimeEventStart();
       },
     );
   }
@@ -172,6 +174,7 @@ class EventController extends ApiController {
             MaterialLocalizations.of(Get.key.currentContext!)
                 .formatTimeOfDay(time!);
         validateTimeEvent();
+        setTimeEventEnd();
       },
     );
   }
@@ -211,7 +214,7 @@ class EventController extends ApiController {
     required double lon,
     required double lat,
   }) {
-    venue = '$lon|$lat';
+    venue = '$lat|$lon';
     locationController.text = location;
     validateLocation(location);
   }
@@ -276,6 +279,7 @@ class EventController extends ApiController {
         dateEventErrorMessage.value = null;
       }
     }
+    validateAllData();
   }
 
   void validateTimeEvent() {
@@ -293,6 +297,23 @@ class EventController extends ApiController {
         isTimeEventValid.value = true;
         timeEventErrorMessage.value = null;
       }
+    }
+    validateAllData();
+  }
+
+  void setTimeEventStart() {
+    if (dateEventStart != null) {
+      timeEventStartValue = dateEventStart!.add(
+        Duration(hours: timeEventStart!.hour, minutes: timeEventStart!.minute),
+      );
+    }
+  }
+
+  void setTimeEventEnd() {
+    if (dateEventEnd != null) {
+      timeEventEndValue = dateEventEnd!.add(
+        Duration(hours: timeEventEnd!.hour, minutes: timeEventEnd!.minute),
+      );
     }
   }
 
@@ -337,8 +358,10 @@ class EventController extends ApiController {
     apiRequest = {
       'name': nameController.text,
       'description': descriptionController.text,
-      // 'dateTimeEventStart': dateTimeEventStart!.millisecondsSinceEpoch,
-      // 'dateTimeEventEnd': dateTimeEventEnd!.millisecondsSinceEpoch,
+      'dateEventStart': dateEventStart!.millisecondsSinceEpoch,
+      'dateEventEnd': dateEventEnd!.millisecondsSinceEpoch,
+      'timeEventStart': timeEventStartValue!.millisecondsSinceEpoch,
+      'timeEventEnd': timeEventEndValue!.millisecondsSinceEpoch,
       'location': venue,
       'bannerPhoto': await dio.MultipartFile.fromFile(
         bannerImage.value!.path,

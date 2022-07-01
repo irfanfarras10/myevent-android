@@ -15,8 +15,8 @@ class EventListController extends ApiController {
 
   @override
   void onInit() {
-    getToken();
     loadData();
+    getToken();
     super.onInit();
   }
 

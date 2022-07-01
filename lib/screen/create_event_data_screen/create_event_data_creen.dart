@@ -37,19 +37,31 @@ class CreateEventDataScreen extends StatelessWidget {
                 color: MyEventColor.secondaryColor,
               ),
             ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_outlined),
+              onPressed: () {
+                Get.back(result: true);
+              },
+            ),
           ),
           backgroundColor: Colors.white,
-          body: GestureDetector(
-            onTap: () {
-              FocusManager.instance.primaryFocus?.unfocus();
-              if (controller.locationController.text.isEmpty ||
-                  controller.venue!.isEmpty) {
-                controller.locationController.text = '';
-              }
+          body: WillPopScope(
+            onWillPop: () async {
+              Get.back(result: true);
+              return true;
             },
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: body,
+            child: GestureDetector(
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                if (controller.locationController.text.isEmpty ||
+                    controller.venue!.isEmpty) {
+                  controller.locationController.text = '';
+                }
+              },
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: body,
+              ),
             ),
           ),
           bottomNavigationBar: controller.isLoadingEventCategoryData.value
