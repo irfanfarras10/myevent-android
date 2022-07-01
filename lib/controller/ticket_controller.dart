@@ -27,19 +27,24 @@ class TicketController extends ApiController {
   List<RxBool> isQuotaValid = RxList();
   List<RxnString> priceErrorMessage = RxList();
   List<RxBool> isPriceValid = RxList();
+  RxnString registrationDatePeriodErrorMessage = RxnString();
+  RxBool isRegistrationDatePeriodValid = false.obs;
 
   List<CreateTicketApiRequestModel> _apiRequest = [];
 
   final _eventId = Get.parameters['id'];
+  Map<String, dynamic> _dateEventStart = Get.arguments;
 
   bool get isDataValid {
     if (isPayedTicket.value) {
-      return !isNameValid.contains(false) &&
+      return isRegistrationDatePeriodValid.value &&
+          !isNameValid.contains(false) &&
           !isQuotaValid.contains(false) &&
           !isPriceValid.contains(false) &&
           registrationPeriod.value != null;
     }
-    return !isNameValid.contains(false) &&
+    return isRegistrationDatePeriodValid.value &&
+        !isNameValid.contains(false) &&
         !isQuotaValid.contains(false) &&
         registrationPeriod.value != null;
   }
@@ -180,8 +185,12 @@ class TicketController extends ApiController {
   Future<void> setRegistrationDate() async {
     showDateRangePicker(
       context: Get.key.currentContext!,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
+      firstDate: DateTime(2000),
+      lastDate: (_dateEventStart['dateEventStart'] as DateTime).add(
+        Duration(
+          days: -3,
+        ),
+      ),
     ).then((dateTimeRange) {
       registrationPeriod.value = dateTimeRange!;
       final registrationDateStart = DateFormat('EEEE, d MMMM yyyy', 'id_ID')

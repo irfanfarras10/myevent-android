@@ -437,10 +437,15 @@ class EventController extends ApiController {
             if (apiResponseState.value == ApiResponseState.http2xx) {
               Get.back();
               Get.back();
-              Get.toNamed(RouteName.createEventTicketScreen.replaceAll(
-                ':id',
-                createEventApiResponse!.eventId.toString(),
-              ));
+              Get.toNamed(
+                RouteName.createEventTicketScreen.replaceAll(
+                  ':id',
+                  createEventApiResponse!.eventId.toString(),
+                ),
+                arguments: {
+                  'dateEventStart': dateEventStart,
+                },
+              );
             } else {
               Get.back();
             }
