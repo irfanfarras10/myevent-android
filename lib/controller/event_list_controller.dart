@@ -63,7 +63,7 @@ class EventListController extends ApiController {
     } else {
       final searchEventData = eventList
           .where(
-            (eventData) => eventData.name!.contains(keyword),
+            (eventData) => eventData.name!.toLowerCase().contains(keyword),
           )
           .toList();
       searchEventList.value = searchEventData;
