@@ -2,8 +2,8 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/controller/api_controller.dart';
-import 'package:myevent_android/model/api_response/view_agenda_api_response.dart';
-import 'package:myevent_android/provider/api_agenda.dart';
+import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
+import 'package:myevent_android/provider/api_event.dart';
 
 enum CalendarViewType {
   monthView,
@@ -14,7 +14,7 @@ enum CalendarViewType {
 class AgendaController extends ApiController {
   final isLoading = true.obs;
   Rx<CalendarViewType> calendarViewType = CalendarViewType.monthView.obs;
-  List<AgendaEventDataList> eventAgenda = [];
+  List<EventDataList> eventAgenda = [];
 
   @override
   void onInit() {
@@ -23,7 +23,10 @@ class AgendaController extends ApiController {
   }
 
   @override
-  void resetState() {}
+  void resetState() {
+    eventAgenda.clear();
+    isLoading.value = true;
+  }
 
   Color _getAgendaEventColor(EventStatus status) {
     Color? agendaEventColor;
@@ -48,26 +51,32 @@ class AgendaController extends ApiController {
   }
 
   Future<void> loadEventSchedule() async {
-    isLoading.value = true;
-    await apiAgenda.getAgenda().then(
+    resetState();
+    await apiEvent.getEvent().then(
       (response) {
         checkApiResponse(response);
         if (apiResponseState.value != ApiResponseState.http401) {
           isLoading.value = false;
         }
         if (apiResponseState.value == ApiResponseState.http2xx) {
-          final data = ViewAgendaApiResponse.fromJson(response);
-          eventAgenda = data.agendaEventDataList!;
           final context = Get.key.currentContext;
+          final eventData = ViewEventApiResponseModel.fromJson(response);
+          eventAgenda = eventData.eventDataList!;
           eventAgenda.forEach(
             (agendaData) {
               final event = CalendarEventData(
                 date: DateTime.fromMillisecondsSinceEpoch(
-                  agendaData.dateTimeEventStart!,
-                ).toLocal(),
+                  agendaData.dateEventStart!,
+                ),
                 endDate: DateTime.fromMillisecondsSinceEpoch(
-                  agendaData.dateTimeEventEnd!,
-                ).toLocal(),
+                  agendaData.dateEventEnd!,
+                ),
+                startTime: DateTime.fromMillisecondsSinceEpoch(
+                  agendaData.timeEventStart!,
+                ),
+                endTime: DateTime.fromMillisecondsSinceEpoch(
+                  agendaData.timeEventEnd!,
+                ),
                 event: agendaData.name,
                 title: agendaData.name!,
                 color: _getAgendaEventColor(agendaData.eventStatus!),

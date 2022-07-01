@@ -1,3 +1,4 @@
+// import 'package:calendar_view/calendar_view.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +20,10 @@ class AgendaScreen extends StatelessWidget {
             calendarViewWidget = MonthView();
             break;
           case CalendarViewType.weekView:
-            calendarViewWidget = WeekView();
+            calendarViewWidget = WeekView(
+              eventArranger: MergeEventArranger(),
+              startDay: WeekDays.sunday,
+            );
             break;
           case CalendarViewType.dayView:
             calendarViewWidget = DayView();

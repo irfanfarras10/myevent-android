@@ -135,7 +135,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                               child: Text(
                                 DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(
                                   DateTime.fromMillisecondsSinceEpoch(
-                                    data!.dateTimeEventStart!,
+                                    data!.dateEventStart!,
                                   ),
                                 ),
                                 style: TextStyle(
