@@ -160,7 +160,11 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                               width: 5.0,
                             ),
                             Text(
-                              '12.00',
+                              DateFormat('hh:mm', 'id_ID').format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                  data!.timeEventStart!,
+                                ),
+                              ),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12.0,

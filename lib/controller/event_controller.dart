@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
@@ -25,8 +26,8 @@ class EventController extends ApiController {
   DateTime? dateEventEnd;
   TimeOfDay? timeEventStart;
   TimeOfDay? timeEventEnd;
-  DateTime? dateTimeEventStart;
-  DateTime? dateTimeEventEnd;
+  DateTime? timeEventStartValue;
+  DateTime? timeEventEndValue;
 
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -55,14 +56,16 @@ class EventController extends ApiController {
 
   RxBool isNameValid = false.obs;
   RxBool isDescriptionValid = false.obs;
-  RxBool isDateTimeEventValid = false.obs;
+  RxBool isDateEventValid = false.obs;
+  RxBool isTimeEventValid = false.obs;
   RxBool isLocationValid = false.obs;
   RxBool isCategoryValid = false.obs;
   RxBool isVenueCategoryValid = false.obs;
 
   RxnString nameErrorMessage = RxnString();
   RxnString descriptionErrorMessage = RxnString();
-  RxnString dateTimeEventErrorMessage = RxnString();
+  RxnString dateEventErrorMessage = RxnString();
+  RxnString timeEventErrorMessage = RxnString();
   RxnString locationErrorMessage = RxnString();
 
   Map<String, dynamic> apiRequest = {};
@@ -77,7 +80,8 @@ class EventController extends ApiController {
   void resetState() {
     nameErrorMessage.value = null;
     descriptionErrorMessage.value = null;
-    dateTimeEventErrorMessage.value = null;
+    dateEventErrorMessage.value = null;
+    timeEventErrorMessage.value = null;
     locationErrorMessage.value = null;
 
     nameFocusNode.unfocus();
@@ -91,27 +95,12 @@ class EventController extends ApiController {
 
   RxBool isDataValid = RxBool(false);
 
-  // bool get isFormValid =>
-  //     isBannerImageUploaded.value &&
-  //     isNameValid.value &&
-  //     isDescriptionValid.value &&
-  //     isDateTimeEventValid.value &&
-  //     dateEventStart != null &&
-  //     timeEventStart != null &&
-  //     dateEventEnd != null &&
-  //     timeEventEnd != null &&
-  //     isLocationValid.value &&
-  //     venue != null &&
-  //     eventVenueCategoryId != null &&
-  //     eventCategoryId != null &&
-  //     isCategoryValid.value &&
-  //     locationController.text.isNotEmpty;
-
   void validateAllData() {
     if (isBannerImageUploaded.value &&
         isNameValid.value &&
         isDescriptionValid.value &&
-        isDateTimeEventValid.value &&
+        isDateEventValid.value &&
+        isTimeEventValid.value &&
         isLocationValid.value &&
         isCategoryValid.value &&
         isVenueCategoryValid.value) {
@@ -138,7 +127,7 @@ class EventController extends ApiController {
       dateEventStart = date;
       dateEventStartController.text =
           '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(dateEventStart!)}';
-      setEventDateTimeStart();
+      validateDateEvent();
     });
   }
 
@@ -152,7 +141,7 @@ class EventController extends ApiController {
       dateEventEnd = date;
       dateEventEndController.text =
           '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(dateEventEnd!)}';
-      setEventDateTimeEnd();
+      validateDateEvent();
     });
   }
 
@@ -167,7 +156,7 @@ class EventController extends ApiController {
             MaterialLocalizations.of(Get.key.currentContext!)
                 .formatTimeOfDay(time!);
 
-        setEventDateTimeStart();
+        validateTimeEvent();
       },
     );
   }
@@ -182,8 +171,7 @@ class EventController extends ApiController {
         timeEventEndController.text =
             MaterialLocalizations.of(Get.key.currentContext!)
                 .formatTimeOfDay(time!);
-
-        setEventDateTimeEnd();
+        validateTimeEvent();
       },
     );
   }
@@ -276,39 +264,39 @@ class EventController extends ApiController {
     validateAllData();
   }
 
-  void validateDateTime() {
-    dateTimeEventErrorMessage.value = null;
-    isDateTimeEventValid.value = true;
-    if (dateTimeEventStart != null && dateTimeEventEnd != null) {
-      if (dateTimeEventEnd!.difference(dateTimeEventStart!).isNegative) {
-        dateTimeEventErrorMessage.value =
-            'Tanggal dan waktu mulai tidak boleh melebihi tanggal dan waktu selesai';
-        isDateTimeEventValid.value = false;
+  void validateDateEvent() {
+    if (dateEventStart != null && dateEventEnd != null) {
+      if (dateEventStart!.millisecondsSinceEpoch >
+          dateEventEnd!.millisecondsSinceEpoch) {
+        isDateEventValid.value = false;
+        dateEventErrorMessage.value =
+            'Tanggal awal tidak boleh melebihi tanggal akhir';
       } else {
-        dateTimeEventErrorMessage.value = null;
-        isDateTimeEventValid.value = true;
+        isDateEventValid.value = true;
+        dateEventErrorMessage.value = null;
       }
     }
-    validateAllData();
   }
 
-  void setEventDateTimeStart() {
-    if (dateEventStart != null && timeEventStart != null) {
-      String dateStart = DateFormat('yyyy-MM-dd').format(dateEventStart!);
-      String timeStart = timeEventStartController.text;
-      dateTimeEventStart = DateTime.parse('$dateStart $timeStart');
+  void validateTimeEvent() {
+    if (timeEventStart != null && timeEventEnd != null) {
+      final eventStart = toDouble(timeEventStart!);
+      final eventEnd = toDouble(timeEventEnd!);
+      if (eventStart == eventEnd) {
+        isTimeEventValid.value = false;
+        timeEventErrorMessage.value = 'Waktu akhir harus melebihi waktu awal';
+      } else if (eventStart > eventEnd) {
+        isTimeEventValid.value = false;
+        timeEventErrorMessage.value =
+            'Waktu awal tidak boleh melebihi waktu akhir';
+      } else {
+        isTimeEventValid.value = true;
+        timeEventErrorMessage.value = null;
+      }
     }
-    validateDateTime();
   }
 
-  void setEventDateTimeEnd() {
-    if (dateEventEnd != null && timeEventEnd != null) {
-      String dateEnd = DateFormat('yyyy-MM-dd').format(dateEventEnd!);
-      String timeEnd = timeEventEndController.text;
-      dateTimeEventEnd = DateTime.parse('$dateEnd $timeEnd');
-    }
-    validateDateTime();
-  }
+  double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
 
   void validateLocation(String location) {
     isVenueCategoryValid.value = true;
@@ -349,8 +337,8 @@ class EventController extends ApiController {
     apiRequest = {
       'name': nameController.text,
       'description': descriptionController.text,
-      'dateTimeEventStart': dateTimeEventStart!.millisecondsSinceEpoch,
-      'dateTimeEventEnd': dateTimeEventEnd!.millisecondsSinceEpoch,
+      // 'dateTimeEventStart': dateTimeEventStart!.millisecondsSinceEpoch,
+      // 'dateTimeEventEnd': dateTimeEventEnd!.millisecondsSinceEpoch,
       'location': venue,
       'bannerPhoto': await dio.MultipartFile.fromFile(
         bannerImage.value!.path,
