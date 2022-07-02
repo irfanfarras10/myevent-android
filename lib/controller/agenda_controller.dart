@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum CalendarViewType {
   monthView,
@@ -103,5 +105,45 @@ class AgendaController extends ApiController {
 
   void setCalendarView(CalendarViewType viewType) {
     calendarViewType.value = viewType;
+  }
+
+  String parseTime(DateTime startTime, DateTime endTime) {
+    String dateTimeString;
+    dateTimeString =
+        '${DateFormat('HH:mm', 'id_ID').format(startTime)} - ${DateFormat('HH:mm', 'id_ID').format(endTime)}';
+    return dateTimeString;
+  }
+
+  String parseDate(DateTime startTime, DateTime endTime) {
+    String dateTimeString;
+    if (startTime.year == endTime.year &&
+        startTime.month == endTime.month &&
+        startTime.weekday == endTime.weekday) {
+      dateTimeString = DateFormat('dd MMMM yyyy', 'id_ID').format(
+        startTime,
+      );
+    } else {
+      dateTimeString =
+          '${DateFormat('dd MMMM yyyy', 'id_ID').format(startTime)} - ${DateFormat('dd MMMM yyyy', 'id_ID').format(endTime)}';
+    }
+    return dateTimeString;
+  }
+
+  void createEventToGoogleCalendar(NeatCleanCalendarEvent event) async {
+    String googleCalendarUrl =
+        'https://calendar.google.com/calendar/render?action=TEMPLATE';
+    String eventDateStart =
+        '&dates=${DateFormat("yyyyMMddTHHmmss").format(event.startTime)}';
+    String eventDateEnd =
+        '%2F${DateFormat("yyyyMMddTHHmmss").format(event.endTime)}';
+    String eventDetail = '&details=${event.description}';
+    String eventLocation = '&location=${event.location}';
+    String eventTitle = '&text=${event.summary}';
+    googleCalendarUrl += eventDateStart;
+    googleCalendarUrl += eventDateEnd;
+    googleCalendarUrl += eventDetail;
+    googleCalendarUrl += eventLocation;
+    googleCalendarUrl += eventTitle;
+    await launch(googleCalendarUrl);
   }
 }

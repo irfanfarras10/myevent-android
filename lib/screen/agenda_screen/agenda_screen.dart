@@ -227,12 +227,12 @@ class AgendaScreen extends StatelessWidget {
                                 showModalBottomSheet(
                                   context: context,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
+                                  isScrollControlled: true,
                                   builder: (context) {
                                     return Container(
                                       padding: EdgeInsets.all(20.0),
-                                      height: 200.0,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(10.0),
@@ -245,10 +245,222 @@ class AgendaScreen extends StatelessWidget {
                                             events[index].summary,
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 18.0,
                                               color:
                                                   MyEventColor.secondaryColor,
                                             ),
                                             textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          Text(
+                                            events[index].description,
+                                            style: TextStyle(
+                                              fontSize: 15.0,
+                                              color:
+                                                  MyEventColor.secondaryColor,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_on,
+                                                size: 16.5,
+                                                color: Colors.black38,
+                                              ),
+                                              SizedBox(width: 5.0),
+                                              Text(
+                                                events[index].location,
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  color: MyEventColor
+                                                      .secondaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.date_range,
+                                                size: 16.5,
+                                                color: Colors.black38,
+                                              ),
+                                              SizedBox(width: 5.0),
+                                              Text(
+                                                controller.parseDate(
+                                                  events[index].startTime,
+                                                  events[index].endTime,
+                                                ),
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  color: MyEventColor
+                                                      .secondaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.access_time,
+                                                size: 16.5,
+                                                color: Colors.black38,
+                                              ),
+                                              SizedBox(width: 5.0),
+                                              Text(
+                                                controller.parseTime(
+                                                  events[index].startTime,
+                                                  events[index].endTime,
+                                                ),
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  color: MyEventColor
+                                                      .secondaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: 60.0,
+                                            child: ElevatedButton(
+                                              onPressed: () {},
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty
+                                                        .resolveWith<Color>(
+                                                  (states) {
+                                                    if (states.contains(
+                                                        MaterialState
+                                                            .disabled)) {
+                                                      return Colors
+                                                          .amber.shade300;
+                                                    }
+                                                    return Colors.amber;
+                                                  },
+                                                ),
+                                              ),
+                                              child: Text(
+                                                'Unduh File Kalender (iCS)',
+                                                style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: MyEventColor
+                                                      .secondaryColor,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 15.0,
+                                          ),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: 60.0,
+                                            child: ElevatedButton(
+                                              onPressed: () => controller
+                                                  .createEventToGoogleCalendar(
+                                                events[index],
+                                              ),
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty
+                                                        .resolveWith<Color>(
+                                                  (states) {
+                                                    return Colors.white;
+                                                  },
+                                                ),
+                                                elevation: MaterialStateProperty
+                                                    .resolveWith<double>(
+                                                  (Set<MaterialState> states) {
+                                                    return 0; // Defer to the widget's default.
+                                                  },
+                                                ),
+                                                shape:
+                                                    MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(4.5),
+                                                    ),
+                                                    side: BorderSide(
+                                                      color: Colors.amber,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              child: Text(
+                                                'Tambahkan Event Ke Google Calendar ',
+                                                style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: MyEventColor
+                                                      .secondaryColor,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 15.0,
+                                          ),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: 60.0,
+                                            child: ElevatedButton(
+                                              onPressed: () {},
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty
+                                                        .resolveWith<Color>(
+                                                  (states) {
+                                                    return Colors.white;
+                                                  },
+                                                ),
+                                                elevation: MaterialStateProperty
+                                                    .resolveWith<double>(
+                                                  (Set<MaterialState> states) {
+                                                    return 0; // Defer to the widget's default.
+                                                  },
+                                                ),
+                                                shape:
+                                                    MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(4.5),
+                                                    ),
+                                                    side: BorderSide(
+                                                      color: Colors.amber,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              child: Text(
+                                                'Tambahkan Event Ke Outlook ',
+                                                style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: MyEventColor
+                                                      .secondaryColor,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
