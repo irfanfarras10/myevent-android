@@ -39,20 +39,182 @@ class AgendaScreen extends StatelessWidget {
               isExpanded: true,
               expandableDateFormat: 'EEEE, dd MMMM yyyy',
               eventListBuilder: (context, events) {
-                return Material(
-                  child: Column(
+                return Expanded(
+                  child: ListView(
                     children: [
                       Divider(),
                       SizedBox(
                         height: 15.0,
                       ),
-                      Text(
-                        'Daftar Event',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.5,
-                          color: MyEventColor.secondaryColor,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Daftar Event',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.5,
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.info),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text('Keterangan Warna'),
+                                    titleTextStyle: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontSize: 16.5,
+                                      fontWeight: FontWeight.bold,
+                                      color: MyEventColor.secondaryColor,
+                                    ),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 12.0,
+                                              height: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.amber,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Draft',
+                                              style: TextStyle(
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 12.0,
+                                              height: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.blue,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Akan Datang',
+                                              style: TextStyle(
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 12.0,
+                                              height: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.green,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Sedang Berjalan',
+                                              style: TextStyle(
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 12.0,
+                                              height: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.purple,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Selesai',
+                                              style: TextStyle(
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 12.0,
+                                              height: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.red,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Dibatalkan',
+                                              style: TextStyle(
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            color: MyEventColor.secondaryColor,
+                          )
+                        ],
                       ),
                       SizedBox(
                         height: 15.0,
@@ -136,6 +298,9 @@ class AgendaScreen extends StatelessWidget {
                         shrinkWrap: true,
                         padding: EdgeInsets.all(5),
                         scrollDirection: Axis.vertical,
+                      ),
+                      SizedBox(
+                        height: 5.0,
                       ),
                     ],
                   ),
