@@ -42,8 +42,7 @@ dependencies:
   time_range: ^1.0.2
   mime: ^1.0.2
   cached_network_image: ^3.2.0
-  calendar_view: ^0.0.5
-  flutter_clean_calendar: ^1.1.0 
+  flutter_neat_and_clean_calendar: ^0.3.6+19
   geocoding: ^2.0.4
  
 dev_dependencies:

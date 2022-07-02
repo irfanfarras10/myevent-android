@@ -1,5 +1,3 @@
-import 'package:calendar_view/calendar_view.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
@@ -28,27 +26,27 @@ class AgendaController extends ApiController {
     isLoading.value = true;
   }
 
-  Color _getAgendaEventColor(EventStatus status) {
-    Color? agendaEventColor;
-    switch (status.id) {
-      case 1:
-        agendaEventColor = Colors.amber;
-        break;
-      case 2:
-        agendaEventColor = Colors.blue;
-        break;
-      case 3:
-        agendaEventColor = Colors.green;
-        break;
-      case 4:
-        agendaEventColor = Colors.purple;
-        break;
-      case 5:
-        agendaEventColor = Colors.red;
-        break;
-    }
-    return agendaEventColor!;
-  }
+  // Color _getAgendaEventColor(EventStatus status) {
+  //   Color? agendaEventColor;
+  //   switch (status.id) {
+  //     case 1:
+  //       agendaEventColor = Colors.amber;
+  //       break;
+  //     case 2:
+  //       agendaEventColor = Colors.blue;
+  //       break;
+  //     case 3:
+  //       agendaEventColor = Colors.green;
+  //       break;
+  //     case 4:
+  //       agendaEventColor = Colors.purple;
+  //       break;
+  //     case 5:
+  //       agendaEventColor = Colors.red;
+  //       break;
+  //   }
+  //   return agendaEventColor!;
+  // }
 
   Future<void> loadEventSchedule() async {
     resetState();
@@ -59,31 +57,31 @@ class AgendaController extends ApiController {
           isLoading.value = false;
         }
         if (apiResponseState.value == ApiResponseState.http2xx) {
-          final context = Get.key.currentContext;
-          final eventData = ViewEventApiResponseModel.fromJson(response);
-          eventAgenda = eventData.eventDataList!;
-          eventAgenda.forEach(
-            (agendaData) {
-              final event = CalendarEventData(
-                date: DateTime.fromMillisecondsSinceEpoch(
-                  agendaData.dateEventStart!,
-                ),
-                endDate: DateTime.fromMillisecondsSinceEpoch(
-                  agendaData.dateEventEnd!,
-                ),
-                startTime: DateTime.fromMillisecondsSinceEpoch(
-                  agendaData.timeEventStart!,
-                ),
-                endTime: DateTime.fromMillisecondsSinceEpoch(
-                  agendaData.timeEventEnd!,
-                ),
-                event: agendaData.name,
-                title: agendaData.name!,
-                color: _getAgendaEventColor(agendaData.eventStatus!),
-              );
-              CalendarControllerProvider.of(context!).controller.add(event);
-            },
-          );
+          // final eventData = ViewEventApiResponseModel.fromJson(response);
+          // eventAgenda = eventData.eventDataList!;
+          // for (int i = 0; i < eventAgenda.length; i++) {
+          //   final event = CalendarEventData(
+          //     date: DateTime.fromMillisecondsSinceEpoch(
+          //       eventAgenda[i].dateEventStart!,
+          //     ),
+          //     endDate: DateTime.fromMillisecondsSinceEpoch(
+          //       eventAgenda[i].dateEventEnd!,
+          //     ),
+          //     startTime: DateTime.fromMillisecondsSinceEpoch(
+          //       eventAgenda[i].timeEventStart!,
+          //     ),
+          //     endTime: DateTime.fromMillisecondsSinceEpoch(
+          //       eventAgenda[i].timeEventEnd!,
+          //     ),
+          //     event: eventAgenda[i].name,
+          //     title: eventAgenda[i].name!,
+          //     color: _getAgendaEventColor(eventAgenda[i].eventStatus!),
+          //   );
+          //   CalendarControllerProvider.of(_context!).controller.remove(event);
+          //   CalendarControllerProvider.of(_context!).controller.add(event);
+          //   //remove unnecessary event added
+
+          // }
         }
       },
     );
