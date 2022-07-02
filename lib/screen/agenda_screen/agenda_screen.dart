@@ -38,6 +38,9 @@ class AgendaScreen extends StatelessWidget {
               todayButtonText: 'Bulan',
               isExpanded: true,
               expandableDateFormat: 'EEEE, dd MMMM yyyy',
+              onEventSelected: (event) {
+                print(event.location);
+              },
             ),
           );
         }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
@@ -50,6 +51,21 @@ class AgendaController extends ApiController {
     return agendaEventColor!;
   }
 
+  Future<String> _getEventLocation(
+    EventStatus eventVenueCategory,
+    String location,
+  ) async {
+    if (eventVenueCategory.id == 1) {
+      final coordinate = location.split('|');
+      final lat = double.parse(coordinate[0]);
+      final lon = double.parse(coordinate[1]);
+      final address = await placemarkFromCoordinates(lat, lon);
+      return address[0].street!;
+    } else {
+      return 'Online Event';
+    }
+  }
+
   Future<void> loadEventSchedule() async {
     resetState();
     await apiEvent.getEvent().then(
@@ -61,6 +77,10 @@ class AgendaController extends ApiController {
         if (apiResponseState.value == ApiResponseState.http2xx) {
           final eventListData = ViewEventApiResponseModel.fromJson(response);
           eventListData.eventDataList!.forEach((eventData) async {
+            final String eventLocation = await _getEventLocation(
+              eventData.eventVenueCategory!,
+              eventData.venue!,
+            );
             eventList.add(
               NeatCleanCalendarEvent(
                 eventData.name!.length > 20
@@ -74,6 +94,7 @@ class AgendaController extends ApiController {
                   eventData.timeEventEnd!,
                 ),
                 color: _getEventColor(eventData.eventStatus!),
+                location: eventLocation,
               ),
             );
           });
