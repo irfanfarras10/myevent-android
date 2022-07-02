@@ -83,10 +83,8 @@ class AgendaController extends ApiController {
             );
             eventList.add(
               NeatCleanCalendarEvent(
-                eventData.name!.length > 20
-                    ? eventData.name!
-                        .replaceRange(20, eventData.name!.length, '...')
-                    : eventData.name!,
+                eventData.name!,
+                description: eventData.description!,
                 startTime: DateTime.fromMillisecondsSinceEpoch(
                   eventData.timeEventStart!,
                 ),
