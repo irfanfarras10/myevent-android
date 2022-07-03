@@ -186,7 +186,7 @@ class PaymentController extends ApiController {
           if (apiResponseState.value == ApiResponseState.http2xx) {
             Get.back();
             Get.back();
-            Get.back();
+            Get.back(result: true);
             Get.toNamed(
               RouteName.createEventContactPersonScreen.replaceAll(
                 ':id',

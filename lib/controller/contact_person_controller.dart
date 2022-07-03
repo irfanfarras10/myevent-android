@@ -210,7 +210,8 @@ class ContactPersonController extends ApiController {
           if (apiResponseState.value == ApiResponseState.http2xx) {
             Get.back();
             Get.back();
-            Get.back();
+            Get.back(result: true);
+            //go to event detail page
           } else {
             Get.back();
           }

@@ -111,7 +111,10 @@ class EventController extends ApiController {
 
   Future<void> pickBannerPhoto() async {
     final ImagePicker _picker = ImagePicker();
-    bannerImage.value = await _picker.pickImage(source: ImageSource.gallery);
+    bannerImage.value = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 25,
+    );
     if (bannerImage.value != null) {
       isBannerImageUploaded.value = true;
     }
@@ -436,7 +439,7 @@ class EventController extends ApiController {
           onConfirm: () {
             if (apiResponseState.value == ApiResponseState.http2xx) {
               Get.back();
-              Get.back();
+              Get.back(result: true);
               Get.toNamed(
                 RouteName.createEventTicketScreen.replaceAll(
                   ':id',
@@ -444,6 +447,7 @@ class EventController extends ApiController {
                 ),
                 arguments: {
                   'dateEventStart': dateEventStart,
+                  'dateEventEnd': dateEventEnd,
                 },
               );
             } else {

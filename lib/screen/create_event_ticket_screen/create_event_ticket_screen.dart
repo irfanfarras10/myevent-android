@@ -234,9 +234,9 @@ class CreateEventTicketScreen extends StatelessWidget {
                         SizedBox(
                           width: 5.0,
                         ),
-                        controller.registrationPeriod.value != null
+                        controller.totalEventDay != null
                             ? Text(
-                                '(${controller.registrationPeriod.value!.duration.inDays + 1} Hari)',
+                                '(${controller.totalEventDay} Hari)',
                                 style: TextStyle(
                                   color: MyEventColor.secondaryColor,
                                   fontWeight: FontWeight.bold,

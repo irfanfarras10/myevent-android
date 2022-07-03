@@ -33,18 +33,17 @@ class TicketController extends ApiController {
   List<CreateTicketApiRequestModel> _apiRequest = [];
 
   final _eventId = Get.parameters['id'];
-  Map<String, dynamic> _dateEventStart = Get.arguments;
+  Map<String, dynamic> _dateEvent = Get.arguments;
+  int? totalEventDay;
 
   bool get isDataValid {
     if (isPayedTicket.value) {
-      return isRegistrationDatePeriodValid.value &&
-          !isNameValid.contains(false) &&
+      return !isNameValid.contains(false) &&
           !isQuotaValid.contains(false) &&
           !isPriceValid.contains(false) &&
           registrationPeriod.value != null;
     }
-    return isRegistrationDatePeriodValid.value &&
-        !isNameValid.contains(false) &&
+    return !isNameValid.contains(false) &&
         !isQuotaValid.contains(false) &&
         registrationPeriod.value != null;
   }
@@ -54,37 +53,62 @@ class TicketController extends ApiController {
 
   @override
   void onInit() {
+    initEventDate();
     initTicket();
     super.onInit();
   }
 
-  void _calculateTicketPriceTotal() {
+  void initEventDate() {
+    final dateEventStart = _dateEvent['dateEventStart'] as DateTime;
+    final dateEventEnd = _dateEvent['dateEventEnd'] as DateTime;
+    totalEventDay = dateEventEnd.difference(dateEventStart).inDays.abs() + 1;
+  }
+
+  void _calculateTicketQuota(int index) {
+    if (isDailyTicket.value) {
+      ticketQuotaTotal.value += ticketData[index]['quotaTotal'] as int;
+      ticketData[index]['quotaPerDay'] = int.parse(quotaController[index].text);
+      ticketData[index]['quotaTotal'] *= totalEventDay;
+    } else {
+      ticketData[index]['quotaPerDay'] = 0;
+      ticketData[index]['quotaTotal'] = int.parse(quotaController[index].text);
+      ticketQuotaTotal.value += ticketData[index]['quotaTotal'] as int;
+    }
+
     ticketQuotaTotal.value = 0;
-    if (registrationPeriod.value != null) {
-      for (int i = 0; i < ticketList.length; i++) {
-        if (isDailyTicket.value) {
-          ticketQuotaTotal.value += ticketData[i]['quotaTotal'] as int;
-          ticketData[i]['quotaPerDay'] = int.parse(quotaController[i].text);
 
-          ticketData[i]['quotaTotal'] *=
-              registrationPeriod.value!.duration.inDays + 1;
-        } else {
-          ticketData[i]['quotaPerDay'] = 0;
-          ticketData[i]['quotaTotal'] = int.parse(quotaController[i].text);
-          ticketQuotaTotal.value += ticketData[i]['quotaTotal'] as int;
-        }
-      }
+    for (int i = 0; i < ticketList.length; i++) {
+      ticketQuotaTotal.value += ticketData[i]['quotaTotal'] as int;
+    }
+  }
 
+  void _calculateTicketQuotaTotal() {
+    ticketQuotaTotal.value = 0;
+
+    for (int i = 0; i < ticketList.length; i++) {
       if (isDailyTicket.value) {
-        ticketQuotaTotal.value *= registrationPeriod.value!.duration.inDays + 1;
+        ticketData[i]['quotaPerDay'] = int.parse(quotaController[i].text);
+        ticketData[i]['quotaTotal'] *= totalEventDay;
+        ticketQuotaTotal.value += ticketData[i]['quotaTotal'] as int;
+      } else {
+        ticketData[i]['quotaPerDay'] = 0;
+        ticketData[i]['quotaTotal'] = int.parse(quotaController[i].text);
+        ticketQuotaTotal.value += ticketData[i]['quotaTotal'] as int;
       }
+    }
+  }
+
+  void _calculateTicketQuotaTotalAfterRemove() {
+    ticketQuotaTotal.value = 0;
+    for (int i = 0; i < ticketList.length; i++) {
+      ticketQuotaTotal.value += ticketData[i]['quotaTotal'] as int;
     }
   }
 
   void setIsDailyTicket(bool value) {
     isDailyTicket.value = value;
 
-    _calculateTicketPriceTotal();
+    _calculateTicketQuotaTotal();
   }
 
   void setIsPayedTicket(bool value) {
@@ -92,7 +116,7 @@ class TicketController extends ApiController {
     initTicket();
 
     ever(isPayedTicket, (_) {
-      _calculateTicketPriceTotal();
+      _calculateTicketQuotaTotal();
       if (!isPayedTicket.value) {
         initTicket();
       }
@@ -186,9 +210,14 @@ class TicketController extends ApiController {
     showDateRangePicker(
       context: Get.key.currentContext!,
       firstDate: DateTime(2000),
-      lastDate: (_dateEventStart['dateEventStart'] as DateTime).add(
+      lastDate: (_dateEvent['dateEventStart'] as DateTime).add(
         Duration(
-          days: -3,
+          days: -1,
+        ),
+      ),
+      currentDate: (_dateEvent['dateEventStart'] as DateTime).add(
+        Duration(
+          days: -1,
         ),
       ),
     ).then((dateTimeRange) {
@@ -199,7 +228,6 @@ class TicketController extends ApiController {
           .format(registrationPeriod.value!.end);
       registrationDatePeriodController.text =
           '$registrationDateStart - $registrationDateEnd';
-      _calculateTicketPriceTotal();
     });
   }
 
@@ -226,7 +254,7 @@ class TicketController extends ApiController {
 
     ticketData[index]['quotaTotal'] = int.parse(quotaController[index].text);
 
-    _calculateTicketPriceTotal();
+    _calculateTicketQuota(index);
   }
 
   void setTicketPrice(int index, String price) {
@@ -356,7 +384,7 @@ class TicketController extends ApiController {
           if (apiResponseState.value == ApiResponseState.http2xx) {
             Get.back();
             Get.back();
-            Get.back();
+            Get.back(result: true);
             if (isPayedTicket.value) {
               Get.toNamed(
                 RouteName.createEventPaymentScreen.replaceAll(':id', _eventId!),
@@ -387,6 +415,6 @@ class TicketController extends ApiController {
     nameController.removeAt(index);
     quotaController.removeAt(index);
     priceController.removeAt(index);
-    _calculateTicketPriceTotal();
+    _calculateTicketQuotaTotalAfterRemove();
   }
 }
