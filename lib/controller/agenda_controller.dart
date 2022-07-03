@@ -9,7 +9,6 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum CalendarViewType {
