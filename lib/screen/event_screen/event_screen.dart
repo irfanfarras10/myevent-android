@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
+import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/screen/draft_event_screen/draft_event_screen.dart';
 
 class EventScreen extends StatelessWidget {
+  final controller = Get.find<EventListController>(tag: 'draft');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +70,15 @@ class EventScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(RouteName.createEventScreen),
+        onPressed: () async {
+          await Get.toNamed(RouteName.createEventScreen)!.then(
+            (refresh) {
+              if (refresh) {
+                controller.loadData();
+              }
+            },
+          );
+        },
         child: Icon(Icons.add),
         tooltip: 'Buat Event',
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myevent_android/controller/agenda_controller.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/controller/profile_controller.dart';
 import 'package:myevent_android/screen/agenda_screen/agenda_screen.dart';
@@ -15,7 +16,8 @@ class NavigationController extends GetxController {
   ];
   void onPressedMenuItem(int index) {
     currentMenuIndex.value = index;
-    Get.delete<ProfileController>();
+    Get.delete<AgendaController>();
     Get.delete<EventListController>();
+    Get.delete<ProfileController>();
   }
 }

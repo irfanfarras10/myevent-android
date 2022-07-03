@@ -52,54 +52,54 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                         File(controller.bannerImage.value!.path),
                       ),
                       Container(
-                          height: 70.0,
-                          color: Colors.black.withOpacity(0.5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    onTap: controller.pickBannerPhoto,
-                                    child: Text(
-                                      'Ubah',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                        height: 70.0,
+                        color: Colors.black.withOpacity(0.5),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: controller.pickBannerPhoto,
+                                  child: Text(
+                                    'Ubah',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
-                                Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    onTap: () {
-                                      Get.dialog(
-                                        SizedBox(
-                                          child: Image.file(
-                                            File(
-                                              controller
-                                                  .bannerImage.value!.path,
-                                            ),
+                              ),
+                              Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {
+                                    Get.dialog(
+                                      SizedBox(
+                                        child: Image.file(
+                                          File(
+                                            controller.bannerImage.value!.path,
                                           ),
                                         ),
-                                        barrierDismissible: true,
-                                      );
-                                    },
-                                    child: Text(
-                                      'Lihat',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
                                       ),
+                                      barrierDismissible: true,
+                                    );
+                                  },
+                                  child: Text(
+                                    'Lihat',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ))
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -182,7 +182,6 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      flex: 2,
                       child: TextFormField(
                         controller: controller.dateEventStartController,
                         textInputAction: TextInputAction.next,
@@ -218,63 +217,6 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                       width: 15.0,
                     ),
                     Expanded(
-                      flex: 1,
-                      child: TextFormField(
-                        controller: controller.timeEventStartController,
-                        textInputAction: TextInputAction.next,
-                        focusNode: controller.timeEventStartFocusNode,
-                        onTap: controller.setEventTimeStart,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          labelText: 'Waktu Mulai',
-                          fillColor: MyEventColor.primaryColor,
-                          labelStyle: TextStyle(
-                            color: MyEventColor.secondaryColor,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: MyEventColor.primaryColor,
-                            ),
-                          ),
-                          suffixIcon: Icon(Icons.access_time),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 15.0,
-                ),
-                Visibility(
-                  visible: controller.dateTimeEventErrorMessage.value != null,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 12.0,
-                      bottom: 15.0,
-                    ),
-                    child: Text(
-                      controller.dateTimeEventErrorMessage.value ?? '',
-                      style: TextStyle(
-                        color: Colors.red.shade800,
-                        fontSize: 12.0,
-                      ),
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
                       child: TextFormField(
                         controller: controller.dateEventEndController,
                         textInputAction: TextInputAction.next,
@@ -306,11 +248,65 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                         ),
                       ),
                     ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Visibility(
+                  visible: controller.dateEventErrorMessage.value != null,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 12.0,
+                      bottom: 15.0,
+                    ),
+                    child: Text(
+                      controller.dateEventErrorMessage.value ?? '',
+                      style: TextStyle(
+                        color: Colors.red.shade800,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: controller.timeEventStartController,
+                        textInputAction: TextInputAction.next,
+                        focusNode: controller.timeEventStartFocusNode,
+                        onTap: controller.setEventTimeStart,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Waktu Mulai',
+                          fillColor: MyEventColor.primaryColor,
+                          labelStyle: TextStyle(
+                            color: MyEventColor.secondaryColor,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.primaryColor,
+                            ),
+                          ),
+                          suffixIcon: Icon(Icons.access_time),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       width: 15.0,
                     ),
                     Expanded(
-                      flex: 1,
                       child: TextFormField(
                         controller: controller.timeEventEndController,
                         textInputAction: TextInputAction.next,
@@ -346,6 +342,22 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 15.0,
+                ),
+                Visibility(
+                  visible: controller.timeEventErrorMessage.value != null,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 12.0,
+                      bottom: 15.0,
+                    ),
+                    child: Text(
+                      controller.timeEventErrorMessage.value ?? '',
+                      style: TextStyle(
+                        color: Colors.red.shade800,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ),
                 ),
                 ButtonTheme(
                   alignedDropdown: true,

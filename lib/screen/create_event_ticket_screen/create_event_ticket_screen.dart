@@ -21,172 +21,185 @@ class CreateEventTicketScreen extends StatelessWidget {
                 color: MyEventColor.secondaryColor,
               ),
             ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_outlined),
+              onPressed: () {
+                Get.back(result: true);
+              },
+            ),
           ),
-          body: GestureDetector(
-            onTap: () {
-              FocusManager.instance.primaryFocus?.unfocus();
+          body: WillPopScope(
+            onWillPop: () async {
+              Get.back(result: true);
+              return true;
             },
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
+            child: GestureDetector(
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Tiket Harian',
+                                style: TextStyle(
+                                  color: MyEventColor.secondaryColor,
+                                  fontSize: 16.5,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12.0,
+                                child: Checkbox(
+                                  value: controller.isDailyTicket.value,
+                                  onChanged: (value) =>
+                                      controller.setIsDailyTicket(value!),
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Tiket Berbayar',
+                                style: TextStyle(
+                                  color: MyEventColor.secondaryColor,
+                                  fontSize: 16.5,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12.0,
+                                child: Checkbox(
+                                  value: controller.isPayedTicket.value,
+                                  onChanged: (value) =>
+                                      controller.setIsPayedTicket(value!),
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          TextFormField(
+                            controller:
+                                controller.registrationDatePeriodController,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.name,
+                            focusNode:
+                                controller.registrationDatePeriodFocusNode,
+                            readOnly: true,
+                            onTap: controller.setRegistrationDate,
+                            decoration: InputDecoration(
+                              labelText: 'Tanggal Registrasi Tiket',
+                              fillColor: MyEventColor.primaryColor,
+                              labelStyle: TextStyle(
+                                color: MyEventColor.secondaryColor,
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: MyEventColor.secondaryColor,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: MyEventColor.secondaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: MyEventColor.primaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Tiket Harian',
-                              style: TextStyle(
-                                color: MyEventColor.secondaryColor,
-                                fontSize: 16.5,
-                              ),
+                    Container(
+                      padding: EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          Column(
+                            children: List.generate(
+                              controller.ticketList.length,
+                              (index) {
+                                return CreateEventTicketScreenCardWidget(
+                                  index: index,
+                                );
+                              },
                             ),
-                            SizedBox(
-                              width: 12.0,
-                              child: Checkbox(
-                                value: controller.isDailyTicket.value,
-                                onChanged: (value) =>
-                                    controller.setIsDailyTicket(value!),
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Tiket Berbayar',
-                              style: TextStyle(
-                                color: MyEventColor.secondaryColor,
-                                fontSize: 16.5,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 12.0,
-                              child: Checkbox(
-                                value: controller.isPayedTicket.value,
-                                onChanged: (value) =>
-                                    controller.setIsPayedTicket(value!),
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        TextFormField(
-                          controller:
-                              controller.registrationDatePeriodController,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.name,
-                          focusNode: controller.registrationDatePeriodFocusNode,
-                          readOnly: true,
-                          onTap: controller.setRegistrationDate,
-                          decoration: InputDecoration(
-                            labelText: 'Tanggal Registrasi Tiket',
-                            fillColor: MyEventColor.primaryColor,
-                            labelStyle: TextStyle(
-                              color: MyEventColor.secondaryColor,
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: MyEventColor.secondaryColor,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: MyEventColor.secondaryColor,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: MyEventColor.primaryColor,
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Visibility(
+                            visible: controller.ticketList.length == 4,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 15.0),
+                              child: Text(
+                                ' - Maksimal 4 Tiket - ',
+                                style: TextStyle(
+                                  fontSize: 16.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: MyEventColor.secondaryColor,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(15.0),
-                    child: Column(
-                      children: [
-                        Column(
-                          children: List.generate(
-                            controller.ticketList.length,
-                            (index) {
-                              return CreateEventTicketScreenCardWidget(
-                                index: index,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Visibility(
-                          visible: controller.ticketList.length == 4,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 15.0),
-                            child: Text(
-                              ' - Maksimal 4 Tiket - ',
-                              style: TextStyle(
-                                fontSize: 16.5,
-                                fontWeight: FontWeight.bold,
-                                color: MyEventColor.secondaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Visibility(
-                          visible: controller.isPayedTicket.value &&
-                              controller.ticketList.length < 4,
-                          child: SizedBox(
-                            height: 60.0,
-                            child: TextButton(
-                              onPressed: controller.addTicket,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Tambahkan Tiket',
-                                    style: TextStyle(
-                                      fontSize: 17.0,
-                                      color: MyEventColor.secondaryColor,
-                                      fontWeight: FontWeight.bold,
+                          Visibility(
+                            visible: controller.isPayedTicket.value &&
+                                controller.ticketList.length < 4,
+                            child: SizedBox(
+                              height: 60.0,
+                              child: TextButton(
+                                onPressed: controller.addTicket,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Tambahkan Tiket',
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                        color: MyEventColor.secondaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  Icon(
-                                    Icons.add,
-                                    color: MyEventColor.secondaryColor,
-                                  ),
-                                ],
+                                    SizedBox(width: 10.0),
+                                    Icon(
+                                      Icons.add,
+                                      color: MyEventColor.secondaryColor,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

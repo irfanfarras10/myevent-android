@@ -7,10 +7,10 @@ import 'package:myevent_android/util/api_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyEventApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyEventApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

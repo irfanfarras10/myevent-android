@@ -135,7 +135,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                               child: Text(
                                 DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(
                                   DateTime.fromMillisecondsSinceEpoch(
-                                    data!.dateTimeEventStart!,
+                                    data!.dateEventStart!,
                                   ),
                                 ),
                                 style: TextStyle(
@@ -160,7 +160,11 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                               width: 5.0,
                             ),
                             Text(
-                              '12.00',
+                              DateFormat('hh:mm', 'id_ID').format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                  data!.timeEventStart!,
+                                ),
+                              ),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12.0,
@@ -169,12 +173,29 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Text(
-                          'The Breeze',
-                          style: TextStyle(
-                            color: MyEventColor.secondaryColor,
-                            fontSize: 12.0,
+                        FutureBuilder<String>(
+                          future: controller.parseLocation(
+                            data!.eventVenueCategory!,
+                            data!.venue!,
                           ),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data.toString(),
+                                style: TextStyle(
+                                  color: MyEventColor.secondaryColor,
+                                  fontSize: 12.0,
+                                ),
+                              );
+                            } else {
+                              return Text(
+                                '',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ],
                     ),

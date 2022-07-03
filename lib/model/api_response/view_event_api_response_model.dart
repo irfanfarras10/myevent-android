@@ -25,8 +25,10 @@ class ViewEventApiResponseModel {
 class EventDataList {
   String? name;
   String? description;
-  int? dateTimeEventStart;
-  int? dateTimeEventEnd;
+  int? dateEventStart;
+  int? dateEventEnd;
+  int? timeEventStart;
+  int? timeEventEnd;
   String? venue;
   String? bannerPhoto;
   EventStatus? eventStatus;
@@ -38,8 +40,10 @@ class EventDataList {
   EventDataList(
       {this.name,
       this.description,
-      this.dateTimeEventStart,
-      this.dateTimeEventEnd,
+      this.dateEventStart,
+      this.dateEventEnd,
+      this.timeEventStart,
+      this.timeEventEnd,
       this.venue,
       this.bannerPhoto,
       this.eventStatus,
@@ -51,8 +55,10 @@ class EventDataList {
   EventDataList.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     description = json['description'];
-    dateTimeEventStart = json['dateTimeEventStart'];
-    dateTimeEventEnd = json['dateTimeEventEnd'];
+    dateEventStart = json['dateEventStart'];
+    dateEventEnd = json['dateEventEnd'];
+    timeEventStart = json['timeEventStart'];
+    timeEventEnd = json['timeEventEnd'];
     venue = json['venue'];
     bannerPhoto = json['bannerPhoto'];
     eventStatus = json['eventStatus'] != null
@@ -76,8 +82,10 @@ class EventDataList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['description'] = this.description;
-    data['dateTimeEventStart'] = this.dateTimeEventStart;
-    data['dateTimeEventEnd'] = this.dateTimeEventEnd;
+    data['dateEventStart'] = this.dateEventStart;
+    data['dateEventEnd'] = this.dateEventEnd;
+    data['timeEventStart'] = this.timeEventStart;
+    data['timeEventEnd'] = this.timeEventEnd;
     data['venue'] = this.venue;
     data['bannerPhoto'] = this.bannerPhoto;
     if (this.eventStatus != null) {

@@ -9,7 +9,9 @@ import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
 
 class DraftEventScreen extends StatefulWidget {
-  const DraftEventScreen({Key? key}) : super(key: key);
+  const DraftEventScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<DraftEventScreen> createState() => _DraftEventScreenState();
