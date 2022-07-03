@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum CalendarViewType {
@@ -145,5 +149,89 @@ class AgendaController extends ApiController {
     googleCalendarUrl += eventLocation;
     googleCalendarUrl += eventTitle;
     await launch(googleCalendarUrl);
+  }
+
+  Future<File> _localFile(String fileName) async {
+    final path = '/storage/emulated/0/Download';
+    return File('$path/$fileName${DateTime.now().millisecondsSinceEpoch}.ics');
+  }
+
+  void writeIcsFile(NeatCleanCalendarEvent event) async {
+    try {
+      final file = await _localFile(event.summary);
+      String fileContent = 'BEGIN:VCALENDAR\n';
+      fileContent += 'VERSION:2.0\n';
+      fileContent += 'BEGIN:VEVENT\n';
+      fileContent +=
+          'DTSTART:${DateFormat('yyyyMMddTHHmmss').format(event.startTime)}\n';
+      fileContent +=
+          'DTEND:${DateFormat('yyyyMMddTHHmmss').format(event.endTime)}\n';
+      fileContent += 'SUMMARY:${event.summary}\n';
+      fileContent += 'DESCRIPTION:${event.description}\n';
+      fileContent += 'LOCATION:${event.location}\n';
+      fileContent += 'END:VEVENT\n';
+      fileContent += 'END:VCALENDAR\n';
+      await file.writeAsString(fileContent);
+      Get.defaultDialog(
+        titleStyle: TextStyle(
+          fontSize: 0.0,
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'File iCS berhasil tersimpan',
+              style: TextStyle(
+                fontSize: 15.0,
+                color: MyEventColor.secondaryColor,
+              ),
+            ),
+            Icon(
+              Icons.check,
+              size: 50.0,
+              color: Colors.green,
+            ),
+          ],
+        ),
+        textConfirm: 'OK',
+        confirmTextColor: MyEventColor.secondaryColor,
+        barrierDismissible: false,
+        onConfirm: () {
+          Get.back();
+        },
+      );
+    } catch (e) {
+      print(e);
+      Get.defaultDialog(
+        titleStyle: TextStyle(
+          fontSize: 0.0,
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Terjadi pada saat membuat file',
+              style: TextStyle(
+                fontSize: 15.0,
+                color: MyEventColor.secondaryColor,
+              ),
+            ),
+            Icon(
+              Icons.close,
+              size: 50.0,
+              color: Colors.red,
+            ),
+          ],
+        ),
+        textConfirm: 'OK',
+        confirmTextColor: MyEventColor.secondaryColor,
+        barrierDismissible: false,
+        onConfirm: () {
+          Get.back();
+        },
+      );
+    }
   }
 }

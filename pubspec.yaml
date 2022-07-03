@@ -45,6 +45,7 @@ dependencies:
   flutter_neat_and_clean_calendar: ^0.3.6+19
   geocoding: ^2.0.4
   url_launcher: ^6.0.10
+  path_provider: ^2.0.4
  
 dev_dependencies:
   flutter_test:

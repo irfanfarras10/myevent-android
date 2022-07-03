@@ -338,7 +338,11 @@ class AgendaScreen extends StatelessWidget {
                                             width: double.infinity,
                                             height: 60.0,
                                             child: ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                controller.writeIcsFile(
+                                                  events[index],
+                                                );
+                                              },
                                               style: ButtonStyle(
                                                 backgroundColor:
                                                     MaterialStateProperty
@@ -417,50 +421,6 @@ class AgendaScreen extends StatelessWidget {
                                           ),
                                           SizedBox(
                                             height: 15.0,
-                                          ),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            height: 60.0,
-                                            child: ElevatedButton(
-                                              onPressed: () {},
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty
-                                                        .resolveWith<Color>(
-                                                  (states) {
-                                                    return Colors.white;
-                                                  },
-                                                ),
-                                                elevation: MaterialStateProperty
-                                                    .resolveWith<double>(
-                                                  (Set<MaterialState> states) {
-                                                    return 0; // Defer to the widget's default.
-                                                  },
-                                                ),
-                                                shape:
-                                                    MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(4.5),
-                                                    ),
-                                                    side: BorderSide(
-                                                      color: Colors.amber,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Text(
-                                                'Tambahkan Event Ke Outlook ',
-                                                style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: MyEventColor
-                                                      .secondaryColor,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
                                           ),
                                         ],
                                       ),
