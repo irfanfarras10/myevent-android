@@ -314,7 +314,7 @@ class EventDetailScreen extends StatelessWidget {
                                         .eventData!.eventVenueCategory!.id ==
                                     1,
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: controller.openLocation,
                                   child: Row(
                                     children: [
                                       Text(
