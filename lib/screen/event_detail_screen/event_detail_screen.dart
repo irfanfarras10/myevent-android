@@ -477,7 +477,7 @@ class EventDetailScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Total Tiket (4 Hari)',
+                            'Total Tiket (${_getTotalEventDay(controller.eventData!.dateEventStart!, controller.eventData!.dateEventEnd!)} Hari)',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: MyEventColor.secondaryColor,
@@ -883,5 +883,14 @@ class EventDetailScreen extends StatelessWidget {
     );
     dateTimeEvent = '$timeEventStartString - $timeEventEndString';
     return dateTimeEvent;
+  }
+
+  String _getTotalEventDay(int dateTimeEventStart, int dateTimeEventEnd) {
+    int totalEventDay;
+    totalEventDay = DateTime.fromMillisecondsSinceEpoch(dateTimeEventEnd)
+            .difference(DateTime.fromMillisecondsSinceEpoch(dateTimeEventStart))
+            .inDays +
+        1;
+    return totalEventDay.toString();
   }
 }
