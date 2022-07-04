@@ -406,7 +406,10 @@ class EventDetailScreen extends StatelessWidget {
                             width: 5.0,
                           ),
                           Text(
-                            '18 Juni 2022 - 19 Juni 2022',
+                            _parseEventDate(
+                              controller.eventData!.dateTimeRegistrationStart!,
+                              controller.eventData!.dateTimeRegistrationEnd!,
+                            ),
                             style: TextStyle(
                               color: MyEventColor.secondaryColor,
                             ),
