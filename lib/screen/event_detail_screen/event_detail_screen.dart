@@ -907,6 +907,7 @@ class EventDetailScreen extends StatelessWidget {
           ),
           backgroundColor: Colors.grey.shade200,
           body: body,
+          bottomNavigationBar: controller.getBottomButton(),
         );
       },
     );

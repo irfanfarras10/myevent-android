@@ -83,4 +83,49 @@ class EventDetailController extends ApiController {
     });
     return ticketQuotaTotal.toString();
   }
+
+  Widget getBottomButton() {
+    Widget bottomButton = Container();
+    if (!isLoading.value && eventData!.eventStatus!.id == 1) {
+      bottomButton = Container(
+        padding: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 6.0,
+              offset: Offset(0.0, 3.0),
+              color: Colors.black26,
+            ),
+          ],
+        ),
+        child: SizedBox(
+          height: 60.0,
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return Colors.amber.shade300;
+                  }
+                  return Colors.amber;
+                },
+              ),
+            ),
+            child: Text(
+              'Publish Event',
+              style: TextStyle(
+                fontSize: 17.0,
+                color: MyEventColor.secondaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    return bottomButton;
+  }
 }
