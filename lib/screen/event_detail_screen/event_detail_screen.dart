@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_detail_controller.dart';
+import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
 
 class EventDetailScreen extends StatelessWidget {
-  final controller = Get.find<EventDetailController>();
-
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<EventDetailController>();
     return Obx(
       () {
         Widget body;
@@ -49,7 +49,7 @@ class EventDetailScreen extends StatelessWidget {
                         height: 10.0,
                       ),
                       Text(
-                        'Belum Di Publish',
+                        _getStatusText(controller.eventData!.eventStatus!),
                         style: TextStyle(
                           fontSize: 16.0,
                           color: MyEventColor.secondaryColor,
@@ -779,7 +779,8 @@ class EventDetailScreen extends StatelessWidget {
             ),
             actions: [
               Visibility(
-                visible: controller.eventData!.eventStatus!.id == 1 &&
+                visible: controller.eventData != null &&
+                        controller.eventData!.eventStatus!.id == 1 &&
                         !controller.isLoading.value
                     ? true
                     : false,
@@ -796,5 +797,28 @@ class EventDetailScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _getStatusText(EventStatus eventStatus) {
+    String? statusText;
+    switch (eventStatus.id) {
+      case 1:
+        statusText = 'Belum di Publish';
+        break;
+      case 2:
+        statusText = 'Akan Datang';
+        break;
+      case 3:
+        statusText = 'Sedang Berjalan';
+        break;
+      case 4:
+        statusText = 'Selesai';
+        break;
+      case 5:
+        statusText = 'Dibatalkan';
+        break;
+      default:
+    }
+    return statusText!;
   }
 }
