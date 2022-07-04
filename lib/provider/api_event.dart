@@ -5,7 +5,8 @@ final apiEvent = ApiEvent();
 class ApiEvent {
   Future<Map<String, dynamic>> getEventCategory() {
     return apiUtil.apiRequestGet(
-        'https://myevent-android-api.herokuapp.com/api/events/categories');
+      'https://myevent-android-api.herokuapp.com/api/events/categories',
+    );
   }
 
   Future<Map<String, dynamic>> createEvent(
@@ -16,13 +17,21 @@ class ApiEvent {
     );
   }
 
-  Future<Map<String, dynamic>> getEvent(){
+  Future<Map<String, dynamic>> getEvent() {
     return apiUtil.apiRequestGet(
-        'https://myevent-android-api.herokuapp.com/api/events');
+      'https://myevent-android-api.herokuapp.com/api/events',
+    );
   }
 
   Future<Map<String, dynamic>> getEventDraft() {
     return apiUtil.apiRequestGet(
-        'https://myevent-android-api.herokuapp.com/api/events/draft');
+      'https://myevent-android-api.herokuapp.com/api/events/draft',
+    );
+  }
+
+  Future<Map<String, dynamic>> getEventDetail({required int id}) {
+    return apiUtil.apiRequestGet(
+      'https://myevent-android-api.herokuapp.com/api/events/$id',
+    );
   }
 }

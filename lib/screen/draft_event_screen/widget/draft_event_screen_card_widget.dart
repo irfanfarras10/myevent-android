@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
-import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
+import 'package:myevent_android/model/api_response/view_event_list_api_response_model.dart';
 import 'package:myevent_android/route/route_name.dart';
 
 class DraftEventScreenCardWidget extends StatelessWidget {
@@ -22,7 +22,10 @@ class DraftEventScreenCardWidget extends StatelessWidget {
       child: Card(
         child: InkWell(
           onTap: () {
-            Get.toNamed(RouteName.eventDetailScreen);
+            Get.toNamed(RouteName.eventDetailScreen.replaceAll(
+              ':id',
+              data!.id.toString(),
+            ));
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
