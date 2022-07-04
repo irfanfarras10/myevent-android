@@ -778,10 +778,16 @@ class EventDetailScreen extends StatelessWidget {
               ),
             ),
             actions: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.delete),
-                tooltip: 'Hapus Event',
+              Visibility(
+                visible: controller.eventData!.eventStatus!.id == 1 &&
+                        !controller.isLoading.value
+                    ? true
+                    : false,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.delete),
+                  tooltip: 'Hapus Event',
+                ),
               ),
             ],
           ),
