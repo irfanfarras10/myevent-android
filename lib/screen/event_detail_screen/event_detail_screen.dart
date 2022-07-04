@@ -814,46 +814,62 @@ class EventDetailScreen extends StatelessWidget {
                       SizedBox(
                         height: 10.0,
                       ),
-                      Column(
-                        children: List.generate(
-                          3,
-                          (index) {
-                            return SizedBox(
-                              width: double.infinity,
-                              child: Card(
-                                shadowColor: Colors.black12,
-                                color: Colors.grey.shade100,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Irfan',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: MyEventColor.secondaryColor,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Text(
-                                        '085894577241',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: MyEventColor.secondaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                      controller.eventData!.eventContactPerson!.isEmpty
+                          ? Center(
+                              child: Text(
+                                'Tidak ada data contact person',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: MyEventColor.secondaryColor,
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      )
+                            )
+                          : Column(
+                              children: List.generate(
+                                controller
+                                    .eventData!.eventContactPerson!.length,
+                                (index) {
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    child: Card(
+                                      shadowColor: Colors.black12,
+                                      color: Colors.grey.shade100,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              controller
+                                                  .eventData!
+                                                  .eventContactPerson![index]
+                                                  .name!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Text(
+                                              '${controller.eventData!.eventContactPerson![index].eventSocialMedia!.name}: ${controller.eventData!.eventContactPerson![index].contact}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
                     ],
                   ),
                 ),
