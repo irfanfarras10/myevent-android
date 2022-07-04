@@ -194,7 +194,7 @@ class EventDetailScreen extends StatelessWidget {
                             height: 5.0,
                           ),
                           Text(
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ex ipsum, ultrices in egestas blandit, gravida eget odio. Integer vestibulum neque ut mi maximus, cursus tempus lorem commodo. In egestas tortor nec elementum efficitur. Curabitur ac ultrices felis. Donec faucibus, neque nec cursus tincidunt, arcu ipsum rhoncus est, vitae sagittis neque libero eget ligula. Praesent mattis leo eget dolor porta, finibus interdum nisl mollis. Sed fringilla est ut congue volutpat. Donec ligula velit, bibendum et metus in, ullamcorper mollis justo. Pellentesque malesuada metus id gravida elementum. Aliquam bibendum at ante eget lacinia. Sed semper lacus orci. Donec tincidunt mi arcu, maximus auctor odio tincidunt ac. Nullam a lorem sagittis neque vestibulum eleifend. ',
+                            controller.eventData!.description!,
                             textAlign: TextAlign.justify,
                           ),
                         ],
