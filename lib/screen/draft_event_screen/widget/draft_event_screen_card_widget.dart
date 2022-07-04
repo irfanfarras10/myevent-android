@@ -26,7 +26,12 @@ class DraftEventScreenCardWidget extends StatelessWidget {
             Get.toNamed(RouteName.eventDetailScreen.replaceAll(
               ':id',
               data!.id.toString(),
-            ));
+            ))!
+                .then((refresh) {
+              if (refresh) {
+                controller.loadData();
+              }
+            });
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

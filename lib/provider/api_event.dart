@@ -34,4 +34,10 @@ class ApiEvent {
       'https://myevent-android-api.herokuapp.com/api/events/$id',
     );
   }
+
+  Future<Map<String, dynamic>> deleteEvent({required int id}) {
+    return apiUtil.apiRequestDelete(
+      'https://myevent-android-api.herokuapp.com/api/events/$id',
+    );
+  }
 }
