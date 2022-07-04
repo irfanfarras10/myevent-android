@@ -425,7 +425,11 @@ class EventDetailScreen extends StatelessWidget {
                             width: 20.0,
                             height: 10.0,
                             child: Checkbox(
-                              value: true,
+                              value: controller
+                                          .eventData!.ticket![0].quotaPerDay! >
+                                      0
+                                  ? true
+                                  : false,
                               onChanged: (checked) {},
                             ),
                           ),
@@ -449,7 +453,9 @@ class EventDetailScreen extends StatelessWidget {
                             width: 20.0,
                             height: 10.0,
                             child: Checkbox(
-                              value: true,
+                              value: controller.eventData!.ticket![0].price! > 0
+                                  ? true
+                                  : false,
                               onChanged: (checked) {},
                             ),
                           ),
