@@ -61,7 +61,7 @@ class EventDetailScreen extends StatelessWidget {
                 SizedBox(
                   height: 200,
                   child: CachedNetworkImage(
-                    imageUrl: '',
+                    imageUrl: controller.eventData!.bannerPhoto!,
                     imageBuilder: (context, imageProvider) => Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
