@@ -94,28 +94,30 @@ class EventDetailScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Nama Event',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: MyEventColor.secondaryColor,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Nama Event',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: MyEventColor.secondaryColor,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              Text(
-                                controller.eventData!.name!,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0,
-                                  color: MyEventColor.secondaryColor,
+                                SizedBox(
+                                  height: 5.0,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  controller.eventData!.name!,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                    color: MyEventColor.secondaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           ElevatedButton(
                             onPressed: () {},
@@ -638,8 +640,10 @@ class EventDetailScreen extends StatelessWidget {
                                               height: 5.0,
                                             ),
                                             Text(
-                                              controller.eventData!
-                                                  .eventPayment![index].type!,
+                                              controller
+                                                  .eventData!
+                                                  .eventPayment![index]
+                                                  .information!,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color:
