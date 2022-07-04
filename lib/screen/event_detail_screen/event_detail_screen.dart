@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_detail_controller.dart';
@@ -226,7 +227,10 @@ class EventDetailScreen extends StatelessWidget {
                                 width: 5.0,
                               ),
                               Text(
-                                '18 Juni 2022 - 19 Juni 2022',
+                                _parseEventDate(
+                                  controller.eventData!.dateEventStart!,
+                                  controller.eventData!.dateEventEnd!,
+                                ),
                                 style: TextStyle(
                                   color: MyEventColor.secondaryColor,
                                 ),
@@ -273,11 +277,13 @@ class EventDetailScreen extends StatelessWidget {
                                     SizedBox(
                                       height: 5.0,
                                     ),
-                                    Text('Jl. Untung Suropati 2 RT 002 / 08   ',
-                                        textAlign: TextAlign.justify,
-                                        style: TextStyle(
-                                          color: MyEventColor.secondaryColor,
-                                        )),
+                                    Text(
+                                      'Jl. Untung Suropati 2 RT 002 / 08   ',
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -820,5 +826,18 @@ class EventDetailScreen extends StatelessWidget {
       default:
     }
     return statusText!;
+  }
+
+  String _parseEventDate(int dateEventStart, int dateEventEnd) {
+    String? dateTimeEvent;
+    String dateEventStartString =
+        DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(dateEventStart),
+    );
+    String dateEventEndString = DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(dateEventEnd),
+    );
+    dateTimeEvent = '$dateEventStartString - $dateEventEndString';
+    return dateTimeEvent;
   }
 }
