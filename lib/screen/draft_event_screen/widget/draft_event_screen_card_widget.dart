@@ -6,6 +6,7 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_list_api_response_model.dart';
 import 'package:myevent_android/route/route_name.dart';
+import 'package:myevent_android/util/location_util.dart';
 
 class DraftEventScreenCardWidget extends StatelessWidget {
   final EventDataList? data;
@@ -183,7 +184,7 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                             ],
                           ),
                           FutureBuilder<String>(
-                            future: controller.parseLocation(
+                            future: locationUtil.parseLocation(
                               data!.eventVenueCategory!,
                               data!.venue!,
                             ),
