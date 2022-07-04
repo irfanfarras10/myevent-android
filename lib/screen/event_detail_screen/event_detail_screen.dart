@@ -493,7 +493,8 @@ class EventDetailScreen extends StatelessWidget {
                         ],
                       ),
                       Column(
-                        children: List.generate(4, (index) {
+                        children: List.generate(
+                            controller.eventData!.ticket!.length, (index) {
                           return Column(
                             children: [
                               SizedBox(
@@ -504,13 +505,13 @@ class EventDetailScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Reguler',
+                                    controller.eventData!.ticket![index].name!,
                                     style: TextStyle(
                                       color: MyEventColor.secondaryColor,
                                     ),
                                   ),
                                   Text(
-                                    '1000',
+                                    '${controller.eventData!.ticket![index].price!}',
                                     style: TextStyle(
                                       color: MyEventColor.secondaryColor,
                                     ),
