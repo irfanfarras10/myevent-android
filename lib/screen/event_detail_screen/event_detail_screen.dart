@@ -106,7 +106,7 @@ class EventDetailScreen extends StatelessWidget {
                                 height: 5.0,
                               ),
                               Text(
-                                'Webinar Data Analytics',
+                                controller.eventData!.name!,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18.0,
@@ -149,7 +149,7 @@ class EventDetailScreen extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              'Webinar',
+                              controller.eventData!.eventCategory!.name!,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: MyEventColor.secondaryColor,
@@ -168,7 +168,7 @@ class EventDetailScreen extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              'Onsite',
+                              controller.eventData!.eventVenueCategory!.name!,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
