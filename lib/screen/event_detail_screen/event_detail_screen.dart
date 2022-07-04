@@ -484,7 +484,7 @@ class EventDetailScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '4000',
+                            controller.calculateTicketTotal(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: MyEventColor.secondaryColor,
@@ -511,7 +511,7 @@ class EventDetailScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    '${controller.eventData!.ticket![index].price!}',
+                                    '${controller.eventData!.ticket![index].quotaTotal!}',
                                     style: TextStyle(
                                       color: MyEventColor.secondaryColor,
                                     ),

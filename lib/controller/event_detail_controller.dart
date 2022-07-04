@@ -75,4 +75,12 @@ class EventDetailController extends ApiController {
       );
     }
   }
+
+  String calculateTicketTotal() {
+    int ticketQuotaTotal = 0;
+    eventData!.ticket!.forEach((ticketData) {
+      ticketQuotaTotal += ticketData.quotaTotal!;
+    });
+    return ticketQuotaTotal.toString();
+  }
 }
