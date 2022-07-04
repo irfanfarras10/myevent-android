@@ -270,10 +270,11 @@ class EventDetailScreen extends StatelessWidget {
                                 SizedBox(
                                   height: 5.0,
                                 ),
-                                Text(
-                                  'Jl. Untung Suropati 2 RT 002 / 08   ',
-                                  textAlign: TextAlign.justify,
-                                ),
+                                Text('Jl. Untung Suropati 2 RT 002 / 08   ',
+                                    textAlign: TextAlign.justify,
+                                    style: TextStyle(
+                                      color: MyEventColor.secondaryColor,
+                                    )),
                               ],
                             ),
                           ),
@@ -286,7 +287,10 @@ class EventDetailScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   'Lihat Lokasi',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: MyEventColor.secondaryColor,
+                                  ),
                                 ),
                                 Icon(
                                   Icons.location_on,
@@ -331,7 +335,10 @@ class EventDetailScreen extends StatelessWidget {
                           children: [
                             Text(
                               'Edit',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: MyEventColor.secondaryColor,
+                              ),
                             ),
                             SizedBox(
                               width: 5.0,
@@ -389,7 +396,12 @@ class EventDetailScreen extends StatelessWidget {
                       SizedBox(
                         width: 10.0,
                       ),
-                      Text('Tiket Harian')
+                      Text(
+                        'Tiket Harian',
+                        style: TextStyle(
+                          color: MyEventColor.secondaryColor,
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -408,7 +420,12 @@ class EventDetailScreen extends StatelessWidget {
                       SizedBox(
                         width: 10.0,
                       ),
-                      Text('Tiket Berbayar')
+                      Text(
+                        'Tiket Berbayar',
+                        style: TextStyle(
+                          color: MyEventColor.secondaryColor,
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -421,80 +438,136 @@ class EventDetailScreen extends StatelessWidget {
                         'Total Tiket (4 Hari)',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          color: MyEventColor.secondaryColor,
                         ),
                       ),
                       Text(
                         '4000',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          color: MyEventColor.secondaryColor,
                         ),
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
+                  Column(
+                    children: List.generate(4, (index) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 5.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Reguler',
+                                style: TextStyle(
+                                  color: MyEventColor.secondaryColor,
+                                ),
+                              ),
+                              Text(
+                                '1000',
+                                style: TextStyle(
+                                  color: MyEventColor.secondaryColor,
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      );
+                    }),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
+            Container(
+              color: Colors.white,
+              width: double.infinity,
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Reguler',
-                        style: TextStyle(),
+                      Expanded(
+                        child: Text(
+                          'Pembayaran',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: MyEventColor.secondaryColor,
+                          ),
+                        ),
                       ),
-                      Text(
-                        '1000',
-                        style: TextStyle(),
-                      )
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Row(
+                          children: [
+                            Text(
+                              'Edit',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: MyEventColor.secondaryColor,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            Icon(
+                              Icons.edit,
+                              size: 16.5,
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(
-                    height: 5.0,
+                    height: 10.0,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Silver',
-                        style: TextStyle(),
-                      ),
-                      Text(
-                        '1000',
-                        style: TextStyle(),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Gold',
-                        style: TextStyle(),
-                      ),
-                      Text(
-                        '1000',
-                        style: TextStyle(),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Platinum',
-                        style: TextStyle(),
-                      ),
-                      Text(
-                        '1000',
-                        style: TextStyle(),
-                      ),
-                    ],
-                  ),
+                  Column(
+                    children: List.generate(
+                      3,
+                      (index) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'OVO',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: MyEventColor.secondaryColor,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Text(
+                                    '085894577241',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: MyEventColor.secondaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
             )
