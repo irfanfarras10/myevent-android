@@ -538,6 +538,8 @@ class EventDetailScreen extends StatelessWidget {
                         return SizedBox(
                           width: double.infinity,
                           child: Card(
+                            shadowColor: Colors.black12,
+                            color: Colors.grey.shade200,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Column(
@@ -570,7 +572,99 @@ class EventDetailScreen extends StatelessWidget {
                   )
                 ],
               ),
-            )
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
+            Container(
+              color: Colors.white,
+              width: double.infinity,
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Tamu Undangan',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: MyEventColor.secondaryColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Row(
+                          children: [
+                            Text(
+                              'Tambah',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: MyEventColor.secondaryColor,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            Icon(
+                              Icons.add,
+                              size: 16.5,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Column(
+                    children: List.generate(
+                      3,
+                      (index) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Card(
+                            shadowColor: Colors.black12,
+                            color: Colors.grey.shade200,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Nama Tamu',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: MyEventColor.secondaryColor,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Text(
+                                    'tamu@gmail.com',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: MyEventColor.secondaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
