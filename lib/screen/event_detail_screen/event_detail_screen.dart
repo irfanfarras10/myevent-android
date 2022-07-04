@@ -385,143 +385,167 @@ class EventDetailScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Text(
-                        'Tanggal Registrasi',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: MyEventColor.secondaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.date_range,
-                            size: 16.5,
-                            color: MyEventColor.secondaryColor,
-                          ),
-                          SizedBox(
-                            width: 5.0,
-                          ),
-                          Text(
-                            _parseEventDate(
-                              controller.eventData!.dateTimeRegistrationStart!,
-                              controller.eventData!.dateTimeRegistrationEnd!,
-                            ),
-                            style: TextStyle(
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 20.0,
-                            height: 10.0,
-                            child: Checkbox(
-                              value: controller
-                                          .eventData!.ticket![0].quotaPerDay! >
-                                      0
-                                  ? true
-                                  : false,
-                              onChanged: (checked) {},
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Text(
-                            'Tiket Harian',
-                            style: TextStyle(
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 20.0,
-                            height: 10.0,
-                            child: Checkbox(
-                              value: controller.eventData!.ticket![0].price! > 0
-                                  ? true
-                                  : false,
-                              onChanged: (checked) {},
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Text(
-                            'Tiket Berbayar',
-                            style: TextStyle(
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total Tiket (${_getTotalEventDay(controller.eventData!.dateEventStart!, controller.eventData!.dateEventEnd!)} Hari)',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          ),
-                          Text(
-                            controller.calculateTicketTotal(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: List.generate(
-                            controller.eventData!.ticket!.length, (index) {
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: 5.0,
+                      controller.eventData!.ticket!.isEmpty
+                          ? Center(
+                              child: Text(
+                                'Tidak ada data tiket',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: MyEventColor.secondaryColor,
+                                ),
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    controller.eventData!.ticket![index].name!,
-                                    style: TextStyle(
-                                      color: MyEventColor.secondaryColor,
-                                    ),
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Tanggal Registrasi',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: MyEventColor.secondaryColor,
                                   ),
-                                  Text(
-                                    '${controller.eventData!.ticket![index].quotaTotal!}',
-                                    style: TextStyle(
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.date_range,
+                                      size: 16.5,
                                       color: MyEventColor.secondaryColor,
                                     ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          );
-                        }),
-                      )
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text(
+                                      _parseEventDate(
+                                        controller.eventData!
+                                            .dateTimeRegistrationStart!,
+                                        controller.eventData!
+                                            .dateTimeRegistrationEnd!,
+                                      ),
+                                      style: TextStyle(
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15.0,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20.0,
+                                      height: 10.0,
+                                      child: Checkbox(
+                                        value: controller.eventData!.ticket![0]
+                                                    .quotaPerDay! >
+                                                0
+                                            ? true
+                                            : false,
+                                        onChanged: (checked) {},
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      'Tiket Harian',
+                                      style: TextStyle(
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20.0,
+                                      height: 10.0,
+                                      child: Checkbox(
+                                        value: controller.eventData!.ticket![0]
+                                                    .price! >
+                                                0
+                                            ? true
+                                            : false,
+                                        onChanged: (checked) {},
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      'Tiket Berbayar',
+                                      style: TextStyle(
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Total Tiket (${_getTotalEventDay(controller.eventData!.dateEventStart!, controller.eventData!.dateEventEnd!)} Hari)',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      controller.calculateTicketTotal(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: List.generate(
+                                      controller.eventData!.ticket!.length,
+                                      (index) {
+                                    return Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              controller.eventData!
+                                                  .ticket![index].name!,
+                                              style: TextStyle(
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${controller.eventData!.ticket![index].quotaTotal!}',
+                                              style: TextStyle(
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                                ),
+                              ],
+                            )
                     ],
                   ),
                 ),
@@ -575,46 +599,61 @@ class EventDetailScreen extends StatelessWidget {
                       SizedBox(
                         height: 10.0,
                       ),
-                      Column(
-                        children: List.generate(
-                          3,
-                          (index) {
-                            return SizedBox(
-                              width: double.infinity,
-                              child: Card(
-                                shadowColor: Colors.black12,
-                                color: Colors.grey.shade100,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'OVO',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: MyEventColor.secondaryColor,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Text(
-                                        '085894577241',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: MyEventColor.secondaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                      controller.eventData!.eventPayment!.isEmpty
+                          ? Center(
+                              child: Text(
+                                'Tidak ada data pembayaran',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: MyEventColor.secondaryColor,
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      )
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                controller.eventData!.eventPayment!.length,
+                                (index) {
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    child: Card(
+                                      shadowColor: Colors.black12,
+                                      color: Colors.grey.shade100,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              controller.eventData!
+                                                  .eventPayment![index].type!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Text(
+                                              controller.eventData!
+                                                  .eventPayment![index].type!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
                     ],
                   ),
                 ),
@@ -668,46 +707,60 @@ class EventDetailScreen extends StatelessWidget {
                       SizedBox(
                         height: 10.0,
                       ),
-                      Column(
-                        children: List.generate(
-                          3,
-                          (index) {
-                            return SizedBox(
-                              width: double.infinity,
-                              child: Card(
-                                shadowColor: Colors.black12,
-                                color: Colors.grey.shade100,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Nama Tamu',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: MyEventColor.secondaryColor,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Text(
-                                        'tamu@gmail.com',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: MyEventColor.secondaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                      controller.eventData!.eventGuest!.isEmpty
+                          ? Center(
+                              child: Text(
+                                'Tidak ada data tamu',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: MyEventColor.secondaryColor,
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      )
+                            )
+                          : Column(
+                              children: List.generate(
+                                controller.eventData!.eventGuest!.length,
+                                (index) {
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    child: Card(
+                                      shadowColor: Colors.black12,
+                                      color: Colors.grey.shade100,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              controller.eventData!
+                                                  .eventGuest![index].name!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Text(
+                                              controller.eventData!
+                                                  .eventGuest![index].email!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
                     ],
                   ),
                 ),
