@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
-import 'package:myevent_android/model/api_response/view_event_api_response_model.dart';
+import 'package:myevent_android/model/api_response/view_event_list_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -80,7 +80,8 @@ class AgendaController extends ApiController {
           isLoading.value = false;
         }
         if (apiResponseState.value == ApiResponseState.http2xx) {
-          final eventListData = ViewEventApiResponseModel.fromJson(response);
+          final eventListData =
+              ViewEventListApiResponseModel.fromJson(response);
           eventListData.eventDataList!.forEach((eventData) async {
             final String eventLocation = await _getEventLocation(
               eventData.eventVenueCategory!,

@@ -1,9 +1,9 @@
-class ViewEventApiResponseModel {
+class ViewEventListApiResponseModel {
   List<EventDataList>? eventDataList;
 
-  ViewEventApiResponseModel({this.eventDataList});
+  ViewEventListApiResponseModel({this.eventDataList});
 
-  ViewEventApiResponseModel.fromJson(Map<String, dynamic> json) {
+  ViewEventListApiResponseModel.fromJson(Map<String, dynamic> json) {
     if (json['eventDataList'] != null) {
       eventDataList = <EventDataList>[];
       json['eventDataList'].forEach((v) {
@@ -23,6 +23,7 @@ class ViewEventApiResponseModel {
 }
 
 class EventDataList {
+  int? id;
   String? name;
   String? description;
   int? dateEventStart;
@@ -38,7 +39,8 @@ class EventDataList {
   EventOrganizer? eventOrganizer;
 
   EventDataList(
-      {this.name,
+      {this.id,
+      this.name,
       this.description,
       this.dateEventStart,
       this.dateEventEnd,
@@ -53,6 +55,7 @@ class EventDataList {
       this.eventOrganizer});
 
   EventDataList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
     description = json['description'];
     dateEventStart = json['dateEventStart'];
@@ -80,6 +83,7 @@ class EventDataList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['name'] = this.name;
     data['description'] = this.description;
     data['dateEventStart'] = this.dateEventStart;

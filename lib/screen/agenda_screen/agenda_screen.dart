@@ -280,12 +280,16 @@ class AgendaScreen extends StatelessWidget {
                                                       color: Colors.black38,
                                                     ),
                                                     SizedBox(width: 5.0),
-                                                    Text(
-                                                      events[index].location,
-                                                      style: TextStyle(
-                                                        fontSize: 15.0,
-                                                        color: MyEventColor
-                                                            .secondaryColor,
+                                                    Expanded(
+                                                      child: Text(
+                                                        events[index].location,
+                                                        style: TextStyle(
+                                                          fontSize: 15.0,
+                                                          color: MyEventColor
+                                                              .secondaryColor,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
                                                     ),
                                                   ],
@@ -452,9 +456,11 @@ class AgendaScreen extends StatelessWidget {
                                             size: 16.5,
                                             color: Colors.black38,
                                           ),
-                                          Text(
-                                            events[index].location,
-                                            overflow: TextOverflow.ellipsis,
+                                          Expanded(
+                                            child: Text(
+                                              events[index].location,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
                                         ],
                                       ),

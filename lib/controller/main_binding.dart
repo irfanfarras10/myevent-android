@@ -3,6 +3,7 @@ import 'package:myevent_android/controller/agenda_controller.dart';
 import 'package:myevent_android/controller/auth_controller.dart';
 import 'package:myevent_android/controller/contact_person_controller.dart';
 import 'package:myevent_android/controller/event_controller.dart';
+import 'package:myevent_android/controller/event_detail_controller.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/controller/main_controller.dart';
 import 'package:myevent_android/controller/navigation_controller.dart';
@@ -57,6 +58,10 @@ class MainBinding implements Bindings {
     );
     Get.lazyPut(
       () => AgendaController(),
+      fenix: true,
+    );
+    Get.lazyPut(
+      () => EventDetailController(),
       fenix: true,
     );
   }
