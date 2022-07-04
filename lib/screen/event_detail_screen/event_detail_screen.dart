@@ -309,22 +309,27 @@ class EventDetailScreen extends StatelessWidget {
                               SizedBox(
                                 width: 15.0,
                               ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Lihat Lokasi',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: MyEventColor.secondaryColor,
+                              Visibility(
+                                visible: controller
+                                        .eventData!.eventVenueCategory!.id ==
+                                    1,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Lihat Lokasi',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: MyEventColor.secondaryColor,
+                                        ),
                                       ),
-                                    ),
-                                    Icon(
-                                      Icons.location_on,
-                                      size: 16.5,
-                                    ),
-                                  ],
+                                      Icon(
+                                        Icons.location_on,
+                                        size: 16.5,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
