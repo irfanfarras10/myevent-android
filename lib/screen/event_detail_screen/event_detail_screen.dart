@@ -539,7 +539,7 @@ class EventDetailScreen extends StatelessWidget {
                           width: double.infinity,
                           child: Card(
                             shadowColor: Colors.black12,
-                            color: Colors.grey.shade200,
+                            color: Colors.grey.shade100,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Column(
@@ -631,7 +631,7 @@ class EventDetailScreen extends StatelessWidget {
                           width: double.infinity,
                           child: Card(
                             shadowColor: Colors.black12,
-                            color: Colors.grey.shade200,
+                            color: Colors.grey.shade100,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Column(
@@ -649,6 +649,98 @@ class EventDetailScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     'tamu@gmail.com',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: MyEventColor.secondaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
+            Container(
+              color: Colors.white,
+              width: double.infinity,
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Contact Person',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: MyEventColor.secondaryColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Row(
+                          children: [
+                            Text(
+                              'Edit',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: MyEventColor.secondaryColor,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            Icon(
+                              Icons.edit,
+                              size: 16.5,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Column(
+                    children: List.generate(
+                      3,
+                      (index) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Card(
+                            shadowColor: Colors.black12,
+                            color: Colors.grey.shade100,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Irfan',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: MyEventColor.secondaryColor,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Text(
+                                    '085894577241',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: MyEventColor.secondaryColor,
