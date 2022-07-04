@@ -24,7 +24,7 @@ class EventDetailController extends ApiController {
 
   Future<void> loadData() async {
     resetState();
-    await apiEvent.getEventDetail(id: eventId).then((response) {
+    apiEvent.getEventDetail(id: eventId).then((response) {
       checkApiResponse(response);
       if (apiResponseState.value != ApiResponseState.http401) {
         isLoading.value = false;
@@ -84,8 +84,8 @@ class EventDetailController extends ApiController {
     return ticketQuotaTotal.toString();
   }
 
-  Widget getBottomButton() {
-    Widget bottomButton = Container();
+  Widget? getBottomButton() {
+    Widget? bottomButton;
     if (!isLoading.value && eventData!.eventStatus!.id == 1) {
       bottomButton = Container(
         padding: const EdgeInsets.all(15.0),
