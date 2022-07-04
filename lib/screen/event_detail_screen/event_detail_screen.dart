@@ -251,7 +251,10 @@ class EventDetailScreen extends StatelessWidget {
                                 width: 5.0,
                               ),
                               Text(
-                                '09.00 - 15.00',
+                                _parseEventTime(
+                                  controller.eventData!.timeEventStart!,
+                                  controller.eventData!.timeEventEnd!,
+                                ),
                                 style: TextStyle(
                                   color: MyEventColor.secondaryColor,
                                 ),
@@ -830,14 +833,25 @@ class EventDetailScreen extends StatelessWidget {
 
   String _parseEventDate(int dateEventStart, int dateEventEnd) {
     String? dateTimeEvent;
-    String dateEventStartString =
-        DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(
+    String dateEventStartString = DateFormat('d MMMM yyyy', 'id_ID').format(
       DateTime.fromMillisecondsSinceEpoch(dateEventStart),
     );
-    String dateEventEndString = DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(
+    String dateEventEndString = DateFormat('d MMMM yyyy', 'id_ID').format(
       DateTime.fromMillisecondsSinceEpoch(dateEventEnd),
     );
     dateTimeEvent = '$dateEventStartString - $dateEventEndString';
+    return dateTimeEvent;
+  }
+
+  String _parseEventTime(int timeEventStart, int timeEventEnd) {
+    String? dateTimeEvent;
+    String timeEventStartString = DateFormat('HH:mm', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(timeEventStart),
+    );
+    String timeEventEndString = DateFormat('HH:mm', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(timeEventEnd),
+    );
+    dateTimeEvent = '$timeEventStartString - $timeEventEndString';
     return dateTimeEvent;
   }
 }
