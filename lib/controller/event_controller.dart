@@ -15,6 +15,7 @@ import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/model/api_response/event_category_api_response_model.dart';
 import 'package:myevent_android/provider/api_location.dart';
 import 'package:myevent_android/route/route_name.dart';
+import 'package:myevent_android/util/location_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // ignore: unused_import
 import 'package:http_parser/http_parser.dart';
@@ -105,7 +106,9 @@ class EventController extends ApiController {
 
   Future<void> loadData() async {
     isLoading.value = true;
-    await apiEvent.getEventDetail(id: int.parse(eventId!)).then((response) {
+    await apiEvent
+        .getEventDetail(id: int.parse(eventId!))
+        .then((response) async {
       checkApiResponse(response);
       if (apiResponseState.value == ApiResponseState.http2xx) {
         isLoading.value = false;
@@ -137,6 +140,17 @@ class EventController extends ApiController {
         //event venue category
         eventVenueCategoryId = eventData!.eventVenueCategory!.id!;
         setEventVenueCategory(eventVenueCategoryId!);
+        //event venue
+        venue = eventData!.venue!;
+        if (isOnsiteEvent.value!) {
+          final location = await locationUtil.parseLocation(
+            eventData!.eventVenueCategory!,
+            eventData!.venue!,
+          );
+          locationController.text = location;
+        } else {
+          locationController.text = eventData!.venue!;
+        }
       }
     });
   }
