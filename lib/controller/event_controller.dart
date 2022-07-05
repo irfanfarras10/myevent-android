@@ -111,6 +111,7 @@ class EventController extends ApiController {
         isLoading.value = false;
         eventData = ViewEventDetailApiResponseModel.fromJson(response);
         nameController.text = eventData!.name!;
+        descriptionController.text = eventData!.description!;
       }
     });
   }
