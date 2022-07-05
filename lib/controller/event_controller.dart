@@ -110,8 +110,15 @@ class EventController extends ApiController {
       if (apiResponseState.value == ApiResponseState.http2xx) {
         isLoading.value = false;
         eventData = ViewEventDetailApiResponseModel.fromJson(response);
+        //name
         nameController.text = eventData!.name!;
+        //description
         descriptionController.text = eventData!.description!;
+        //date event start
+        dateEventStartController.text =
+            '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventStart!))}';
+        dateEventStart =
+            DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventStart!);
       }
     });
   }
