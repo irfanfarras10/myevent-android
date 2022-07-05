@@ -48,7 +48,13 @@ class NavigationDrawerWidget extends StatelessWidget {
             leading: Icon(Icons.dashboard, color: MyEventColor.secondaryColor),
             title: Text('Detail Event'),
             onTap: () {
-              Navigator.pop(context);
+              Get.offNamedUntil(
+                RouteName.eventDetailScreen.replaceAll(
+                  ':id',
+                  eventData!.id!.toString(),
+                ),
+                (route) => false,
+              );
             },
           ),
           ListTile(
@@ -107,7 +113,7 @@ class NavigationDrawerWidget extends StatelessWidget {
             leading: Icon(Icons.person, color: MyEventColor.secondaryColor),
             title: Text('Profil'),
             onTap: () {
-              Navigator.pop(context);
+              Get.offAllNamed(RouteName.profileScreen);
             },
           ),
           ListTile(
