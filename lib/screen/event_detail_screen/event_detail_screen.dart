@@ -6,6 +6,7 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_detail_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
+import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/util/location_util.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
@@ -123,7 +124,14 @@ class EventDetailScreen extends StatelessWidget {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed(
+                                  RouteName.editEventDataScreen.replaceAll(
+                                    ':id',
+                                    controller.eventData!.id!.toString(),
+                                  ),
+                                );
+                              },
                               child: Row(
                                 children: [
                                   Text(

@@ -12,4 +12,5 @@ class RouteName {
   static const createEventContactPersonScreen =
       '/events/:id/contact-person/create';
   static const eventDetailScreen = '/events/:id';
+  static const editEventDataScreen = '/events/:id/edit';
 }

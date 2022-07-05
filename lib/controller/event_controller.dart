@@ -10,6 +10,7 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/create_event_api_response_model.dart';
 import 'package:myevent_android/model/api_response/location_api_response_model.dart';
+import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/model/api_response/event_category_api_response_model.dart';
 import 'package:myevent_android/provider/api_location.dart';
@@ -41,7 +42,7 @@ class EventController extends ApiController {
   int eventStatusId = 1;
   int? eventCategoryId;
 
-  RxBool isLoadingEventCategoryData = true.obs;
+  RxBool isLoading = true.obs;
 
   RxnBool isOnsiteEvent = RxnBool();
 
@@ -69,9 +70,17 @@ class EventController extends ApiController {
 
   Map<String, dynamic> apiRequest = {};
 
+  final eventId = Get.parameters['id'];
+
+  ViewEventDetailApiResponseModel? eventData;
+
   @override
   onInit() {
     getEventCategory();
+    if (eventId != null) {
+      loadData();
+    }
+
     super.onInit();
   }
 
@@ -93,6 +102,17 @@ class EventController extends ApiController {
   }
 
   RxBool isDataValid = RxBool(false);
+
+  Future<void> loadData() async {
+    isLoading.value = true;
+    await apiEvent.getEventDetail(id: int.parse(eventId!)).then((response) {
+      checkApiResponse(response);
+      if (apiResponseState.value == ApiResponseState.http2xx) {
+        isLoading.value = false;
+        eventData = ViewEventDetailApiResponseModel.fromJson(response);
+      }
+    });
+  }
 
   void validateAllData() {
     if (isBannerImageUploaded.value &&
@@ -187,7 +207,9 @@ class EventController extends ApiController {
       (response) {
         checkApiResponse(response);
         if (apiResponseState.value != ApiResponseState.http401) {
-          isLoadingEventCategoryData.value = false;
+          if (eventId == null) {
+            isLoading.value = false;
+          }
           final eventCategoryApiResponse =
               EventCategoryApiResponseModel.fromJson(response);
           eventCategoryList = eventCategoryApiResponse.eventCategories!;
