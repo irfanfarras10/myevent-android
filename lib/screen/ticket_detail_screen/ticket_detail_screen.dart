@@ -27,195 +27,216 @@ class TicketDetailScreen extends StatelessWidget {
           }
           body = SingleChildScrollView(
             physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(15.0),
-                  color: Colors.grey.shade200,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.calendar_today,
-                            size: 20.0,
-                            color: MyEventColor.secondaryColor,
-                          ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              _parseEventDate(
-                                controller
-                                    .eventData!.dateTimeRegistrationStart!,
-                                controller.eventData!.dateTimeRegistrationEnd!,
-                              ),
-                              style: TextStyle(
-                                fontSize: 16.5,
-                                fontWeight: FontWeight.bold,
-                                color: MyEventColor.secondaryColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 20.0,
-                            height: 10.0,
-                            child: Checkbox(
-                              value: true,
-                              onChanged: (checked) {},
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Text(
-                            'Tiket Berbayar',
-                            style: TextStyle(
-                              fontSize: 16.5,
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 20.0,
-                            height: 10.0,
-                            child: Checkbox(
-                              value: false,
-                              onChanged: (checked) {},
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Text(
-                            'Tiket Harian',
-                            style: TextStyle(
-                              fontSize: 16.5,
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total Tiket (4 Hari)',
-                            style: TextStyle(
-                              fontSize: 16.5,
-                              fontWeight: FontWeight.bold,
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          ),
-                          Text(
-                            '4000',
-                            style: TextStyle(
-                              fontSize: 16.5,
-                              fontWeight: FontWeight.bold,
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: List.generate(
-                          4,
-                          (index) {
-                            return Column(
-                              children: [
-                                SizedBox(
-                                  height: 15.0,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Reguler',
-                                      style: TextStyle(
-                                        fontSize: 16.5,
-                                        color: MyEventColor.secondaryColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      '1000',
-                                      style: TextStyle(
-                                        fontSize: 16.5,
-                                        color: MyEventColor.secondaryColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
+            child: controller.eventData!.ticket!.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height -
+                        AppBar().preferredSize.height,
+                    child: Center(
+                      child: Text(
+                        'Tidak Ada Data Tiket',
+                        style: TextStyle(
+                          fontSize: 16.5,
                         ),
                       ),
-                      Divider(),
-                      Column(
-                        children: List.generate(
-                          4,
-                          (index) {
-                            return Column(
+                    ),
+                  )
+                : Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(15.0),
+                        color: Colors.grey.shade200,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  height: 15.0,
+                                Icon(
+                                  Icons.calendar_today,
+                                  size: 20.0,
+                                  color: MyEventColor.secondaryColor,
                                 ),
-                                Card(
-                                  shadowColor: Colors.black12,
-                                  color: Colors.grey.shade100,
-                                  child: ListTile(
-                                    title: Text(
-                                      'Premium',
-                                      style: TextStyle(
-                                        fontSize: 16.5,
-                                        fontWeight: FontWeight.bold,
-                                        color: MyEventColor.secondaryColor,
-                                      ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    _parseEventDate(
+                                      controller.eventData!
+                                          .dateTimeRegistrationStart!,
+                                      controller
+                                          .eventData!.dateTimeRegistrationEnd!,
                                     ),
-                                    subtitle: Text(
-                                      'Rp. 100.000',
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: MyEventColor.secondaryColor,
-                                      ),
+                                    style: TextStyle(
+                                      fontSize: 16.5,
+                                      fontWeight: FontWeight.bold,
+                                      color: MyEventColor.secondaryColor,
                                     ),
                                   ),
                                 ),
                               ],
-                            );
-                          },
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 20.0,
+                                  height: 10.0,
+                                  child: Checkbox(
+                                    value: true,
+                                    onChanged: (checked) {},
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text(
+                                  'Tiket Berbayar',
+                                  style: TextStyle(
+                                    fontSize: 16.5,
+                                    color: MyEventColor.secondaryColor,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 20.0,
+                                  height: 10.0,
+                                  child: Checkbox(
+                                    value: false,
+                                    onChanged: (checked) {},
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text(
+                                  'Tiket Harian',
+                                  style: TextStyle(
+                                    fontSize: 16.5,
+                                    color: MyEventColor.secondaryColor,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Total Tiket (4 Hari)',
+                                  style: TextStyle(
+                                    fontSize: 16.5,
+                                    fontWeight: FontWeight.bold,
+                                    color: MyEventColor.secondaryColor,
+                                  ),
+                                ),
+                                Text(
+                                  '4000',
+                                  style: TextStyle(
+                                    fontSize: 16.5,
+                                    fontWeight: FontWeight.bold,
+                                    color: MyEventColor.secondaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: List.generate(
+                                4,
+                                (index) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Reguler',
+                                            style: TextStyle(
+                                              fontSize: 16.5,
+                                              color:
+                                                  MyEventColor.secondaryColor,
+                                            ),
+                                          ),
+                                          Text(
+                                            '1000',
+                                            style: TextStyle(
+                                              fontSize: 16.5,
+                                              color:
+                                                  MyEventColor.secondaryColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Divider(),
+                            Column(
+                              children: List.generate(
+                                4,
+                                (index) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      Card(
+                                        shadowColor: Colors.black12,
+                                        color: Colors.grey.shade100,
+                                        child: ListTile(
+                                          title: Text(
+                                            'Premium',
+                                            style: TextStyle(
+                                              fontSize: 16.5,
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  MyEventColor.secondaryColor,
+                                            ),
+                                          ),
+                                          subtitle: Text(
+                                            'Rp. 100.000',
+                                            style: TextStyle(
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  MyEventColor.secondaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            )
+                          ],
                         ),
                       )
                     ],
                   ),
-                )
-              ],
-            ),
           );
         }
         return Scaffold(
