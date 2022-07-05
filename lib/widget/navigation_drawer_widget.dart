@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
+import 'package:myevent_android/route/route_name.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final ViewEventDetailApiResponseModel? eventData;
@@ -31,7 +33,7 @@ class NavigationDrawerWidget extends StatelessWidget {
             leading: Icon(Icons.event, color: MyEventColor.secondaryColor),
             title: Text('Event'),
             onTap: () {
-              Navigator.pop(context);
+              Get.offAllNamed(RouteName.mainScreen);
             },
           ),
           ListTile(
@@ -52,6 +54,16 @@ class NavigationDrawerWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.dashboard, color: MyEventColor.secondaryColor),
             title: Text('Dashboard'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.people,
+              color: MyEventColor.secondaryColor,
+            ),
+            title: Text('Peserta'),
             onTap: () {
               Navigator.pop(context);
             },
