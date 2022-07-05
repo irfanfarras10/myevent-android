@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
+import 'package:myevent_android/controller/agenda_controller.dart';
+import 'package:myevent_android/controller/event_list_controller.dart';
+import 'package:myevent_android/controller/profile_controller.dart';
 import 'package:myevent_android/screen/agenda_screen/agenda_screen.dart';
 import 'package:myevent_android/screen/event_screen/event_screen.dart';
 import 'package:myevent_android/screen/profile_screen/profile_screen.dart';
@@ -39,6 +43,9 @@ class _MainScreenState extends State<MainScreen> {
         unselectedItemColor: MyEventColor.secondaryColor,
         elevation: 20.0,
         onTap: (index) {
+          Get.delete<EventListController>();
+          Get.delete<AgendaController>();
+          Get.delete<ProfileController>();
           setState(() {
             currentIndex = index;
           });
