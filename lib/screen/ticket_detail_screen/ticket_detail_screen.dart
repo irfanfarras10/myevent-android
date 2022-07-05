@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_detail_controller.dart';
@@ -24,8 +25,98 @@ class TicketDetailScreen extends StatelessWidget {
               refreshAction: controller.loadData,
             );
           }
-          body = Center(
-            child: Text('Tiket Detail'),
+          body = SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(15.0),
+                  color: Colors.grey.shade200,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.calendar_today,
+                            size: 20.0,
+                            color: MyEventColor.secondaryColor,
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              _parseEventDate(
+                                controller
+                                    .eventData!.dateTimeRegistrationStart!,
+                                controller.eventData!.dateTimeRegistrationEnd!,
+                              ),
+                              style: TextStyle(
+                                fontSize: 16.5,
+                                fontWeight: FontWeight.bold,
+                                color: MyEventColor.secondaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 20.0,
+                            height: 10.0,
+                            child: Checkbox(
+                              value: true,
+                              onChanged: (checked) {},
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Text(
+                            'Tiket Berbayar',
+                            style: TextStyle(
+                              fontSize: 16.5,
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 20.0,
+                            height: 10.0,
+                            child: Checkbox(
+                              value: false,
+                              onChanged: (checked) {},
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Text(
+                            'Tiket Harian',
+                            style: TextStyle(
+                              fontSize: 16.5,
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           );
         }
         return Scaffold(
@@ -55,5 +146,17 @@ class TicketDetailScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _parseEventDate(int dateEventStart, int dateEventEnd) {
+    String? dateTimeEvent;
+    String dateEventStartString = DateFormat('d MMMM yyyy', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(dateEventStart),
+    );
+    String dateEventEndString = DateFormat('d MMMM yyyy', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(dateEventEnd),
+    );
+    dateTimeEvent = '$dateEventStartString - $dateEventEndString';
+    return dateTimeEvent;
   }
 }
