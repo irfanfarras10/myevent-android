@@ -81,7 +81,12 @@ class NavigationDrawerWidget extends StatelessWidget {
             ),
             title: Text('Tiket'),
             onTap: () {
-              Navigator.pop(context);
+              Get.offAllNamed(
+                RouteName.ticketDetailScreen.replaceAll(
+                  ':id',
+                  eventData!.id!.toString(),
+                ),
+              );
             },
           ),
           ListTile(
