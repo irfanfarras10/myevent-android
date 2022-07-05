@@ -447,6 +447,9 @@ class EditEventDataScreenWidget extends StatelessWidget {
                         child: Text('Online'),
                       ),
                     ],
+                    value: controller.eventVenueCategoryId == null
+                        ? null
+                        : controller.eventVenueCategoryId,
                     onChanged: (venue) {
                       controller.setEventVenueCategory(venue!);
                     },
