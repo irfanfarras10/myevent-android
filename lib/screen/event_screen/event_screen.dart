@@ -7,7 +7,7 @@ import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/screen/draft_event_screen/draft_event_screen.dart';
 
 class EventScreen extends StatelessWidget {
-  final controller = Get.find<EventListController>(tag: 'draft');
+  final controller = Get.put(EventListController(), tag: 'draft');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
