@@ -6,7 +6,6 @@ import 'package:myevent_android/controller/event_controller.dart';
 import 'package:myevent_android/controller/event_detail_controller.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/controller/main_controller.dart';
-import 'package:myevent_android/controller/navigation_controller.dart';
 import 'package:myevent_android/controller/payment_controller.dart';
 import 'package:myevent_android/controller/profile_controller.dart';
 import 'package:myevent_android/controller/ticket_controller.dart';
@@ -26,10 +25,6 @@ class MainBinding implements Bindings {
       () => AuthController(),
       fenix: true,
       tag: 'signUp',
-    );
-    Get.lazyPut<NavigationController>(
-      () => NavigationController(),
-      fenix: true,
     );
     Get.lazyPut<ProfileController>(
       () => ProfileController(),

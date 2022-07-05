@@ -41,7 +41,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                 Icon(Icons.calendar_today, color: MyEventColor.secondaryColor),
             title: Text('Agenda'),
             onTap: () {
-              Navigator.pop(context);
+              Get.offAllNamed(RouteName.agendaScreen);
             },
           ),
           ListTile(
