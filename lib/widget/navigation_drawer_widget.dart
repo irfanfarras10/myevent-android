@@ -48,12 +48,11 @@ class NavigationDrawerWidget extends StatelessWidget {
             leading: Icon(Icons.dashboard, color: MyEventColor.secondaryColor),
             title: Text('Detail Event'),
             onTap: () {
-              Get.offNamedUntil(
+              Get.offAllNamed(
                 RouteName.eventDetailScreen.replaceAll(
                   ':id',
                   eventData!.id!.toString(),
                 ),
-                (route) => false,
               );
             },
           ),

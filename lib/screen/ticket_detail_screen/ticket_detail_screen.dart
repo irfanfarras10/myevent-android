@@ -37,6 +37,16 @@ class TicketDetailScreen extends StatelessWidget {
                 color: MyEventColor.secondaryColor,
               ),
             ),
+            actions: [
+              Visibility(
+                visible: !controller.isLoading.value,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.edit),
+                  tooltip: 'Edit data tiket',
+                ),
+              )
+            ],
           ),
           body: body,
           drawer: !controller.isLoading.value
