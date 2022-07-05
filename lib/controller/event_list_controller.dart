@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_list_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EventListController extends ApiController {
   final isLoading = true.obs;
@@ -10,12 +9,10 @@ class EventListController extends ApiController {
 
   List<EventDataList> eventList = [];
   RxList<EventDataList> searchEventList = RxList();
-  String? authToken;
 
   @override
   void onInit() {
     loadData();
-    getToken();
     super.onInit();
   }
 
@@ -32,11 +29,6 @@ class EventListController extends ApiController {
 
   void resetData() {
     searchEventList.value = eventList;
-  }
-
-  Future<void> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    authToken = 'Bearer ${prefs.getString('myevent.auth.token')}';
   }
 
   Future<void> loadData() async {

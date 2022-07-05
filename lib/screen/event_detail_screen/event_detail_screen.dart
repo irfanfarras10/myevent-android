@@ -9,6 +9,7 @@ import 'package:myevent_android/model/api_response/view_event_detail_api_respons
 import 'package:myevent_android/util/location_util.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
+import 'package:myevent_android/widget/navigation_drawer_widget.dart';
 
 class EventDetailScreen extends StatelessWidget {
   @override
@@ -913,6 +914,9 @@ class EventDetailScreen extends StatelessWidget {
           backgroundColor: Colors.grey.shade200,
           body: body,
           bottomNavigationBar: controller.getBottomButton(),
+          drawer: !controller.isLoading.value
+              ? NavigationDrawerWidget(eventData: controller.eventData!)
+              : null,
         );
       },
     );

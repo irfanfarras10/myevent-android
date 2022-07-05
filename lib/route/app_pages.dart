@@ -53,6 +53,14 @@ class AppPages {
     GetPage(
       name: RouteName.eventDetailScreen,
       page: () => EventDetailScreen(),
-    )
+    ),
+    GetPage(
+      name: RouteName.agendaScreen,
+      page: () => MainScreen(index: 1),
+    ),
+    GetPage(
+      name: RouteName.profileScreen,
+      page: () => MainScreen(index: 2),
+    ),
   ];
 }

@@ -9,15 +9,15 @@ import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/util/location_util.dart';
 
 class DraftEventScreenCardWidget extends StatelessWidget {
+  final controller = Get.put(EventListController(), tag: 'draft');
   final EventDataList? data;
-  const DraftEventScreenCardWidget({
+  DraftEventScreenCardWidget({
     Key? key,
     required this.data,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<EventListController>(tag: 'draft');
     return Container(
       margin: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 7.5),
       child: Card(
@@ -59,9 +59,6 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                           Icons.image,
                         ),
                       ),
-                      httpHeaders: {
-                        'Authorization': controller.authToken!,
-                      },
                     ),
                   ),
                   Padding(

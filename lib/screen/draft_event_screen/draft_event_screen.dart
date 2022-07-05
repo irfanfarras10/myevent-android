@@ -18,7 +18,7 @@ class DraftEventScreen extends StatefulWidget {
 }
 
 class _DraftEventScreenState extends State<DraftEventScreen> {
-  final controller = Get.find<EventListController>(tag: 'draft');
+  final controller = Get.put(EventListController(), tag: 'draft');
 
   @override
   void dispose() {
