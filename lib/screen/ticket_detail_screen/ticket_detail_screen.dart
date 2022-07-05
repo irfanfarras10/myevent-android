@@ -63,7 +63,7 @@ class TicketDetailScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: 10.0,
+                        height: 15.0,
                       ),
                       Row(
                         children: [
@@ -88,7 +88,7 @@ class TicketDetailScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: 10.0,
+                        height: 15.0,
                       ),
                       Row(
                         children: [
@@ -111,6 +111,68 @@ class TicketDetailScreen extends StatelessWidget {
                             ),
                           )
                         ],
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total Tiket (4 Hari)',
+                            style: TextStyle(
+                              fontSize: 16.5,
+                              fontWeight: FontWeight.bold,
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          Text(
+                            '4000',
+                            style: TextStyle(
+                              fontSize: 16.5,
+                              fontWeight: FontWeight.bold,
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: List.generate(
+                          4,
+                          (index) {
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height: 15.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Reguler',
+                                      style: TextStyle(
+                                        fontSize: 16.5,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      '1000',
+                                      style: TextStyle(
+                                        fontSize: 16.5,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
