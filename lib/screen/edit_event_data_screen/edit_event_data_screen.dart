@@ -19,7 +19,8 @@ class EditEventDataScreen extends StatelessWidget {
         } else {
           if (controller.apiResponseState.value != ApiResponseState.http2xx &&
               controller.apiResponseState.value != ApiResponseState.http401 &&
-              controller.apiResponseState.value != ApiResponseState.http409) {
+              controller.apiResponseState.value != ApiResponseState.http409 &&
+              controller.apiResponseState.value != ApiResponseState.http400) {
             return HttpErrorWidget(
               errorMessage: controller.errorMessage,
               refreshAction: controller.getEventCategory,

@@ -106,4 +106,18 @@ class ApiUtil {
       return _handleDioError(error);
     }
   }
+
+  Future<Map<String, dynamic>> apiRequestMultipartPut({
+    required String url,
+    required Map<String, dynamic> data,
+  }) async {
+    try {
+      final formData = FormData.fromMap(data);
+      final httpClient = await _getDioClient();
+      final response = await httpClient.put(url, data: formData);
+      return response.data;
+    } on DioError catch (error) {
+      return _handleDioError(error);
+    }
+  }
 }

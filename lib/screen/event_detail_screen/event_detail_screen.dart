@@ -123,30 +123,41 @@ class EventDetailScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Get.toNamed(
-                                  RouteName.editEventDataScreen.replaceAll(
-                                    ':id',
-                                    controller.eventData!.id!.toString(),
-                                  ),
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Edit',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Icon(
-                                    Icons.edit,
-                                    size: 16.5,
-                                  ),
-                                ],
+                            Visibility(
+                              visible:
+                                  controller.eventData!.eventStatus!.id == 1
+                                      ? true
+                                      : false,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.toNamed(
+                                    RouteName.editEventDataScreen.replaceAll(
+                                      ':id',
+                                      controller.eventData!.id!.toString(),
+                                    ),
+                                  )!
+                                      .then((refresh) {
+                                    if (refresh) {
+                                      controller.loadData();
+                                    }
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Edit',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Icon(
+                                      Icons.edit,
+                                      size: 16.5,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -895,36 +906,50 @@ class EventDetailScreen extends StatelessWidget {
             ),
           );
         }
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Detail Event',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: MyEventColor.secondaryColor,
-              ),
-            ),
-            actions: [
-              Visibility(
-                visible: controller.eventData != null &&
-                        controller.eventData!.eventStatus!.id == 1 &&
-                        !controller.isLoading.value
-                    ? true
-                    : false,
-                child: IconButton(
-                  onPressed: controller.deleteEvent,
-                  icon: Icon(Icons.delete),
-                  tooltip: 'Hapus Event',
+        return WillPopScope(
+          onWillPop: () async {
+            Get.back(result: true);
+            return true;
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Detail Event',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: MyEventColor.secondaryColor,
                 ),
               ),
-            ],
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                ),
+                onPressed: () {
+                  Get.back(result: true);
+                },
+              ),
+              actions: [
+                Visibility(
+                  visible: controller.eventData != null &&
+                          controller.eventData!.eventStatus!.id == 1 &&
+                          !controller.isLoading.value
+                      ? true
+                      : false,
+                  child: IconButton(
+                    onPressed: controller.deleteEvent,
+                    icon: Icon(Icons.delete),
+                    tooltip: 'Hapus Event',
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.grey.shade200,
+            body: body,
+            bottomNavigationBar: controller.getBottomButton(),
+            drawer: !controller.isLoading.value
+                ? NavigationDrawerWidget(eventData: controller.eventData!)
+                : null,
           ),
-          backgroundColor: Colors.grey.shade200,
-          body: body,
-          bottomNavigationBar: controller.getBottomButton(),
-          drawer: !controller.isLoading.value
-              ? NavigationDrawerWidget(eventData: controller.eventData!)
-              : null,
         );
       },
     );

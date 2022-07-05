@@ -541,7 +541,7 @@ class EventController extends ApiController {
       'timeEventStart': timeEventStartValue!.millisecondsSinceEpoch,
       'timeEventEnd': timeEventEndValue!.millisecondsSinceEpoch,
       'location': venue,
-      'bannerPhoto': bannerImage.value == null
+      'bannerPhoto': !isBannerImageUploaded.value
           ? null
           : await dio.MultipartFile.fromFile(
               bannerImage.value!.path,
@@ -559,5 +559,74 @@ class EventController extends ApiController {
     };
 
     print(apiRequest);
+
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Menyimpan data...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    apiEvent.updateEvent(id: int.parse(eventId!), data: apiRequest).then(
+      (response) {
+        Get.back();
+        checkApiResponse(response);
+        CreateEventApiResponseModel? createEventApiResponse;
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          createEventApiResponse =
+              CreateEventApiResponseModel.fromJson(response);
+        }
+        Get.defaultDialog(
+          titleStyle: TextStyle(
+            fontSize: 0.0,
+          ),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                apiResponseState.value == ApiResponseState.http2xx
+                    ? createEventApiResponse!.message!
+                    : response['message'],
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: MyEventColor.secondaryColor,
+                ),
+              ),
+              response['code'] != null
+                  ? Icon(
+                      Icons.close,
+                      size: 50.0,
+                      color: Colors.red,
+                    )
+                  : Icon(
+                      Icons.check,
+                      size: 50.0,
+                      color: Colors.green,
+                    ),
+            ],
+          ),
+          textConfirm: 'OK',
+          confirmTextColor: MyEventColor.secondaryColor,
+          barrierDismissible: false,
+          onConfirm: () {
+            if (apiResponseState.value == ApiResponseState.http2xx) {
+              Get.back();
+              Get.back(result: true);
+            } else {
+              Get.back();
+            }
+          },
+        );
+      },
+    );
   }
 }
