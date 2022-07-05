@@ -618,6 +618,9 @@ class EditEventDataScreenWidget extends StatelessWidget {
                     onChanged: (category) {
                       controller.setEventCategory(category!);
                     },
+                    value: controller.eventCategoryId == null
+                        ? null
+                        : controller.eventCategoryId,
                     hint: Text(
                       'Kategori Event',
                       style: TextStyle(

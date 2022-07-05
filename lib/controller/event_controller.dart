@@ -111,7 +111,6 @@ class EventController extends ApiController {
         .then((response) async {
       checkApiResponse(response);
       if (apiResponseState.value == ApiResponseState.http2xx) {
-        isLoading.value = false;
         eventData = ViewEventDetailApiResponseModel.fromJson(response);
         //name
         nameController.text = eventData!.name!;
@@ -151,6 +150,10 @@ class EventController extends ApiController {
         } else {
           locationController.text = eventData!.venue!;
         }
+        //event category
+        eventCategoryId = eventData!.eventCategory!.id;
+
+        isLoading.value = false;
       }
     });
   }
