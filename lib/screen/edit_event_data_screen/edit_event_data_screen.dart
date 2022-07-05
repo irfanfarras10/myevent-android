@@ -3,13 +3,12 @@ import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_controller.dart';
-import 'package:myevent_android/screen/create_event_data_screen/widget/create_event_data_screen_widget.dart';
+import 'package:myevent_android/screen/edit_event_data_screen/widget/edit_event_data_screen_widget.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
 
-class CreateEventDataScreen extends StatelessWidget {
-  final controller = Get.find<EventController>(tag: 'create');
-
+class EditEventDataScreen extends StatelessWidget {
+  final controller = Get.find<EventController>(tag: 'edit');
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -20,18 +19,19 @@ class CreateEventDataScreen extends StatelessWidget {
         } else {
           if (controller.apiResponseState.value != ApiResponseState.http2xx &&
               controller.apiResponseState.value != ApiResponseState.http401 &&
-              controller.apiResponseState.value != ApiResponseState.http409) {
+              controller.apiResponseState.value != ApiResponseState.http409 &&
+              controller.apiResponseState.value != ApiResponseState.http400) {
             return HttpErrorWidget(
               errorMessage: controller.errorMessage,
               refreshAction: controller.getEventCategory,
             );
           }
-          body = CreateEventDataScreenWidget();
+          body = EditEventDataScreenWidget();
         }
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              'Membuat Event',
+              'Edit Event',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: MyEventColor.secondaryColor,
@@ -72,7 +72,9 @@ class CreateEventDataScreen extends StatelessWidget {
                     height: 60.0,
                     child: ElevatedButton(
                       onPressed: controller.isDataValid.value
-                          ? controller.createEvent
+                          ? () async {
+                              await controller.updateEvent();
+                            }
                           : null,
                       style: ButtonStyle(
                         backgroundColor:
@@ -86,7 +88,7 @@ class CreateEventDataScreen extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        'Atur Tiket',
+                        'Simpan Data Event',
                         style: TextStyle(
                           fontSize: 17.0,
                           color: MyEventColor.secondaryColor,

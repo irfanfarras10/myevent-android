@@ -40,4 +40,14 @@ class ApiEvent {
       'https://myevent-android-api.herokuapp.com/api/events/$id',
     );
   }
+
+  Future<Map<String, dynamic>> updateEvent({
+    required int id,
+    required Map<String, dynamic> data,
+  }) {
+    return apiUtil.apiRequestMultipartPut(
+      url: 'https://myevent-android-api.herokuapp.com/api/events/update/$id',
+      data: data,
+    );
+  }
 }

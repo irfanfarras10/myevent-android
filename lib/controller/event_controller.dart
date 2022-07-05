@@ -10,10 +10,12 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_response/create_event_api_response_model.dart';
 import 'package:myevent_android/model/api_response/location_api_response_model.dart';
+import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/model/api_response/event_category_api_response_model.dart';
 import 'package:myevent_android/provider/api_location.dart';
 import 'package:myevent_android/route/route_name.dart';
+import 'package:myevent_android/util/location_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // ignore: unused_import
 import 'package:http_parser/http_parser.dart';
@@ -41,7 +43,7 @@ class EventController extends ApiController {
   int eventStatusId = 1;
   int? eventCategoryId;
 
-  RxBool isLoadingEventCategoryData = true.obs;
+  RxBool isLoading = true.obs;
 
   RxnBool isOnsiteEvent = RxnBool();
 
@@ -69,9 +71,17 @@ class EventController extends ApiController {
 
   Map<String, dynamic> apiRequest = {};
 
+  final eventId = Get.parameters['id'];
+
+  ViewEventDetailApiResponseModel? eventData;
+
   @override
   onInit() {
     getEventCategory();
+    if (eventId != null) {
+      loadData();
+    }
+
     super.onInit();
   }
 
@@ -94,18 +104,100 @@ class EventController extends ApiController {
 
   RxBool isDataValid = RxBool(false);
 
+  Future<void> loadData() async {
+    isLoading.value = true;
+    await apiEvent
+        .getEventDetail(id: int.parse(eventId!))
+        .then((response) async {
+      checkApiResponse(response);
+      if (apiResponseState.value == ApiResponseState.http2xx) {
+        eventData = ViewEventDetailApiResponseModel.fromJson(response);
+        //name
+        nameController.text = eventData!.name!;
+        //description
+        descriptionController.text = eventData!.description!;
+        //date event start
+        dateEventStartController.text =
+            '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventStart!))}';
+        dateEventStart =
+            DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventStart!);
+        //date event end
+        dateEventEndController.text =
+            '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventEnd!))}';
+        dateEventEnd =
+            DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventEnd!);
+        //time event start
+        timeEventStartController.text =
+            '${DateFormat('HH:mm', 'id_ID').format(DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventStart!))}';
+        timeEventStartValue =
+            DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventStart!);
+        timeEventStart = TimeOfDay.fromDateTime(
+            DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventStart!));
+        //time event end
+        timeEventEndController.text =
+            '${DateFormat('HH:mm', 'id_ID').format(DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventEnd!))}';
+        timeEventEndValue =
+            DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventEnd!);
+        timeEventEnd = TimeOfDay.fromDateTime(
+            DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventEnd!));
+        //event venue category
+        eventVenueCategoryId = eventData!.eventVenueCategory!.id!;
+        setEventVenueCategory(eventVenueCategoryId!);
+        //event venue
+        venue = eventData!.venue!;
+        if (isOnsiteEvent.value!) {
+          final location = await locationUtil.parseLocation(
+            eventData!.eventVenueCategory!,
+            eventData!.venue!,
+          );
+          locationController.text = location;
+        } else {
+          locationController.text = eventData!.venue!;
+        }
+        //event category
+        eventCategoryId = eventData!.eventCategory!.id;
+
+        isLoading.value = false;
+
+        //set all data valid by default
+        isNameValid.value = true;
+        isDescriptionValid.value = true;
+        isDateEventValid.value = true;
+        isTimeEventValid.value = true;
+        isLocationValid.value = true;
+        isCategoryValid.value = true;
+        isVenueCategoryValid.value = true;
+        isDataValid.value = true;
+      }
+    });
+  }
+
   void validateAllData() {
-    if (isBannerImageUploaded.value &&
-        isNameValid.value &&
-        isDescriptionValid.value &&
-        isDateEventValid.value &&
-        isTimeEventValid.value &&
-        isLocationValid.value &&
-        isCategoryValid.value &&
-        isVenueCategoryValid.value) {
-      isDataValid.value = true;
+    if (eventId == null) {
+      if (isBannerImageUploaded.value &&
+          isNameValid.value &&
+          isDescriptionValid.value &&
+          isDateEventValid.value &&
+          isTimeEventValid.value &&
+          isLocationValid.value &&
+          isCategoryValid.value &&
+          isVenueCategoryValid.value) {
+        isDataValid.value = true;
+      } else {
+        isDataValid.value = false;
+      }
     } else {
-      isDataValid.value = false;
+      if (isNameValid.value &&
+          isDescriptionValid.value &&
+          isDateEventValid.value &&
+          isTimeEventValid.value &&
+          isLocationValid.value &&
+          isCategoryValid.value &&
+          isVenueCategoryValid.value) {
+        isDataValid.value = true;
+      } else {
+        isDataValid.value = false;
+      }
     }
   }
 
@@ -187,7 +279,9 @@ class EventController extends ApiController {
       (response) {
         checkApiResponse(response);
         if (apiResponseState.value != ApiResponseState.http401) {
-          isLoadingEventCategoryData.value = false;
+          if (eventId == null) {
+            isLoading.value = false;
+          }
           final eventCategoryApiResponse =
               EventCategoryApiResponseModel.fromJson(response);
           eventCategoryList = eventCategoryApiResponse.eventCategories!;
@@ -450,6 +544,111 @@ class EventController extends ApiController {
                   'dateEventEnd': dateEventEnd,
                 },
               );
+            } else {
+              Get.back();
+            }
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> updateEvent() async {
+    resetState();
+    final pref = await SharedPreferences.getInstance();
+    List<String>? imageMediaType;
+    if (bannerImage.value != null) {
+      imageMediaType = lookupMimeType(bannerImage.value!.path)!.split('/');
+    }
+
+    apiRequest = {
+      'name': nameController.text,
+      'description': descriptionController.text,
+      'dateEventStart': dateEventStart!.millisecondsSinceEpoch,
+      'dateEventEnd': dateEventEnd!.millisecondsSinceEpoch,
+      'timeEventStart': timeEventStartValue!.millisecondsSinceEpoch,
+      'timeEventEnd': timeEventEndValue!.millisecondsSinceEpoch,
+      'location': venue,
+      'bannerPhoto': !isBannerImageUploaded.value
+          ? null
+          : await dio.MultipartFile.fromFile(
+              bannerImage.value!.path,
+              contentType: MediaType(
+                imageMediaType![0],
+                imageMediaType[1],
+              ),
+            ),
+      'eventStatusId': eventStatusId,
+      'eventCategoryId': eventCategoryId,
+      'eventVenueCategoryId': eventVenueCategoryId,
+      'eventOrganizerId': int.parse(
+        pref.getString('myevent.auth.token.subject')!,
+      ),
+    };
+
+    print(apiRequest);
+
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Menyimpan data...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    apiEvent.updateEvent(id: int.parse(eventId!), data: apiRequest).then(
+      (response) {
+        Get.back();
+        checkApiResponse(response);
+        CreateEventApiResponseModel? createEventApiResponse;
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          createEventApiResponse =
+              CreateEventApiResponseModel.fromJson(response);
+        }
+        Get.defaultDialog(
+          titleStyle: TextStyle(
+            fontSize: 0.0,
+          ),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                apiResponseState.value == ApiResponseState.http2xx
+                    ? createEventApiResponse!.message!
+                    : response['message'],
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: MyEventColor.secondaryColor,
+                ),
+              ),
+              response['code'] != null
+                  ? Icon(
+                      Icons.close,
+                      size: 50.0,
+                      color: Colors.red,
+                    )
+                  : Icon(
+                      Icons.check,
+                      size: 50.0,
+                      color: Colors.green,
+                    ),
+            ],
+          ),
+          textConfirm: 'OK',
+          confirmTextColor: MyEventColor.secondaryColor,
+          barrierDismissible: false,
+          onConfirm: () {
+            if (apiResponseState.value == ApiResponseState.http2xx) {
+              Get.back();
+              Get.back(result: true);
             } else {
               Get.back();
             }

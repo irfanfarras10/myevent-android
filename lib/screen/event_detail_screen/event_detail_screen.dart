@@ -6,6 +6,7 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_detail_controller.dart';
 import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
+import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/util/location_util.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
@@ -122,23 +123,41 @@ class EventDetailScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Edit',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Icon(
-                                    Icons.edit,
-                                    size: 16.5,
-                                  ),
-                                ],
+                            Visibility(
+                              visible:
+                                  controller.eventData!.eventStatus!.id == 1
+                                      ? true
+                                      : false,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.toNamed(
+                                    RouteName.editEventDataScreen.replaceAll(
+                                      ':id',
+                                      controller.eventData!.id!.toString(),
+                                    ),
+                                  )!
+                                      .then((refresh) {
+                                    if (refresh) {
+                                      controller.loadData();
+                                    }
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Edit',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Icon(
+                                      Icons.edit,
+                                      size: 16.5,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -887,36 +906,50 @@ class EventDetailScreen extends StatelessWidget {
             ),
           );
         }
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Detail Event',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: MyEventColor.secondaryColor,
-              ),
-            ),
-            actions: [
-              Visibility(
-                visible: controller.eventData != null &&
-                        controller.eventData!.eventStatus!.id == 1 &&
-                        !controller.isLoading.value
-                    ? true
-                    : false,
-                child: IconButton(
-                  onPressed: controller.deleteEvent,
-                  icon: Icon(Icons.delete),
-                  tooltip: 'Hapus Event',
+        return WillPopScope(
+          onWillPop: () async {
+            Get.back(result: true);
+            return true;
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Detail Event',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: MyEventColor.secondaryColor,
                 ),
               ),
-            ],
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                ),
+                onPressed: () {
+                  Get.back(result: true);
+                },
+              ),
+              actions: [
+                Visibility(
+                  visible: controller.eventData != null &&
+                          controller.eventData!.eventStatus!.id == 1 &&
+                          !controller.isLoading.value
+                      ? true
+                      : false,
+                  child: IconButton(
+                    onPressed: controller.deleteEvent,
+                    icon: Icon(Icons.delete),
+                    tooltip: 'Hapus Event',
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.grey.shade200,
+            body: body,
+            bottomNavigationBar: controller.getBottomButton(),
+            drawer: !controller.isLoading.value
+                ? NavigationDrawerWidget(eventData: controller.eventData!)
+                : null,
           ),
-          backgroundColor: Colors.grey.shade200,
-          body: body,
-          bottomNavigationBar: controller.getBottomButton(),
-          drawer: !controller.isLoading.value
-              ? NavigationDrawerWidget(eventData: controller.eventData!)
-              : null,
         );
       },
     );

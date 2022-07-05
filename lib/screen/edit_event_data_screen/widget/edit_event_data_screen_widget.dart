@@ -1,45 +1,120 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/event_controller.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:myevent_android/model/api_response/location_api_response_model.dart';
 
-class CreateEventDataScreenWidget extends StatelessWidget {
-  final controller = Get.find<EventController>(tag: 'create');
-
+class EditEventDataScreenWidget extends StatelessWidget {
+  final controller = Get.find<EventController>(tag: 'edit');
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Column(
         children: [
           !controller.isBannerImageUploaded.value
-              ? Container(
-                  decoration: BoxDecoration(color: Colors.grey),
-                  width: double.infinity,
-                  height: 200,
-                  child: Material(
-                    color: Colors.grey,
-                    child: InkWell(
-                      onTap: controller.pickBannerPhoto,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Unggah Foto Banner'),
-                          SizedBox(
-                            width: 10.0,
+              ? Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    SizedBox(
+                      height: 200,
+                      child: CachedNetworkImage(
+                        imageUrl: controller.eventData!.bannerPhoto!,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          Icon(
-                            Icons.camera_alt,
-                            color: Colors.grey[800],
-                            size: 30.0,
+                        ),
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          color: Colors.grey.shade100,
+                          child: Center(
+                            child: Icon(
+                              Icons.image,
+                            ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
+                    Container(
+                      height: 70.0,
+                      color: Colors.black.withOpacity(0.5),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: controller.pickBannerPhoto,
+                                child: Text(
+                                  'Ubah',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {
+                                  Get.dialog(
+                                    SizedBox(
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            controller.eventData!.bannerPhoto!,
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                        ),
+                                        placeholder: (context, url) => Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Container(
+                                          color: Colors.grey.shade100,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.image,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    barrierDismissible: true,
+                                  );
+                                },
+                                child: Text(
+                                  'Lihat',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 )
               : Container(
                   width: double.infinity,
@@ -82,7 +157,6 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                                           File(
                                             controller.bannerImage.value!.path,
                                           ),
-                                          fit: BoxFit.contain,
                                         ),
                                       ),
                                       barrierDismissible: true,
@@ -373,6 +447,9 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                         child: Text('Online'),
                       ),
                     ],
+                    value: controller.eventVenueCategoryId == null
+                        ? null
+                        : controller.eventVenueCategoryId,
                     onChanged: (venue) {
                       controller.setEventVenueCategory(venue!);
                     },
@@ -541,6 +618,9 @@ class CreateEventDataScreenWidget extends StatelessWidget {
                     onChanged: (category) {
                       controller.setEventCategory(category!);
                     },
+                    value: controller.eventCategoryId == null
+                        ? null
+                        : controller.eventCategoryId,
                     hint: Text(
                       'Kategori Event',
                       style: TextStyle(

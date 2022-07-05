@@ -8,6 +8,7 @@ enum ApiResponseState {
   offline,
   timeout,
   http2xx,
+  http400,
   http401,
   http403,
   http409,
@@ -34,6 +35,9 @@ abstract class ApiController extends GetxController {
           },
         );
         return;
+      }
+      if (response['code'] == 400) {
+        apiResponseState.value = ApiResponseState.http400;
       }
       if (response['code'] == 403) {
         apiResponseState.value = ApiResponseState.http403;
