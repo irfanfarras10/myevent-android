@@ -524,4 +524,40 @@ class EventController extends ApiController {
       },
     );
   }
+
+  Future<void> updateEvent() async {
+    resetState();
+    final pref = await SharedPreferences.getInstance();
+    List<String>? imageMediaType;
+    if (bannerImage.value != null) {
+      imageMediaType = lookupMimeType(bannerImage.value!.path)!.split('/');
+    }
+
+    apiRequest = {
+      'name': nameController.text,
+      'description': descriptionController.text,
+      'dateEventStart': dateEventStart!.millisecondsSinceEpoch,
+      'dateEventEnd': dateEventEnd!.millisecondsSinceEpoch,
+      'timeEventStart': timeEventStartValue!.millisecondsSinceEpoch,
+      'timeEventEnd': timeEventEndValue!.millisecondsSinceEpoch,
+      'location': venue,
+      'bannerPhoto': bannerImage.value == null
+          ? null
+          : await dio.MultipartFile.fromFile(
+              bannerImage.value!.path,
+              contentType: MediaType(
+                imageMediaType![0],
+                imageMediaType[1],
+              ),
+            ),
+      'eventStatusId': eventStatusId,
+      'eventCategoryId': eventCategoryId,
+      'eventVenueCategoryId': eventVenueCategoryId,
+      'eventOrganizerId': int.parse(
+        pref.getString('myevent.auth.token.subject')!,
+      ),
+    };
+
+    print(apiRequest);
+  }
 }
