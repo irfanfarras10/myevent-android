@@ -4,11 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_detail_controller.dart';
+import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
 import 'package:myevent_android/widget/navigation_drawer_widget.dart';
 
 class TicketDetailScreen extends StatelessWidget {
+  final eventId = Get.parameters['id'];
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<EventDetailController>();
@@ -252,7 +254,27 @@ class TicketDetailScreen extends StatelessWidget {
               Visibility(
                 visible: !controller.isLoading.value,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed(
+                      RouteName.createEventTicketScreen.replaceAll(
+                        ':id',
+                        eventId!,
+                      ),
+                      arguments: {
+                        'dateEventStart': DateTime.fromMillisecondsSinceEpoch(
+                          controller.eventData!.dateEventStart!,
+                        ),
+                        'dateEventEnd': DateTime.fromMillisecondsSinceEpoch(
+                          controller.eventData!.dateEventEnd!,
+                        ),
+                      },
+                    )!
+                        .then((refresh) {
+                      if (refresh) {
+                        controller.loadData();
+                      }
+                    });
+                  },
                   icon: Icon(Icons.edit),
                   tooltip: 'Edit data tiket',
                 ),

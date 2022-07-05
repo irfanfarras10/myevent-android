@@ -389,7 +389,29 @@ class EventDetailScreen extends StatelessWidget {
                               height: 30.0,
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed(
+                                  RouteName.createEventTicketScreen.replaceAll(
+                                    ':id',
+                                    controller.eventData!.id!.toString(),
+                                  ),
+                                  arguments: {
+                                    'dateEventStart':
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                      controller.eventData!.dateEventStart!,
+                                    ),
+                                    'dateEventEnd':
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                      controller.eventData!.dateEventEnd!,
+                                    ),
+                                  },
+                                )!
+                                    .then((refresh) {
+                                  if (refresh) {
+                                    controller.loadData();
+                                  }
+                                });
+                              },
                               child: Row(
                                 children: [
                                   Text(
