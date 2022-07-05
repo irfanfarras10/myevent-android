@@ -83,6 +83,16 @@ class ApiUtil {
     }
   }
 
+  Future<Map<String, dynamic>> apiRequestDelete(String url) async {
+    try {
+      final httpClient = await _getDioClient();
+      final response = await httpClient.delete(url);
+      return response.data;
+    } on DioError catch (error) {
+      return _handleDioError(error);
+    }
+  }
+
   Future<Map<String, dynamic>> apiRequestMultipartPost({
     required String url,
     required Map<String, dynamic> data,

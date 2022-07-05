@@ -903,7 +903,7 @@ class EventDetailScreen extends StatelessWidget {
                     ? true
                     : false,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: controller.deleteEvent,
                   icon: Icon(Icons.delete),
                   tooltip: 'Hapus Event',
                 ),
