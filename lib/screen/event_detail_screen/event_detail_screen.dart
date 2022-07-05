@@ -920,14 +920,6 @@ class EventDetailScreen extends StatelessWidget {
                   color: MyEventColor.secondaryColor,
                 ),
               ),
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                ),
-                onPressed: () {
-                  Get.back(result: true);
-                },
-              ),
               actions: [
                 Visibility(
                   visible: controller.eventData != null &&
