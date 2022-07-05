@@ -131,11 +131,15 @@ class EventController extends ApiController {
             '${DateFormat('HH:mm', 'id_ID').format(DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventStart!))}';
         timeEventStartValue =
             DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventStart!);
+        timeEventStart = TimeOfDay.fromDateTime(
+            DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventStart!));
         //time event end
         timeEventEndController.text =
             '${DateFormat('HH:mm', 'id_ID').format(DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventEnd!))}';
         timeEventEndValue =
             DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventEnd!);
+        timeEventEnd = TimeOfDay.fromDateTime(
+            DateTime.fromMillisecondsSinceEpoch(eventData!.timeEventEnd!));
         //event venue category
         eventVenueCategoryId = eventData!.eventVenueCategory!.id!;
         setEventVenueCategory(eventVenueCategoryId!);
@@ -154,22 +158,46 @@ class EventController extends ApiController {
         eventCategoryId = eventData!.eventCategory!.id;
 
         isLoading.value = false;
+
+        //set all data valid by default
+        isNameValid.value = true;
+        isDescriptionValid.value = true;
+        isDateEventValid.value = true;
+        isTimeEventValid.value = true;
+        isLocationValid.value = true;
+        isCategoryValid.value = true;
+        isVenueCategoryValid.value = true;
+        isDataValid.value = true;
       }
     });
   }
 
   void validateAllData() {
-    if (isBannerImageUploaded.value &&
-        isNameValid.value &&
-        isDescriptionValid.value &&
-        isDateEventValid.value &&
-        isTimeEventValid.value &&
-        isLocationValid.value &&
-        isCategoryValid.value &&
-        isVenueCategoryValid.value) {
-      isDataValid.value = true;
+    if (eventId == null) {
+      if (isBannerImageUploaded.value &&
+          isNameValid.value &&
+          isDescriptionValid.value &&
+          isDateEventValid.value &&
+          isTimeEventValid.value &&
+          isLocationValid.value &&
+          isCategoryValid.value &&
+          isVenueCategoryValid.value) {
+        isDataValid.value = true;
+      } else {
+        isDataValid.value = false;
+      }
     } else {
-      isDataValid.value = false;
+      if (isNameValid.value &&
+          isDescriptionValid.value &&
+          isDateEventValid.value &&
+          isTimeEventValid.value &&
+          isLocationValid.value &&
+          isCategoryValid.value &&
+          isVenueCategoryValid.value) {
+        isDataValid.value = true;
+      } else {
+        isDataValid.value = false;
+      }
     }
   }
 

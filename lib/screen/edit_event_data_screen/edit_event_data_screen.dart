@@ -71,7 +71,11 @@ class EditEventDataScreen extends StatelessWidget {
                   child: SizedBox(
                     height: 60.0,
                     child: ElevatedButton(
-                      onPressed: controller.updateEvent,
+                      onPressed: controller.isDataValid.value
+                          ? () async {
+                              await controller.updateEvent();
+                            }
+                          : null,
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.resolveWith<Color>(
