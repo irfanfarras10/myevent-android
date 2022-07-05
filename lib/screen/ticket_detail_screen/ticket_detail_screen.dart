@@ -174,6 +174,43 @@ class TicketDetailScreen extends StatelessWidget {
                           },
                         ),
                       ),
+                      Divider(),
+                      Column(
+                        children: List.generate(
+                          4,
+                          (index) {
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height: 15.0,
+                                ),
+                                Card(
+                                  shadowColor: Colors.black12,
+                                  color: Colors.grey.shade100,
+                                  child: ListTile(
+                                    title: Text(
+                                      'Premium',
+                                      style: TextStyle(
+                                        fontSize: 16.5,
+                                        fontWeight: FontWeight.bold,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      'Rp. 100.000',
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      )
                     ],
                   ),
                 )
