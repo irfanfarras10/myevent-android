@@ -119,6 +119,11 @@ class EventController extends ApiController {
             '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventStart!))}';
         dateEventStart =
             DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventStart!);
+        //date event end
+        dateEventEndController.text =
+            '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventEnd!))}';
+        dateEventEnd =
+            DateTime.fromMillisecondsSinceEpoch(eventData!.dateEventEnd!);
       }
     });
   }
