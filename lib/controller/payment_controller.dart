@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/create_payment_api_request_mode.dart';
+import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/provider/api_payment.dart';
 import 'package:myevent_android/route/route_name.dart';
@@ -29,6 +30,8 @@ class PaymentController extends ApiController {
 
   RxBool isLoading = false.obs;
 
+  ViewEventDetailApiResponseModel? eventData;
+
   @override
   void onInit() {
     addPayment();
@@ -49,6 +52,35 @@ class PaymentController extends ApiController {
       checkApiResponse(response);
       if (apiResponseState.value == ApiResponseState.http2xx) {
         isLoading.value = false;
+        eventData = ViewEventDetailApiResponseModel.fromJson(response);
+        eventData!.eventPayment!.sort(
+          (a, b) => a.type!.compareTo(b.type!),
+        );
+        if (eventData!.eventPayment!.isNotEmpty) {
+          paymentList.clear();
+          paymentData.clear();
+          paymentTypeController.clear();
+          paymentNumberController.clear();
+          paymentNumberController.clear();
+          isPaymentTypeValid.clear();
+          isPaymentNumberValid.clear();
+          paymentTypeErrorMessage.clear();
+          paymentNumberErrorMessage.clear();
+          eventData!.eventPayment!.forEach((data) {
+            paymentList.add(CreateEventPaymentScreenCardWidget());
+            paymentTypeController.add(TextEditingController(text: data.type));
+            paymentNumberController
+                .add(TextEditingController(text: data.information));
+            isPaymentTypeValid.add(RxBool(true));
+            isPaymentNumberValid.add(RxBool(true));
+            paymentTypeErrorMessage.add(RxnString());
+            paymentNumberErrorMessage.add(RxnString());
+            paymentData.add({
+              'type': data.type,
+              'information': data.type,
+            });
+          });
+        }
       }
     });
   }
