@@ -634,7 +634,11 @@ class EventDetailScreen extends StatelessWidget {
                               child: ElevatedButton(
                                 onPressed: () {
                                   Get.toNamed(
-                                    RouteName.createEventPaymentScreen,
+                                    RouteName.createEventPaymentScreen
+                                        .replaceAll(
+                                      ':id',
+                                      controller.eventData!.id!.toString(),
+                                    ),
                                     arguments: {
                                       'canEdit': true,
                                     },

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/create_payment_api_request_mode.dart';
+import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/provider/api_payment.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/screen/create_event_payment_screen/widget/create_event_payment_screen_card_widget.dart';
@@ -24,15 +25,32 @@ class PaymentController extends ApiController {
 
   final _eventId = Get.parameters['id'];
 
+  final paymentParam = Get.arguments;
+
+  RxBool isLoading = false.obs;
+
   @override
   void onInit() {
     addPayment();
+    if (paymentParam['canEdit'] == true) {
+      loadData();
+    }
     super.onInit();
   }
 
   @override
   void resetState() {
     FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  Future<void> loadData() async {
+    isLoading.value = true;
+    await apiEvent.getEventDetail(id: int.parse(_eventId!)).then((response) {
+      checkApiResponse(response);
+      if (apiResponseState.value == ApiResponseState.http2xx) {
+        isLoading.value = false;
+      }
+    });
   }
 
   bool get isDataValid {
