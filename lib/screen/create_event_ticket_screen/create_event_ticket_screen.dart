@@ -56,8 +56,10 @@ class CreateEventTicketScreen extends StatelessWidget {
                               width: 12.0,
                               child: Checkbox(
                                 value: controller.isDailyTicket.value,
-                                onChanged: (value) =>
-                                    controller.setIsDailyTicket(value!),
+                                onChanged: controller.ticketParam['canEdit']
+                                    ? null
+                                    : (value) =>
+                                        controller.setIsDailyTicket(value!),
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
                               ),
@@ -159,7 +161,8 @@ class CreateEventTicketScreen extends StatelessWidget {
                         ),
                         Visibility(
                           visible: controller.isPayedTicket.value &&
-                              controller.ticketList.length < 4,
+                              controller.ticketList.length < 4 &&
+                              !controller.ticketParam['canEdit'],
                           child: SizedBox(
                             height: 60.0,
                             child: TextButton(
