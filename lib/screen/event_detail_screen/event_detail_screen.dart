@@ -673,6 +673,9 @@ class EventDetailScreen extends StatelessWidget {
                                 children: List.generate(
                                   controller.eventData!.eventPayment!.length,
                                   (index) {
+                                    controller.eventData!.eventPayment!.sort(
+                                      (a, b) => a.type!.compareTo(b.type!),
+                                    );
                                     return SizedBox(
                                       width: double.infinity,
                                       child: Card(
