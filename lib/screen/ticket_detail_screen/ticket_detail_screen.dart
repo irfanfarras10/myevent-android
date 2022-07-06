@@ -283,6 +283,7 @@ class TicketDetailScreen extends StatelessWidget {
                                                       color: MyEventColor
                                                           .secondaryColor,
                                                     ),
+                                                    textAlign: TextAlign.right,
                                                   ),
                                                 ),
                                               ),
