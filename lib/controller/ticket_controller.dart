@@ -90,6 +90,16 @@ class TicketController extends ApiController {
             isPayedTicket.value = false;
           }
         }
+        if (eventData!.ticket!.isNotEmpty) {
+          final registrationDateStart = DateFormat('EEEE, d MMMM yyyy', 'id_ID')
+              .format(DateTime.fromMillisecondsSinceEpoch(
+                  eventData!.dateTimeRegistrationStart!));
+          final registrationDateEnd = DateFormat('EEEE, d MMMM yyyy', 'id_ID')
+              .format(DateTime.fromMillisecondsSinceEpoch(
+                  eventData!.dateTimeRegistrationEnd!));
+          registrationDatePeriodController.text =
+              '$registrationDateStart - $registrationDateEnd';
+        }
       }
     });
   }
