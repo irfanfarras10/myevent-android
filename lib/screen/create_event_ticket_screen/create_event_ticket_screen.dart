@@ -404,12 +404,20 @@ class CreateEventTicketScreen extends StatelessWidget {
                         height: 60.0,
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
-                          onPressed: controller.isDataValid
+                          onPressed: controller.isDataValid &&
+                                  !controller.ticketParam['canEdit']
                               ? () async {
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   await controller.createTicket();
                                 }
-                              : null,
+                              : controller.isDataValid &&
+                                      controller.ticketParam['canEdit']
+                                  ? () async {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      await controller.updateTicket();
+                                    }
+                                  : null,
                           style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith<Color>(
