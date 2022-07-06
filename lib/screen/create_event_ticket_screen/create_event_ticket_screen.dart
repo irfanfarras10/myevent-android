@@ -19,8 +19,7 @@ class CreateEventTicketScreen extends StatelessWidget {
         if (controller.isLoading.value) {
           body = LoadingWidget();
         } else {
-          if (controller.apiResponseState.value != null &&
-              controller.apiResponseState.value != ApiResponseState.http2xx &&
+          if (controller.apiResponseState.value != ApiResponseState.http2xx &&
               controller.apiResponseState.value != ApiResponseState.http401) {
             return HttpErrorWidget(
               errorMessage: controller.errorMessage,
