@@ -163,6 +163,9 @@ class TicketController extends ApiController {
               ),
             );
           }
+
+          //calculate ticket quota total
+          _calculateTicketQuotaTotalAfterRemove();
         }
       }
     });
