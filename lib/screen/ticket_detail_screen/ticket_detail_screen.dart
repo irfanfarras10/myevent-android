@@ -158,8 +158,11 @@ class TicketDetailScreen extends StatelessWidget {
                             ),
                             Column(
                               children: List.generate(
-                                4,
+                                controller.eventData!.ticket!.length,
                                 (index) {
+                                  controller.eventData!.ticket!.sort(
+                                    (a, b) => a.id!.compareTo(b.id!),
+                                  );
                                   return Column(
                                     children: [
                                       SizedBox(
@@ -170,7 +173,8 @@ class TicketDetailScreen extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Reguler',
+                                            controller.eventData!.ticket![index]
+                                                .name!,
                                             style: TextStyle(
                                               fontSize: 16.5,
                                               color:
@@ -178,7 +182,7 @@ class TicketDetailScreen extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            '1000',
+                                            '${controller.eventData!.ticket![index].quotaTotal!}',
                                             style: TextStyle(
                                               fontSize: 16.5,
                                               color:
