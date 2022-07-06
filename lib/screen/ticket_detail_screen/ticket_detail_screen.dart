@@ -213,80 +213,30 @@ class TicketDetailScreen extends StatelessWidget {
                                         shadowColor: Colors.black12,
                                         color: Colors.grey.shade100,
                                         child: ListTile(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  controller.eventData!
-                                                      .ticket![index].name!,
-                                                  style: TextStyle(
-                                                    fontSize: 16.5,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: MyEventColor
-                                                        .secondaryColor,
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  '${controller.eventData!.ticket![index].quotaTotal!} tiket',
-                                                  style: TextStyle(
-                                                    fontSize: 16.5,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: MyEventColor
-                                                        .secondaryColor,
-                                                  ),
-                                                  textAlign: TextAlign.right,
-                                                ),
-                                              ),
-                                            ],
+                                          title: Text(
+                                            controller.eventData!.ticket![index]
+                                                .name!,
+                                            style: TextStyle(
+                                              fontSize: 16.5,
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  MyEventColor.secondaryColor,
+                                            ),
                                           ),
-                                          subtitle: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Visibility(
-                                                visible: controller.eventData!
-                                                        .ticket![0].price! >
-                                                    0,
-                                                child: Expanded(
-                                                  child: Text(
-                                                    _rupiah(controller
-                                                        .eventData!
-                                                        .ticket![index]
-                                                        .price!),
-                                                    style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: MyEventColor
-                                                          .secondaryColor,
-                                                    ),
-                                                  ),
-                                                ),
+                                          subtitle: Visibility(
+                                            visible: controller.eventData!
+                                                    .ticket![0].price! >
+                                                0,
+                                            child: Text(
+                                              _rupiah(controller.eventData!
+                                                  .ticket![index].price!),
+                                              style: TextStyle(
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    MyEventColor.secondaryColor,
                                               ),
-                                              Visibility(
-                                                visible: controller
-                                                        .eventData!
-                                                        .ticket![0]
-                                                        .quotaPerDay! >
-                                                    0,
-                                                child: Expanded(
-                                                  child: Text(
-                                                    '${controller.eventData!.ticket![index].quotaPerDay!} tiket / hari',
-                                                    style: TextStyle(
-                                                      fontSize: 10.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: MyEventColor
-                                                          .secondaryColor,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -328,9 +278,7 @@ class TicketDetailScreen extends StatelessWidget {
                         'dateEventEnd': DateTime.fromMillisecondsSinceEpoch(
                           controller.eventData!.dateEventEnd!,
                         ),
-                        'canEdit': controller.eventData!.ticket!.isEmpty
-                            ? false
-                            : true,
+                        'canEdit': true,
                       },
                     )!
                         .then((refresh) {
