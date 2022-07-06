@@ -108,6 +108,11 @@ class TicketController extends ApiController {
           nameController.clear();
           quotaController.clear();
           priceController.clear();
+          //sort ticket data based on id
+          eventData!.ticket!.sort(
+            (a, b) => a.id!.compareTo(b.id!),
+          );
+
           for (int i = 0; i < 4; i++) {
             if (i <= eventData!.ticket!.length - 1) {
               ticketList.add(CreateEventTicketScreenCardWidget());
