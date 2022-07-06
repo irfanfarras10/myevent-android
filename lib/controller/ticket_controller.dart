@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/create_ticket_api_request_model.dart';
+import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/provider/api_ticket.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/screen/create_event_ticket_screen/widget/create_event_ticket_screen_card_widget.dart';
@@ -33,8 +34,10 @@ class TicketController extends ApiController {
   List<CreateTicketApiRequestModel> _apiRequest = [];
 
   final _eventId = Get.parameters['id'];
-  Map<String, dynamic> _dateEvent = Get.arguments;
+  Map<String, dynamic> _eventData = Get.arguments;
   int? totalEventDay;
+
+  RxBool isLoading = false.obs;
 
   bool get isDataValid {
     if (isPayedTicket.value) {
@@ -53,14 +56,27 @@ class TicketController extends ApiController {
 
   @override
   void onInit() {
+    if (_eventData['canEdit']) {
+      loadData();
+    }
     initEventDate();
     initTicket();
     super.onInit();
   }
 
+  Future<void> loadData() async {
+    isLoading.value = true;
+    // apiEvent.getEventDetail(id: int.parse(_eventId!)).then((response) {
+    //   checkApiResponse(response);
+    //   if (apiResponseState.value == ApiResponseState.http2xx) {
+    //     isLoading.value = true;
+    //   }
+    // });
+  }
+
   void initEventDate() {
-    final dateEventStart = _dateEvent['dateEventStart'] as DateTime;
-    final dateEventEnd = _dateEvent['dateEventEnd'] as DateTime;
+    final dateEventStart = _eventData['dateEventStart'] as DateTime;
+    final dateEventEnd = _eventData['dateEventEnd'] as DateTime;
     totalEventDay = dateEventEnd.difference(dateEventStart).inDays.abs() + 1;
   }
 
@@ -210,12 +226,12 @@ class TicketController extends ApiController {
     showDateRangePicker(
       context: Get.key.currentContext!,
       firstDate: DateTime(2000),
-      lastDate: (_dateEvent['dateEventStart'] as DateTime).add(
+      lastDate: (_eventData['dateEventStart'] as DateTime).add(
         Duration(
           days: -1,
         ),
       ),
-      currentDate: (_dateEvent['dateEventStart'] as DateTime).add(
+      currentDate: (_eventData['dateEventStart'] as DateTime).add(
         Duration(
           days: -1,
         ),

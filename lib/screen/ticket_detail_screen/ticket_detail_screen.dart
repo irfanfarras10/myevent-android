@@ -267,6 +267,7 @@ class TicketDetailScreen extends StatelessWidget {
                         'dateEventEnd': DateTime.fromMillisecondsSinceEpoch(
                           controller.eventData!.dateEventEnd!,
                         ),
+                        'canEdit': true,
                       },
                     )!
                         .then((refresh) {

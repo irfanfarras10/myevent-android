@@ -404,6 +404,7 @@ class EventDetailScreen extends StatelessWidget {
                                         DateTime.fromMillisecondsSinceEpoch(
                                       controller.eventData!.dateEventEnd!,
                                     ),
+                                    'canEdit': true,
                                   },
                                 )!
                                     .then((refresh) {
