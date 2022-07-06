@@ -630,15 +630,18 @@ class TicketController extends ApiController {
             Get.back();
             Get.back();
             Get.back(result: true);
-            if (isPayedTicket.value) {
-              Get.toNamed(
-                RouteName.createEventPaymentScreen.replaceAll(':id', _eventId!),
-              );
-            } else {
-              Get.toNamed(
-                RouteName.createEventContactPersonScreen
-                    .replaceAll(':id', _eventId!),
-              );
+            if (eventData != null) {
+              if (isPayedTicket.value) {
+                Get.toNamed(
+                  RouteName.createEventPaymentScreen
+                      .replaceAll(':id', _eventId!),
+                );
+              } else {
+                Get.toNamed(
+                  RouteName.createEventContactPersonScreen
+                      .replaceAll(':id', _eventId!),
+                );
+              }
             }
           } else {
             Get.back();
