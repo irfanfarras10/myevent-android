@@ -48,6 +48,7 @@ class CreateEventTicketScreenCardWidget extends StatelessWidget {
                     labelStyle: TextStyle(
                       color: MyEventColor.secondaryColor,
                     ),
+                    enabled: controller.eventData!.eventStatus!.id == 1,
                     border: OutlineInputBorder(
                       borderSide: const BorderSide(
                         color: MyEventColor.secondaryColor,
@@ -81,6 +82,8 @@ class CreateEventTicketScreenCardWidget extends StatelessWidget {
                       labelStyle: TextStyle(
                         color: MyEventColor.secondaryColor,
                       ),
+                      enabled: controller.eventData!.eventStatus!.id == 1 ||
+                          controller.eventData!.eventStatus!.id == 2,
                       border: OutlineInputBorder(
                         borderSide: const BorderSide(
                           color: MyEventColor.secondaryColor,
@@ -118,6 +121,7 @@ class CreateEventTicketScreenCardWidget extends StatelessWidget {
                         labelStyle: TextStyle(
                           color: MyEventColor.secondaryColor,
                         ),
+                        enabled: controller.eventData!.eventStatus!.id == 1,
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(
                             color: MyEventColor.secondaryColor,
