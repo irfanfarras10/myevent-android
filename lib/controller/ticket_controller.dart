@@ -114,9 +114,9 @@ class TicketController extends ApiController {
               nameErrorMessage.add(RxnString());
               quotaErrorMessage.add(RxnString());
               priceErrorMessage.add(RxnString());
-              isNameValid.add(RxBool(false));
-              isQuotaValid.add(RxBool(false));
-              isPriceValid.add(RxBool(false));
+              isNameValid.add(RxBool(true));
+              isQuotaValid.add(RxBool(true));
+              isPriceValid.add(RxBool(true));
               nameController.add(
                   TextEditingController(text: eventData!.ticket![i].name!));
               if (isDailyTicket.value) {
@@ -152,6 +152,16 @@ class TicketController extends ApiController {
             ticketData[i]['price'] = i <= eventData!.ticket!.length - 1
                 ? eventData!.ticket![i].price
                 : 0;
+
+            //registration period
+            registrationPeriod.value = DateTimeRange(
+              start: DateTime.fromMillisecondsSinceEpoch(
+                eventData!.dateTimeRegistrationStart!,
+              ),
+              end: DateTime.fromMillisecondsSinceEpoch(
+                eventData!.dateTimeRegistrationEnd!,
+              ),
+            );
           }
         }
       }
