@@ -635,6 +635,9 @@ class TicketController extends ApiController {
                 Get.toNamed(
                   RouteName.createEventPaymentScreen
                       .replaceAll(':id', _eventId!),
+                  arguments: {
+                    'canEdit': false,
+                  },
                 );
               } else {
                 Get.toNamed(

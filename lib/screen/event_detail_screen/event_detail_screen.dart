@@ -632,7 +632,14 @@ class EventDetailScreen extends StatelessWidget {
                               visible:
                                   controller.eventData!.eventStatus!.id == 1,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.toNamed(
+                                    RouteName.createEventPaymentScreen,
+                                    arguments: {
+                                      'canEdit': true,
+                                    },
+                                  );
+                                },
                                 child: Row(
                                   children: [
                                     Text(
