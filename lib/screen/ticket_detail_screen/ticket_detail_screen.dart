@@ -202,7 +202,7 @@ class TicketDetailScreen extends StatelessWidget {
                             Divider(),
                             Column(
                               children: List.generate(
-                                4,
+                                controller.eventData!.ticket!.length,
                                 (index) {
                                   return Column(
                                     children: [
@@ -214,7 +214,8 @@ class TicketDetailScreen extends StatelessWidget {
                                         color: Colors.grey.shade100,
                                         child: ListTile(
                                           title: Text(
-                                            'Premium',
+                                            controller.eventData!.ticket![index]
+                                                .name!,
                                             style: TextStyle(
                                               fontSize: 16.5,
                                               fontWeight: FontWeight.bold,
@@ -223,7 +224,8 @@ class TicketDetailScreen extends StatelessWidget {
                                             ),
                                           ),
                                           subtitle: Text(
-                                            'Rp. 100.000',
+                                            _rupiah(controller.eventData!
+                                                .ticket![index].price!),
                                             style: TextStyle(
                                               fontSize: 14.0,
                                               fontWeight: FontWeight.bold,
@@ -314,5 +316,10 @@ class TicketDetailScreen extends StatelessWidget {
             .inDays +
         1;
     return totalEventDay.toString();
+  }
+
+  String _rupiah(value) {
+    return NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+        .format(value);
   }
 }
