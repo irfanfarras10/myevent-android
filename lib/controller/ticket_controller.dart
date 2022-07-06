@@ -59,11 +59,11 @@ class TicketController extends ApiController {
 
   @override
   void onInit() {
+    initEventDate();
+    initTicket();
     if (_eventData['canEdit']) {
       loadData();
     }
-    initEventDate();
-    initTicket();
     super.onInit();
   }
 
@@ -74,23 +74,21 @@ class TicketController extends ApiController {
       if (apiResponseState.value == ApiResponseState.http2xx) {
         eventData = ViewEventDetailApiResponseModel.fromJson(response);
         isLoading.value = false;
-        //daily ticket checklist
+
         if (eventData!.ticket!.isNotEmpty) {
+          //daily ticket checklist
           if (eventData!.ticket![0].quotaPerDay! > 0) {
             isDailyTicket.value = true;
           } else {
             isDailyTicket.value = false;
           }
-        }
-        //paid ticket checklist
-        if (eventData!.ticket!.isNotEmpty) {
+          //paid ticket checklist
           if (eventData!.ticket![0].price! > 0) {
             isPayedTicket.value = true;
           } else {
             isPayedTicket.value = false;
           }
-        }
-        if (eventData!.ticket!.isNotEmpty) {
+          //ticket registration period
           final registrationDateStart = DateFormat('EEEE, d MMMM yyyy', 'id_ID')
               .format(DateTime.fromMillisecondsSinceEpoch(
                   eventData!.dateTimeRegistrationStart!));
@@ -99,6 +97,37 @@ class TicketController extends ApiController {
                   eventData!.dateTimeRegistrationEnd!));
           registrationDatePeriodController.text =
               '$registrationDateStart - $registrationDateEnd';
+          //ticket list and data
+          ticketList.clear();
+          for (int i = 0; i < 4; i++) {
+            print(i);
+            if (i <= eventData!.ticket!.length - 1) {
+              ticketList.add(CreateEventTicketScreenCardWidget());
+              nameErrorMessage.add(RxnString());
+              quotaErrorMessage.add(RxnString());
+              priceErrorMessage.add(RxnString());
+              isNameValid.add(RxBool(false));
+              isQuotaValid.add(RxBool(false));
+              isPriceValid.add(RxBool(false));
+              nameController.add(TextEditingController());
+              quotaController.add(TextEditingController());
+              priceController.add(TextEditingController());
+            }
+
+            //ticket data
+            ticketData[i]['name'] = i <= eventData!.ticket!.length - 1
+                ? eventData!.ticket![i].name
+                : '';
+            ticketData[i]['quotaPerDay'] = i <= eventData!.ticket!.length - 1
+                ? eventData!.ticket![i].quotaPerDay
+                : 0;
+            ticketData[i]['quotaTotal'] = i <= eventData!.ticket!.length - 1
+                ? eventData!.ticket![i].quotaTotal
+                : 0;
+            ticketData[i]['price'] = i <= eventData!.ticket!.length - 1
+                ? eventData!.ticket![i].price
+                : 0;
+          }
         }
       }
     });
