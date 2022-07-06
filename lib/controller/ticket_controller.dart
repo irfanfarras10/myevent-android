@@ -75,8 +75,12 @@ class TicketController extends ApiController {
         eventData = ViewEventDetailApiResponseModel.fromJson(response);
         isLoading.value = false;
         //daily ticket checklist
-        if (eventData!.ticket![0].quotaPerDay! > 0) {
-          isDailyTicket.value = true;
+        if (eventData!.ticket != null) {
+          if (eventData!.ticket![0].quotaPerDay! > 0) {
+            isDailyTicket.value = true;
+          } else {
+            isDailyTicket.value = false;
+          }
         }
       }
     });
