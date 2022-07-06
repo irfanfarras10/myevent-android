@@ -563,6 +563,9 @@ class EventDetailScreen extends StatelessWidget {
                                     children: List.generate(
                                         controller.eventData!.ticket!.length,
                                         (index) {
+                                      controller.eventData!.ticket!.sort(
+                                        (a, b) => a.id!.compareTo(b.id!),
+                                      );
                                       return Column(
                                         children: [
                                           SizedBox(
