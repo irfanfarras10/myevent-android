@@ -49,27 +49,30 @@ class CreateEventPaymentScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    SizedBox(
-                      height: 60.0,
-                      child: TextButton(
-                        onPressed: controller.addPayment,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Tambahkan Pembayaran',
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                color: MyEventColor.secondaryColor,
-                                fontWeight: FontWeight.bold,
+                    Visibility(
+                      visible: !controller.paymentParam['canEdit'],
+                      child: SizedBox(
+                        height: 60.0,
+                        child: TextButton(
+                          onPressed: controller.addPayment,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Tambahkan Pembayaran',
+                                style: TextStyle(
+                                  fontSize: 17.0,
+                                  color: MyEventColor.secondaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            SizedBox(width: 10.0),
-                            Icon(
-                              Icons.add,
-                              color: MyEventColor.secondaryColor,
-                            ),
-                          ],
+                              SizedBox(width: 10.0),
+                              Icon(
+                                Icons.add,
+                                color: MyEventColor.secondaryColor,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
