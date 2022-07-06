@@ -99,8 +99,16 @@ class TicketController extends ApiController {
               '$registrationDateStart - $registrationDateEnd';
           //ticket list and data
           ticketList.clear();
+          nameErrorMessage.clear();
+          quotaErrorMessage.clear();
+          priceErrorMessage.clear();
+          isNameValid.clear();
+          isQuotaValid.clear();
+          isPriceValid.clear();
+          nameController.clear();
+          quotaController.clear();
+          priceController.clear();
           for (int i = 0; i < 4; i++) {
-            print(i);
             if (i <= eventData!.ticket!.length - 1) {
               ticketList.add(CreateEventTicketScreenCardWidget());
               nameErrorMessage.add(RxnString());
@@ -109,9 +117,26 @@ class TicketController extends ApiController {
               isNameValid.add(RxBool(false));
               isQuotaValid.add(RxBool(false));
               isPriceValid.add(RxBool(false));
-              nameController.add(TextEditingController());
-              quotaController.add(TextEditingController());
-              priceController.add(TextEditingController());
+              nameController.add(
+                  TextEditingController(text: eventData!.ticket![i].name!));
+              if (isDailyTicket.value) {
+                quotaController.add(
+                  TextEditingController(
+                    text: eventData!.ticket![i].quotaPerDay!.toString(),
+                  ),
+                );
+              } else {
+                quotaController.add(
+                  TextEditingController(
+                    text: eventData!.ticket![i].quotaTotal!.toString(),
+                  ),
+                );
+              }
+              priceController.add(
+                TextEditingController(
+                  text: eventData!.ticket![i].price!.toString(),
+                ),
+              );
             }
 
             //ticket data
