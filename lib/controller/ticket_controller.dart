@@ -517,4 +517,21 @@ class TicketController extends ApiController {
     priceController.removeAt(index);
     _calculateTicketQuotaTotalAfterRemove();
   }
+
+  bool isDeleteButtonVisible(int index) {
+    //edit data mode
+    if (ticketParam['canEdit'] == true) {
+      print('ini');
+      if (index < eventData!.ticket!.length) {
+        return false;
+      }
+    }
+    //create mode
+    else {
+      if (index < 1) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

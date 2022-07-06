@@ -26,8 +26,7 @@ class CreateEventTicketScreenCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Visibility(
-                  visible: controller.ticketList.length > 1 &&
-                      controller.ticketParam['canEdit'] == false,
+                  visible: controller.isDeleteButtonVisible(index!),
                   child: IconButton(
                     icon: Icon(Icons.close),
                     onPressed: () => controller.removeTicket(index!),
