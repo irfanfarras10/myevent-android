@@ -628,25 +628,29 @@ class EventDetailScreen extends StatelessWidget {
                             SizedBox(
                               height: 30.0,
                             ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Edit',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: MyEventColor.secondaryColor,
+                            Visibility(
+                              visible:
+                                  controller.eventData!.eventStatus!.id == 1,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Edit',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Icon(
-                                    Icons.edit,
-                                    size: 16.5,
-                                  ),
-                                ],
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Icon(
+                                      Icons.edit,
+                                      size: 16.5,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
