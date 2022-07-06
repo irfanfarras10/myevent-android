@@ -82,6 +82,14 @@ class TicketController extends ApiController {
             isDailyTicket.value = false;
           }
         }
+        //paid ticket checklist
+        if (eventData!.ticket!.isNotEmpty) {
+          if (eventData!.ticket![0].price! > 0) {
+            isPayedTicket.value = true;
+          } else {
+            isPayedTicket.value = false;
+          }
+        }
       }
     });
   }
