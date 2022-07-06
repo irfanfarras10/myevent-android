@@ -83,8 +83,10 @@ class CreateEventTicketScreen extends StatelessWidget {
                               width: 12.0,
                               child: Checkbox(
                                 value: controller.isPayedTicket.value,
-                                onChanged: (value) =>
-                                    controller.setIsPayedTicket(value!),
+                                onChanged: controller.ticketParam['canEdit']
+                                    ? null
+                                    : (value) =>
+                                        controller.setIsPayedTicket(value!),
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
                               ),
