@@ -10,6 +10,7 @@ import 'package:myevent_android/screen/onboarding_screen/onboarding_screen.dart'
 import 'package:myevent_android/screen/signin_screen/signin_screen.dart';
 import 'package:myevent_android/screen/signup_screen/signup_screen.dart';
 import 'package:myevent_android/screen/splash_screen/splash_screen.dart';
+import 'package:myevent_android/screen/ticket_detail_screen/ticket_detail_screen.dart';
 import 'route_name.dart';
 
 class AppPages {
@@ -66,6 +67,10 @@ class AppPages {
     GetPage(
       name: RouteName.editEventDataScreen,
       page: () => EditEventDataScreen(),
+    ),
+    GetPage(
+      name: RouteName.ticketDetailScreen,
+      page: () => TicketDetailScreen(),
     )
   ];
 }

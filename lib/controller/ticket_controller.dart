@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/create_ticket_api_request_model.dart';
+import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
+import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/provider/api_ticket.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/screen/create_event_ticket_screen/widget/create_event_ticket_screen_card_widget.dart';
@@ -33,8 +35,12 @@ class TicketController extends ApiController {
   List<CreateTicketApiRequestModel> _apiRequest = [];
 
   final _eventId = Get.parameters['id'];
-  Map<String, dynamic> _dateEvent = Get.arguments;
+  Map<String, dynamic> ticketParam = Get.arguments;
   int? totalEventDay;
+
+  RxBool isLoading = false.obs;
+
+  ViewEventDetailApiResponseModel? eventData;
 
   bool get isDataValid {
     if (isPayedTicket.value) {
@@ -55,12 +61,124 @@ class TicketController extends ApiController {
   void onInit() {
     initEventDate();
     initTicket();
+    if (ticketParam['canEdit']) {
+      loadData();
+    }
     super.onInit();
   }
 
+  Future<void> loadData() async {
+    isLoading.value = true;
+    apiEvent.getEventDetail(id: int.parse(_eventId!)).then((response) {
+      checkApiResponse(response);
+      if (apiResponseState.value == ApiResponseState.http2xx) {
+        eventData = ViewEventDetailApiResponseModel.fromJson(response);
+        isLoading.value = false;
+
+        if (eventData!.ticket!.isNotEmpty) {
+          //daily ticket checklist
+          if (eventData!.ticket![0].quotaPerDay! > 0) {
+            isDailyTicket.value = true;
+          } else {
+            isDailyTicket.value = false;
+          }
+          //paid ticket checklist
+          if (eventData!.ticket![0].price! > 0) {
+            isPayedTicket.value = true;
+          } else {
+            isPayedTicket.value = false;
+          }
+          //ticket registration period
+          final registrationDateStart = DateFormat('EEEE, d MMMM yyyy', 'id_ID')
+              .format(DateTime.fromMillisecondsSinceEpoch(
+                  eventData!.dateTimeRegistrationStart!));
+          final registrationDateEnd = DateFormat('EEEE, d MMMM yyyy', 'id_ID')
+              .format(DateTime.fromMillisecondsSinceEpoch(
+                  eventData!.dateTimeRegistrationEnd!));
+          registrationDatePeriodController.text =
+              '$registrationDateStart - $registrationDateEnd';
+          //ticket list and data
+          ticketList.clear();
+          nameErrorMessage.clear();
+          quotaErrorMessage.clear();
+          priceErrorMessage.clear();
+          isNameValid.clear();
+          isQuotaValid.clear();
+          isPriceValid.clear();
+          nameController.clear();
+          quotaController.clear();
+          priceController.clear();
+          //sort ticket data based on id
+          eventData!.ticket!.sort(
+            (a, b) => a.id!.compareTo(b.id!),
+          );
+
+          for (int i = 0; i < 4; i++) {
+            if (i <= eventData!.ticket!.length - 1) {
+              ticketList.add(CreateEventTicketScreenCardWidget());
+              nameErrorMessage.add(RxnString());
+              quotaErrorMessage.add(RxnString());
+              priceErrorMessage.add(RxnString());
+              isNameValid.add(RxBool(true));
+              isQuotaValid.add(RxBool(true));
+              isPriceValid.add(RxBool(true));
+              nameController.add(
+                  TextEditingController(text: eventData!.ticket![i].name!));
+              if (isDailyTicket.value) {
+                quotaController.add(
+                  TextEditingController(
+                    text: eventData!.ticket![i].quotaPerDay!.toString(),
+                  ),
+                );
+              } else {
+                quotaController.add(
+                  TextEditingController(
+                    text: eventData!.ticket![i].quotaTotal!.toString(),
+                  ),
+                );
+              }
+              priceController.add(
+                TextEditingController(
+                  text: eventData!.ticket![i].price!.toString(),
+                ),
+              );
+            }
+
+            //ticket data
+            ticketData[i]['name'] = i <= eventData!.ticket!.length - 1
+                ? eventData!.ticket![i].name
+                : '';
+            ticketData[i]['quotaPerDay'] = i <= eventData!.ticket!.length - 1
+                ? eventData!.ticket![i].quotaPerDay
+                : 0;
+            ticketData[i]['quotaTotal'] = i <= eventData!.ticket!.length - 1
+                ? eventData!.ticket![i].quotaTotal
+                : 0;
+            ticketData[i]['price'] = i <= eventData!.ticket!.length - 1
+                ? eventData!.ticket![i].price
+                : 0;
+
+            //registration period
+            registrationPeriod.value = DateTimeRange(
+              start: DateTime.fromMillisecondsSinceEpoch(
+                eventData!.dateTimeRegistrationStart!,
+              ),
+              end: DateTime.fromMillisecondsSinceEpoch(
+                eventData!.dateTimeRegistrationEnd!,
+              ),
+            );
+          }
+
+          //calculate ticket quota total
+          _calculateTicketQuotaTotalAfterRemove();
+        }
+      }
+    });
+  }
+
   void initEventDate() {
-    final dateEventStart = _dateEvent['dateEventStart'] as DateTime;
-    final dateEventEnd = _dateEvent['dateEventEnd'] as DateTime;
+    final dateEventStart = ticketParam['dateEventStart'] as DateTime;
+    final dateEventEnd = ticketParam['dateEventEnd'] as DateTime;
     totalEventDay = dateEventEnd.difference(dateEventStart).inDays.abs() + 1;
   }
 
@@ -210,12 +328,12 @@ class TicketController extends ApiController {
     showDateRangePicker(
       context: Get.key.currentContext!,
       firstDate: DateTime(2000),
-      lastDate: (_dateEvent['dateEventStart'] as DateTime).add(
+      lastDate: (ticketParam['dateEventStart'] as DateTime).add(
         Duration(
           days: -1,
         ),
       ),
-      currentDate: (_dateEvent['dateEventStart'] as DateTime).add(
+      currentDate: (ticketParam['dateEventStart'] as DateTime).add(
         Duration(
           days: -1,
         ),
@@ -268,6 +386,133 @@ class TicketController extends ApiController {
     }
 
     ticketData[index]['price'] = int.parse(priceController[index].text);
+  }
+
+  Future<void> updateTicket() async {
+    _apiRequest.clear();
+    for (int i = 0; i < ticketList.length; i++) {
+      _apiRequest.add(
+        CreateTicketApiRequestModel.fromJson({
+          'name': ticketData[i]['name'],
+          'price': ticketData[i]['price'],
+          'dateTimeRegistrationStart':
+              registrationPeriod.value!.start.toUtc().millisecondsSinceEpoch,
+          'dateTimeRegistrationEnd':
+              registrationPeriod.value!.end.toUtc().millisecondsSinceEpoch,
+          'quotaPerDay': ticketData[i]['quotaPerDay'],
+          'quotaTotal': ticketData[i]['quotaTotal'],
+        }),
+      );
+
+      print(ticketData[i]);
+
+      print(_apiRequest[i].name);
+      print(_apiRequest[i].dateTimeRegistrationStart);
+      print(_apiRequest[i].dateTimeRegistrationEnd);
+      print(_apiRequest[i].quotaPerDay);
+      print(_apiRequest[i].quotaTotal);
+    }
+
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Menyimpan data...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    for (int i = 0; i < _apiRequest.length; i++) {
+      await apiTicket
+          .updateTicket(
+        eventId: _eventId!,
+        ticketId: eventData!.ticket![i].id!.toString(),
+        requestBody: _apiRequest[i],
+      )
+          .then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http2xx) {
+            Get.defaultDialog(
+              titleStyle: TextStyle(
+                fontSize: 0.0,
+              ),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Terjadi Kesalahan',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: MyEventColor.secondaryColor,
+                    ),
+                  ),
+                  Icon(
+                    Icons.close,
+                    size: 50.0,
+                    color: Colors.red,
+                  ),
+                ],
+              ),
+              textConfirm: 'OK',
+              confirmTextColor: MyEventColor.secondaryColor,
+              barrierDismissible: false,
+              onConfirm: () {
+                Get.back();
+                if (apiResponseState.value != ApiResponseState.http401) {
+                  Get.back();
+                }
+              },
+            );
+          }
+        },
+      );
+    }
+
+    if (apiResponseState.value == ApiResponseState.http2xx) {
+      Get.defaultDialog(
+        titleStyle: TextStyle(
+          fontSize: 0.0,
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Tiket Tersimpan',
+              style: TextStyle(
+                fontSize: 15.0,
+                color: MyEventColor.secondaryColor,
+              ),
+            ),
+            Icon(
+              Icons.check,
+              size: 50.0,
+              color: Colors.green,
+            ),
+          ],
+        ),
+        textConfirm: 'OK',
+        confirmTextColor: MyEventColor.secondaryColor,
+        barrierDismissible: false,
+        onConfirm: () {
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            Get.back();
+            Get.back();
+            Get.back(result: true);
+          } else {
+            Get.back();
+          }
+        },
+      );
+    }
   }
 
   Future<void> createTicket() async {
@@ -416,5 +661,22 @@ class TicketController extends ApiController {
     quotaController.removeAt(index);
     priceController.removeAt(index);
     _calculateTicketQuotaTotalAfterRemove();
+  }
+
+  bool isDeleteButtonVisible(int index) {
+    //edit data mode
+    if (ticketParam['canEdit'] == true) {
+      print('ini');
+      if (index < eventData!.ticket!.length) {
+        return false;
+      }
+    }
+    //create mode
+    else {
+      if (index < 1) {
+        return false;
+      }
+    }
+    return true;
   }
 }

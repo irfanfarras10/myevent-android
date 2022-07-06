@@ -389,7 +389,30 @@ class EventDetailScreen extends StatelessWidget {
                               height: 30.0,
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed(
+                                  RouteName.createEventTicketScreen.replaceAll(
+                                    ':id',
+                                    controller.eventData!.id!.toString(),
+                                  ),
+                                  arguments: {
+                                    'dateEventStart':
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                      controller.eventData!.dateEventStart!,
+                                    ),
+                                    'dateEventEnd':
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                      controller.eventData!.dateEventEnd!,
+                                    ),
+                                    'canEdit': true,
+                                  },
+                                )!
+                                    .then((refresh) {
+                                  if (refresh) {
+                                    controller.loadData();
+                                  }
+                                });
+                              },
                               child: Row(
                                 children: [
                                   Text(
@@ -540,6 +563,9 @@ class EventDetailScreen extends StatelessWidget {
                                     children: List.generate(
                                         controller.eventData!.ticket!.length,
                                         (index) {
+                                      controller.eventData!.ticket!.sort(
+                                        (a, b) => a.id!.compareTo(b.id!),
+                                      );
                                       return Column(
                                         children: [
                                           SizedBox(
@@ -919,14 +945,6 @@ class EventDetailScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: MyEventColor.secondaryColor,
                 ),
-              ),
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                ),
-                onPressed: () {
-                  Get.back(result: true);
-                },
               ),
               actions: [
                 Visibility(

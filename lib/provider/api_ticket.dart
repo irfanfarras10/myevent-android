@@ -12,4 +12,14 @@ class ApiTicket {
       requestBody.toJson(),
     );
   }
+
+  Future<Map<String, dynamic>> updateTicket(
+      {required String eventId,
+      required String ticketId,
+      required CreateTicketApiRequestModel requestBody}) {
+    return apiUtil.apiRequestPut(
+      'https://myevent-android-api.herokuapp.com/api/events/$eventId/ticket/$ticketId',
+      requestBody.toJson(),
+    );
+  }
 }

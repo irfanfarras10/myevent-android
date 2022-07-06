@@ -542,6 +542,7 @@ class EventController extends ApiController {
                 arguments: {
                   'dateEventStart': dateEventStart,
                   'dateEventEnd': dateEventEnd,
+                  'canEdit': false,
                 },
               );
             } else {
