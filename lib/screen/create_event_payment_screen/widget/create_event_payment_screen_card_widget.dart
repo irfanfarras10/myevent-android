@@ -28,7 +28,8 @@ class CreateEventPaymentScreenCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Visibility(
-                  visible: controller.paymentList.length > 1,
+                  visible: controller.paymentList.length > 1 &&
+                      !controller.paymentParam['canEdit'],
                   child: IconButton(
                     icon: Icon(Icons.close),
                     onPressed: () => controller.removePayment(index),
