@@ -223,14 +223,19 @@ class TicketDetailScreen extends StatelessWidget {
                                                   MyEventColor.secondaryColor,
                                             ),
                                           ),
-                                          subtitle: Text(
-                                            _rupiah(controller.eventData!
-                                                .ticket![index].price!),
-                                            style: TextStyle(
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.bold,
-                                              color:
-                                                  MyEventColor.secondaryColor,
+                                          subtitle: Visibility(
+                                            visible: controller.eventData!
+                                                    .ticket![0].price! >
+                                                0,
+                                            child: Text(
+                                              _rupiah(controller.eventData!
+                                                  .ticket![index].price!),
+                                              style: TextStyle(
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                              ),
                                             ),
                                           ),
                                         ),
