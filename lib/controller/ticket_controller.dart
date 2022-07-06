@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/create_ticket_api_request_model.dart';
+import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/provider/api_ticket.dart';
 import 'package:myevent_android/route/route_name.dart';
@@ -39,6 +40,8 @@ class TicketController extends ApiController {
 
   RxBool isLoading = false.obs;
 
+  ViewEventDetailApiResponseModel? eventData;
+
   bool get isDataValid {
     if (isPayedTicket.value) {
       return !isNameValid.contains(false) &&
@@ -66,12 +69,17 @@ class TicketController extends ApiController {
 
   Future<void> loadData() async {
     isLoading.value = true;
-    // apiEvent.getEventDetail(id: int.parse(_eventId!)).then((response) {
-    //   checkApiResponse(response);
-    //   if (apiResponseState.value == ApiResponseState.http2xx) {
-    //     isLoading.value = true;
-    //   }
-    // });
+    apiEvent.getEventDetail(id: int.parse(_eventId!)).then((response) {
+      checkApiResponse(response);
+      if (apiResponseState.value == ApiResponseState.http2xx) {
+        eventData = ViewEventDetailApiResponseModel.fromJson(response);
+        isLoading.value = false;
+        //daily ticket checklist
+        if (eventData!.ticket![0].quotaPerDay! > 0) {
+          isDailyTicket.value = true;
+        }
+      }
+    });
   }
 
   void initEventDate() {
