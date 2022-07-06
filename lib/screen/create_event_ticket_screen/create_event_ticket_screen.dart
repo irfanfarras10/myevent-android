@@ -159,7 +159,8 @@ class CreateEventTicketScreen extends StatelessWidget {
                         ),
                         Visibility(
                           visible: controller.isPayedTicket.value &&
-                              controller.ticketList.length < 4,
+                              controller.ticketList.length < 4 &&
+                              controller.ticketParam['canEdit'] == false,
                           child: SizedBox(
                             height: 60.0,
                             child: TextButton(

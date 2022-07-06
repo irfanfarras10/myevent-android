@@ -35,7 +35,7 @@ class TicketController extends ApiController {
   List<CreateTicketApiRequestModel> _apiRequest = [];
 
   final _eventId = Get.parameters['id'];
-  Map<String, dynamic> _eventData = Get.arguments;
+  Map<String, dynamic> ticketParam = Get.arguments;
   int? totalEventDay;
 
   RxBool isLoading = false.obs;
@@ -61,7 +61,7 @@ class TicketController extends ApiController {
   void onInit() {
     initEventDate();
     initTicket();
-    if (_eventData['canEdit']) {
+    if (ticketParam['canEdit']) {
       loadData();
     }
     super.onInit();
@@ -159,8 +159,8 @@ class TicketController extends ApiController {
   }
 
   void initEventDate() {
-    final dateEventStart = _eventData['dateEventStart'] as DateTime;
-    final dateEventEnd = _eventData['dateEventEnd'] as DateTime;
+    final dateEventStart = ticketParam['dateEventStart'] as DateTime;
+    final dateEventEnd = ticketParam['dateEventEnd'] as DateTime;
     totalEventDay = dateEventEnd.difference(dateEventStart).inDays.abs() + 1;
   }
 
@@ -310,12 +310,12 @@ class TicketController extends ApiController {
     showDateRangePicker(
       context: Get.key.currentContext!,
       firstDate: DateTime(2000),
-      lastDate: (_eventData['dateEventStart'] as DateTime).add(
+      lastDate: (ticketParam['dateEventStart'] as DateTime).add(
         Duration(
           days: -1,
         ),
       ),
-      currentDate: (_eventData['dateEventStart'] as DateTime).add(
+      currentDate: (ticketParam['dateEventStart'] as DateTime).add(
         Duration(
           days: -1,
         ),
