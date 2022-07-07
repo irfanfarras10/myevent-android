@@ -351,6 +351,9 @@ class PaymentController extends ApiController {
                   ':id',
                   _eventId!,
                 ),
+                arguments: {
+                  'canEdit': false,
+                },
               );
             }
           } else {

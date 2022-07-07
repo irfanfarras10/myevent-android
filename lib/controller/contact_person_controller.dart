@@ -24,6 +24,8 @@ class ContactPersonController extends ApiController {
 
   final _eventId = Get.parameters['id'];
 
+  final contactPersonParam = Get.arguments;
+
   bool get isAllDataValid {
     return !isContactPersonNameValid.contains(false) &&
         !isContactPersonNumberValid.contains(false) &&

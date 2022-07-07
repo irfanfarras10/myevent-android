@@ -876,6 +876,12 @@ class EventDetailScreen extends StatelessWidget {
                                     ':id',
                                     controller.eventData!.id!.toString(),
                                   ),
+                                  arguments: {
+                                    'canEdit': controller.eventData!
+                                            .eventContactPerson!.isEmpty
+                                        ? false
+                                        : true,
+                                  },
                                 )!
                                     .then(
                                   (refresh) {
