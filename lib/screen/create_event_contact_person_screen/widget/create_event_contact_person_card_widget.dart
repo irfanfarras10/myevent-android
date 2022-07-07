@@ -40,6 +40,7 @@ class CreateEventContactPersonCardWidget extends StatelessWidget {
                   onChanged: (String name) {
                     controller.setContactPersonName(index!, name);
                   },
+                  controller: controller.contactPersonNameController[index!],
                   decoration: InputDecoration(
                     labelText: 'Nama',
                     errorText:
@@ -72,6 +73,8 @@ class CreateEventContactPersonCardWidget extends StatelessWidget {
                     onChanged: (String number) {
                       controller.setContactPersonNumber(index!, number);
                     },
+                    controller:
+                        controller.contactPersonNumberController[index!],
                     decoration: InputDecoration(
                       labelText: 'ID / Nomor Media Sosial',
                       errorText: controller
@@ -111,6 +114,9 @@ class CreateEventContactPersonCardWidget extends StatelessWidget {
                             ),
                           )
                           .toList(),
+                      value: controller.contactPersonSocialMediaIdValue.isEmpty
+                          ? null
+                          : controller.contactPersonSocialMediaIdValue[index!],
                       onChanged: (socialMediaId) {
                         controller.setContactPersonSocialMeda(
                           index!,

@@ -24,6 +24,10 @@ class ContactPersonController extends ApiController {
   List<RxBool> isContactPersonNumberValid = [];
   List<RxBool> isContactPersonSocialMediaIdValid = [];
 
+  List<TextEditingController> contactPersonNameController = [];
+  List<TextEditingController> contactPersonNumberController = [];
+  List<int?> contactPersonSocialMediaIdValue = [];
+
   final _eventId = Get.parameters['id'];
 
   final contactPersonParam = Get.arguments;
@@ -57,6 +61,36 @@ class ContactPersonController extends ApiController {
       if (apiResponseState.value == ApiResponseState.http2xx) {
         isLoading.value = false;
         eventData = ViewEventDetailApiResponseModel.fromJson(response);
+
+        contactPersonList.clear();
+        contactPersonData.clear();
+        contactPersonNameErrorMessage.clear();
+        contactPersonNumberErrorMessage.clear();
+        isContactPersonNameValid.clear();
+        isContactPersonNumberValid.clear();
+        isContactPersonSocialMediaIdValid.clear();
+        contactPersonNameController.clear();
+        contactPersonNumberController.clear();
+        contactPersonSocialMediaIdValue.clear();
+
+        eventData!.eventContactPerson!.forEach((data) {
+          contactPersonList.add(CreateEventContactPersonCardWidget());
+          contactPersonData.add({
+            'name': data.name,
+            'contact': data.contact,
+            'eventSocialMediaId': data.eventSocialMedia!.id,
+          });
+          contactPersonNameErrorMessage.add(RxnString());
+          contactPersonNumberErrorMessage.add(RxnString());
+          isContactPersonNameValid.add(RxBool(true));
+          isContactPersonNumberValid.add(RxBool(true));
+          isContactPersonSocialMediaIdValid.add(RxBool(true));
+          contactPersonNameController
+              .add(TextEditingController(text: data.name));
+          contactPersonNumberController
+              .add(TextEditingController(text: data.contact));
+          contactPersonSocialMediaIdValue.add(data.eventSocialMedia!.id);
+        });
       }
     });
   }
@@ -92,6 +126,9 @@ class ContactPersonController extends ApiController {
     isContactPersonNameValid.add(RxBool(false));
     isContactPersonNumberValid.add(RxBool(false));
     isContactPersonSocialMediaIdValid.add(RxBool(false));
+    contactPersonNameController.add(TextEditingController());
+    contactPersonNumberController.add(TextEditingController());
+    contactPersonSocialMediaIdValue.add(null);
   }
 
   void removeContactPerson(int index) {
@@ -102,6 +139,9 @@ class ContactPersonController extends ApiController {
     isContactPersonNameValid.removeAt(index);
     isContactPersonNumberValid.removeAt(index);
     isContactPersonSocialMediaIdValid.removeAt(index);
+    contactPersonNameController.removeAt(index);
+    contactPersonNumberController.removeAt(index);
+    contactPersonSocialMediaIdValue.removeAt(index);
   }
 
   void setContactPersonName(int index, String name) {
