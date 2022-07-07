@@ -118,9 +118,13 @@ class CreateEventPaymentScreen extends StatelessWidget {
                   height: 60.0,
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
-                    onPressed: controller.isDataValid
+                    onPressed: controller.isDataValid &&
+                            !controller.paymentParam['canEdit']
                         ? controller.createPayment
-                        : null,
+                        : controller.isDataValid &&
+                                controller.paymentParam['canEdit']
+                            ? controller.updatePayment
+                            : null,
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
                         (states) {

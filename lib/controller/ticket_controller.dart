@@ -672,7 +672,6 @@ class TicketController extends ApiController {
   bool isDeleteButtonVisible(int index) {
     //edit data mode
     if (ticketParam['canEdit'] == true) {
-      print('ini');
       if (index < eventData!.ticket!.length) {
         return false;
       }

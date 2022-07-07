@@ -53,9 +53,7 @@ class PaymentController extends ApiController {
       if (apiResponseState.value == ApiResponseState.http2xx) {
         isLoading.value = false;
         eventData = ViewEventDetailApiResponseModel.fromJson(response);
-        eventData!.eventPayment!.sort(
-          (a, b) => a.type!.compareTo(b.type!),
-        );
+
         if (eventData!.eventPayment!.isNotEmpty) {
           paymentList.clear();
           paymentData.clear();
@@ -77,7 +75,7 @@ class PaymentController extends ApiController {
             paymentNumberErrorMessage.add(RxnString());
             paymentData.add({
               'type': data.type,
-              'information': data.type,
+              'information': data.information,
             });
           });
         }
@@ -137,6 +135,116 @@ class PaymentController extends ApiController {
     }
 
     paymentData[index]['information'] = number;
+  }
+
+  Future<void> updatePayment() async {
+    resetState();
+    _apiRequest.clear();
+    for (int i = 0; i < paymentList.length; i++) {
+      _apiRequest.add(CreatePaymentApiRequestModel.fromJson(paymentData[i]));
+    }
+
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Menyimpan data...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    for (int i = 0; i < _apiRequest.length; i++) {
+      await apiPayment
+          .updatePayment(
+        eventId: _eventId!,
+        paymentId: eventData!.eventPayment![i].id.toString(),
+        requestBody: _apiRequest[i],
+      )
+          .then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http2xx) {
+            Get.defaultDialog(
+              titleStyle: TextStyle(
+                fontSize: 0.0,
+              ),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Terjadi Kesalahan',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: MyEventColor.secondaryColor,
+                    ),
+                  ),
+                  Icon(
+                    Icons.close,
+                    size: 50.0,
+                    color: Colors.red,
+                  ),
+                ],
+              ),
+              textConfirm: 'OK',
+              confirmTextColor: MyEventColor.secondaryColor,
+              barrierDismissible: false,
+              onConfirm: () {
+                Get.back();
+                if (apiResponseState.value != ApiResponseState.http401) {
+                  Get.back();
+                }
+              },
+            );
+            return;
+          }
+        },
+      );
+    }
+
+    if (apiResponseState.value == ApiResponseState.http2xx) {
+      Get.defaultDialog(
+        titleStyle: TextStyle(
+          fontSize: 0.0,
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Pembayaran Tersimpan',
+              style: TextStyle(
+                fontSize: 15.0,
+                color: MyEventColor.secondaryColor,
+              ),
+            ),
+            Icon(
+              Icons.check,
+              size: 50.0,
+              color: Colors.green,
+            ),
+          ],
+        ),
+        textConfirm: 'OK',
+        confirmTextColor: MyEventColor.secondaryColor,
+        barrierDismissible: false,
+        onConfirm: () {
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            Get.back();
+            Get.back();
+            Get.back(result: true);
+          } else {
+            Get.back();
+          }
+        },
+      );
+    }
   }
 
   Future<void> createPayment() async {
@@ -237,12 +345,14 @@ class PaymentController extends ApiController {
             Get.back();
             Get.back();
             Get.back(result: true);
-            Get.toNamed(
-              RouteName.createEventContactPersonScreen.replaceAll(
-                ':id',
-                _eventId!,
-              ),
-            );
+            if (eventData != null) {
+              Get.toNamed(
+                RouteName.createEventContactPersonScreen.replaceAll(
+                  ':id',
+                  _eventId!,
+                ),
+              );
+            }
           } else {
             Get.back();
           }
