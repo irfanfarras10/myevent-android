@@ -635,6 +635,9 @@ class TicketController extends ApiController {
                 Get.toNamed(
                   RouteName.createEventPaymentScreen
                       .replaceAll(':id', _eventId!),
+                  arguments: {
+                    'canEdit': false,
+                  },
                 );
               } else {
                 Get.toNamed(
@@ -669,7 +672,6 @@ class TicketController extends ApiController {
   bool isDeleteButtonVisible(int index) {
     //edit data mode
     if (ticketParam['canEdit'] == true) {
-      print('ini');
       if (index < eventData!.ticket!.length) {
         return false;
       }

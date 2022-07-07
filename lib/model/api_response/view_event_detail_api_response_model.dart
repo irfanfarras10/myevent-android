@@ -268,18 +268,21 @@ class EventGuest {
 }
 
 class EventPayment {
+  int? id;
   String? type;
   String? information;
 
   EventPayment({this.type, this.information});
 
   EventPayment.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     type = json['type'];
     information = json['information'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['type'] = this.type;
     data['information'] = this.information;
     return data;

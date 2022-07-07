@@ -12,4 +12,14 @@ class ApiPayment {
       requestBody.toJson(),
     );
   }
+
+  Future<Map<String, dynamic>> updatePayment(
+      {required String eventId,
+      required String paymentId,
+      required CreatePaymentApiRequestModel requestBody}) {
+    return apiUtil.apiRequestPut(
+      'https://myevent-android-api.herokuapp.com/api/events/$eventId/payment/$paymentId',
+      requestBody.toJson(),
+    );
+  }
 }
