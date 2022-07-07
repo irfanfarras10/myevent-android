@@ -640,7 +640,10 @@ class EventDetailScreen extends StatelessWidget {
                                       controller.eventData!.id!.toString(),
                                     ),
                                     arguments: {
-                                      'canEdit': true,
+                                      'canEdit': controller
+                                              .eventData!.eventPayment!.isEmpty
+                                          ? false
+                                          : true,
                                     },
                                   )!
                                       .then((refresh) {
