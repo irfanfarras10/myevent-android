@@ -4,7 +4,9 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/model/api_request/create_contact_person_api_request_model.dart';
 import 'package:myevent_android/model/api_response/contact_person_social_media_api_response_model.dart';
+import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/provider/api_contact_person.dart';
+import 'package:myevent_android/provider/api_event.dart';
 import 'package:myevent_android/screen/create_event_contact_person_screen/widget/create_event_contact_person_card_widget.dart';
 
 class ContactPersonController extends ApiController {
@@ -26,6 +28,8 @@ class ContactPersonController extends ApiController {
 
   final contactPersonParam = Get.arguments;
 
+  ViewEventDetailApiResponseModel? eventData;
+
   bool get isAllDataValid {
     return !isContactPersonNameValid.contains(false) &&
         !isContactPersonNumberValid.contains(false) &&
@@ -36,6 +40,9 @@ class ContactPersonController extends ApiController {
   void onInit() {
     getContactPersonSocialMedia();
     addContactPerson();
+    if (contactPersonParam['canEdit']) {
+      loadData();
+    }
     super.onInit();
   }
 
@@ -44,12 +51,23 @@ class ContactPersonController extends ApiController {
     FocusManager.instance.primaryFocus?.unfocus();
   }
 
+  Future<void> loadData() async {
+    await apiEvent.getEventDetail(id: int.parse(_eventId!)).then((response) {
+      checkApiResponse(response);
+      if (apiResponseState.value == ApiResponseState.http2xx) {
+        isLoading.value = false;
+        eventData = ViewEventDetailApiResponseModel.fromJson(response);
+      }
+    });
+  }
+
   Future<void> getContactPersonSocialMedia() async {
     await apiContactPerson.getContactPersonSocialMedia().then(
       (response) {
         checkApiResponse(response);
 
-        if (apiResponseState.value != ApiResponseState.http401) {
+        if (apiResponseState.value != ApiResponseState.http401 &&
+            !contactPersonParam['canEdit']) {
           isLoading.value = false;
         }
 
