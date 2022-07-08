@@ -643,6 +643,9 @@ class TicketController extends ApiController {
                 Get.toNamed(
                   RouteName.createEventContactPersonScreen
                       .replaceAll(':id', _eventId!),
+                  arguments: {
+                    'canEdit': false,
+                  },
                 );
               }
             }

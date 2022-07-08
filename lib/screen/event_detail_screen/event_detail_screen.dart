@@ -629,8 +629,9 @@ class EventDetailScreen extends StatelessWidget {
                               height: 30.0,
                             ),
                             Visibility(
-                              visible:
-                                  controller.eventData!.eventStatus!.id == 1,
+                              visible: controller.eventData!.eventStatus!.id ==
+                                      1 &&
+                                  controller.eventData!.ticket![0].price! > 0,
                               child: ElevatedButton(
                                 onPressed: () {
                                   Get.toNamed(
@@ -640,7 +641,10 @@ class EventDetailScreen extends StatelessWidget {
                                       controller.eventData!.id!.toString(),
                                     ),
                                     arguments: {
-                                      'canEdit': true,
+                                      'canEdit': controller
+                                              .eventData!.eventPayment!.isEmpty
+                                          ? false
+                                          : true,
                                     },
                                   )!
                                       .then((refresh) {
@@ -866,7 +870,28 @@ class EventDetailScreen extends StatelessWidget {
                               height: 30.0,
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed(
+                                  RouteName.createEventContactPersonScreen
+                                      .replaceAll(
+                                    ':id',
+                                    controller.eventData!.id!.toString(),
+                                  ),
+                                  arguments: {
+                                    'canEdit': controller.eventData!
+                                            .eventContactPerson!.isEmpty
+                                        ? false
+                                        : true,
+                                  },
+                                )!
+                                    .then(
+                                  (refresh) {
+                                    if (refresh) {
+                                      controller.loadData();
+                                    }
+                                  },
+                                );
+                              },
                               child: Row(
                                 children: [
                                   Text(

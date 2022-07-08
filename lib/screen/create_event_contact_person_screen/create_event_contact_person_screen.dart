@@ -29,27 +29,30 @@ class CreateEventContactPersonScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 60.0,
-                  child: TextButton(
-                    onPressed: controller.addContactPerson,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Tambahkan Contact Person',
-                          style: TextStyle(
-                            fontSize: 17.0,
-                            color: MyEventColor.secondaryColor,
-                            fontWeight: FontWeight.bold,
+                Visibility(
+                  visible: !controller.contactPersonParam['canEdit'],
+                  child: SizedBox(
+                    height: 60.0,
+                    child: TextButton(
+                      onPressed: controller.addContactPerson,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Tambahkan Contact Person',
+                            style: TextStyle(
+                              fontSize: 17.0,
+                              color: MyEventColor.secondaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 10.0),
-                        Icon(
-                          Icons.add,
-                          color: MyEventColor.secondaryColor,
-                        ),
-                      ],
+                          SizedBox(width: 10.0),
+                          Icon(
+                            Icons.add,
+                            color: MyEventColor.secondaryColor,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -100,9 +103,13 @@ class CreateEventContactPersonScreen extends StatelessWidget {
                   child: SizedBox(
                     height: 60.0,
                     child: ElevatedButton(
-                      onPressed: controller.isAllDataValid
+                      onPressed: controller.isAllDataValid &&
+                              !controller.contactPersonParam['canEdit']
                           ? controller.createContactPerson
-                          : null,
+                          : controller.isAllDataValid &&
+                                  controller.contactPersonParam['canEdit']
+                              ? controller.updateContactPerson
+                              : null,
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.resolveWith<Color>(
