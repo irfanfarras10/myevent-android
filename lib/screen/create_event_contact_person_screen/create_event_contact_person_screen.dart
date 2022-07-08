@@ -103,9 +103,13 @@ class CreateEventContactPersonScreen extends StatelessWidget {
                   child: SizedBox(
                     height: 60.0,
                     child: ElevatedButton(
-                      onPressed: controller.isAllDataValid
+                      onPressed: controller.isAllDataValid &&
+                              !controller.contactPersonParam['canEdit']
                           ? controller.createContactPerson
-                          : null,
+                          : controller.isAllDataValid &&
+                                  controller.contactPersonParam['canEdit']
+                              ? controller.updateContactPerson
+                              : null,
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.resolveWith<Color>(
