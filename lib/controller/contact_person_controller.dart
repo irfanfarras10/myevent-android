@@ -168,7 +168,7 @@ class ContactPersonController extends ApiController {
     contactPersonData[index]['contact'] = number;
   }
 
-  void setContactPersonSocialMeda(int index, int id) {
+  void setContactPersonSocialMedia(int index, int id) {
     contactPersonData[index]['eventSocialMediaId'] = id;
     isContactPersonSocialMediaIdValid[index].value = true;
   }

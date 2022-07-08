@@ -118,7 +118,7 @@ class CreateEventContactPersonCardWidget extends StatelessWidget {
                           ? null
                           : controller.contactPersonSocialMediaIdValue[index!],
                       onChanged: (socialMediaId) {
-                        controller.setContactPersonSocialMeda(
+                        controller.setContactPersonSocialMedia(
                           index!,
                           socialMediaId!,
                         );
