@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/guest_controller.dart';
+import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
 import 'package:myevent_android/widget/navigation_drawer_widget.dart';
@@ -135,12 +136,14 @@ class GuestScreen extends StatelessWidget {
                 color: MyEventColor.secondaryColor,
               ),
             ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.add_comment_rounded),
-              )
-            ],
+            actions: controller.isLoading.value
+                ? null
+                : [
+                    IconButton(
+                      onPressed: controller.inviteAllGuest,
+                      icon: Icon(Icons.add_comment_rounded),
+                    )
+                  ],
           ),
           body: body,
           drawer: controller.isLoading.value
@@ -149,7 +152,9 @@ class GuestScreen extends StatelessWidget {
           floatingActionButton: controller.isLoading.value
               ? null
               : FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed(RouteName.createGuestScreen);
+                  },
                   child: Icon(
                     Icons.add,
                   ),

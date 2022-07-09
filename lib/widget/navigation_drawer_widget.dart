@@ -60,7 +60,12 @@ class NavigationDrawerWidget extends StatelessWidget {
             leading: Icon(Icons.dashboard, color: MyEventColor.secondaryColor),
             title: Text('Dashboard'),
             onTap: () {
-              Navigator.pop(context);
+              Get.offAllNamed(
+                RouteName.dashboardScreen.replaceAll(
+                  ':id',
+                  eventData!.id!.toString(),
+                ),
+              );
             },
           ),
           ListTile(

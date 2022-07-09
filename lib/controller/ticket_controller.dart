@@ -630,7 +630,7 @@ class TicketController extends ApiController {
             Get.back();
             Get.back();
             Get.back(result: true);
-            if (eventData != null) {
+            if (eventData == null) {
               if (isPayedTicket.value) {
                 Get.toNamed(
                   RouteName.createEventPaymentScreen
