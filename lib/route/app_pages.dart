@@ -5,6 +5,7 @@ import 'package:myevent_android/screen/create_event_payment_screen/create_event_
 import 'package:myevent_android/screen/create_event_ticket_screen/create_event_ticket_screen.dart';
 import 'package:myevent_android/screen/edit_event_data_screen/edit_event_data_screen.dart';
 import 'package:myevent_android/screen/event_detail_screen/event_detail_screen.dart';
+import 'package:myevent_android/screen/guest_screen/guest_screen.dart';
 import 'package:myevent_android/screen/main_screen/main_screen.dart';
 import 'package:myevent_android/screen/onboarding_screen/onboarding_screen.dart';
 import 'package:myevent_android/screen/signin_screen/signin_screen.dart';
@@ -71,6 +72,10 @@ class AppPages {
     GetPage(
       name: RouteName.ticketDetailScreen,
       page: () => TicketDetailScreen(),
+    ),
+    GetPage(
+      name: RouteName.guestScreen,
+      page: () => GuestScreen(),
     )
   ];
 }

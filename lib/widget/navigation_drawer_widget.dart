@@ -92,7 +92,12 @@ class NavigationDrawerWidget extends StatelessWidget {
             leading: Icon(Icons.people, color: MyEventColor.secondaryColor),
             title: Text('Tamu'),
             onTap: () {
-              Navigator.pop(context);
+              Get.offAllNamed(
+                RouteName.guestScreen.replaceAll(
+                  ':id',
+                  eventData!.id!.toString(),
+                ),
+              );
             },
           ),
           ListTile(
