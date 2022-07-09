@@ -135,11 +135,25 @@ class GuestScreen extends StatelessWidget {
                 color: MyEventColor.secondaryColor,
               ),
             ),
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.add_comment_rounded),
+              )
+            ],
           ),
           body: body,
           drawer: controller.isLoading.value
               ? null
               : NavigationDrawerWidget(eventData: controller.eventData),
+          floatingActionButton: controller.isLoading.value
+              ? null
+              : FloatingActionButton(
+                  onPressed: () {},
+                  child: Icon(
+                    Icons.add,
+                  ),
+                ),
         );
       },
     );
