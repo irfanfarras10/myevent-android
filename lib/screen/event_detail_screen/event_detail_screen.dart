@@ -1068,83 +1068,100 @@ class EventDetailScreen extends StatelessWidget {
                                     color: MyEventColor.secondaryColor,
                                   ),
                                 ),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      TextFormField(
-                                        // controller: controller.descriptionController,
-                                        textInputAction: TextInputAction.next,
-                                        keyboardType: TextInputType.name,
-                                        // focusNode: controller.descriptionFocusNode,
-                                        // onChanged: (String description) {
-                                        //   controller.validateDescription(description);
-                                        // },
-                                        decoration: InputDecoration(
-                                          labelText: 'Alasan Pembatalan',
-                                          // errorText: controller.descriptionErrorMessage.value,
-                                          fillColor: MyEventColor.primaryColor,
-                                          labelStyle: TextStyle(
-                                            color: MyEventColor.secondaryColor,
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: const BorderSide(
+                                content: Obx(
+                                  () => SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFormField(
+                                          controller: controller
+                                              .cancelTextEditingController,
+                                          textInputAction:
+                                              TextInputAction.done,
+                                          keyboardType: TextInputType.name,
+                                          onChanged: (String message) {
+                                            controller.validateCancelMessage(
+                                                message);
+                                          },
+                                          decoration: InputDecoration(
+                                            labelText: 'Alasan Pembatalan',
+                                            errorText: controller
+                                                .cancelErrorMessage.value,
+                                            fillColor:
+                                                MyEventColor.primaryColor,
+                                            labelStyle: TextStyle(
                                               color:
                                                   MyEventColor.secondaryColor,
                                             ),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(
-                                              color:
-                                                  MyEventColor.secondaryColor,
+                                            border: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color: MyEventColor
+                                                    .secondaryColor,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color: MyEventColor
+                                                    .secondaryColor,
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color:
+                                                    MyEventColor.primaryColor,
+                                              ),
                                             ),
                                           ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(
-                                              color: MyEventColor.primaryColor,
+                                          maxLines: 20,
+                                        ),
+                                        SizedBox(
+                                          height: 20.0,
+                                        ),
+                                        SizedBox(
+                                          height: 60.0,
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width,
+                                          child: ElevatedButton(
+                                            onPressed: controller
+                                                    .isCancelButtonValid.value
+                                                ? () {}
+                                                : null,
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty
+                                                      .resolveWith<Color>(
+                                                (states) {
+                                                  if (states.contains(
+                                                      MaterialState
+                                                          .disabled)) {
+                                                    return Colors
+                                                        .amber.shade300;
+                                                  }
+                                                  return Colors.amber;
+                                                },
+                                              ),
+                                            ),
+                                            child: Text(
+                                              'Konfirmasi Pembatalan',
+                                              style: TextStyle(
+                                                fontSize: 17.0,
+                                                color: MyEventColor
+                                                    .secondaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        maxLines: 20,
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      SizedBox(
-                                        height: 60.0,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: ElevatedButton(
-                                          onPressed: () {},
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty
-                                                    .resolveWith<Color>(
-                                              (states) {
-                                                if (states.contains(
-                                                    MaterialState.disabled)) {
-                                                  return Colors.amber.shade300;
-                                                }
-                                                return Colors.amber;
-                                              },
-                                            ),
-                                          ),
-                                          child: Text(
-                                            'Konfirmasi Pembatalan',
-                                            style: TextStyle(
-                                              fontSize: 17.0,
-                                              color:
-                                                  MyEventColor.secondaryColor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            );
+                            ).then((_) {
+                              controller.isCancelButtonValid.value = false;
+                              controller.cancelErrorMessage.value = null;
+                            });
                           },
                         );
                         break;

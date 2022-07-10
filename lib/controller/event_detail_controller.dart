@@ -10,6 +10,10 @@ class EventDetailController extends ApiController {
   RxBool isLoading = RxBool(true);
   final eventId = int.parse(Get.parameters['id']!);
   ViewEventDetailApiResponseModel? eventData;
+  RxBool isCancelButtonValid = RxBool(false);
+
+  TextEditingController cancelTextEditingController = TextEditingController();
+  RxnString cancelErrorMessage = RxnString();
 
   @override
   void onInit() {
@@ -20,6 +24,16 @@ class EventDetailController extends ApiController {
   @override
   void resetState() {
     isLoading.value = true;
+  }
+
+  void validateCancelMessage(String message) {
+    if (message.isEmpty) {
+      isCancelButtonValid.value = false;
+      cancelErrorMessage.value = 'Harap masukkan alasan pembatalan';
+    } else {
+      isCancelButtonValid.value = true;
+      cancelErrorMessage.value = null;
+    }
   }
 
   Future<void> loadData() async {
