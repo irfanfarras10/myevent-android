@@ -103,7 +103,49 @@ class EventDetailController extends ApiController {
           height: 60.0,
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              //free event
+              if (eventData!.ticket!.isNotEmpty &&
+                  eventData!.eventPaymentCategory!.id == 1 &&
+                  eventData!.eventContactPerson!.isNotEmpty) {
+                print('on pressed publish event for free event');
+              } else if (eventData!.ticket!.isNotEmpty &&
+                  eventData!.eventPaymentCategory!.id == 2 &&
+                  eventData!.eventPayment!.isNotEmpty &&
+                  eventData!.eventContactPerson!.isNotEmpty) {
+                print('on pressed publish event for free event');
+              } else {
+                Get.defaultDialog(
+                  titleStyle: TextStyle(
+                    fontSize: 0.0,
+                  ),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Lengkapi data event sebelum publish',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          color: MyEventColor.secondaryColor,
+                        ),
+                      ),
+                      Icon(
+                        Icons.close,
+                        size: 50.0,
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                  textConfirm: 'OK',
+                  confirmTextColor: MyEventColor.secondaryColor,
+                  barrierDismissible: false,
+                  onConfirm: () {
+                    Get.back();
+                  },
+                );
+              }
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (states) {

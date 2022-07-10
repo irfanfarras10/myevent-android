@@ -629,8 +629,12 @@ class EventDetailScreen extends StatelessWidget {
                               height: 30.0,
                             ),
                             Visibility(
-                              visible:
-                                  controller.eventData!.eventStatus!.id == 1,
+                              visible: controller.eventData!.eventStatus!.id ==
+                                      1 &&
+                                  controller.eventData!.ticket!.isNotEmpty &&
+                                  controller.eventData!.eventPaymentCategory!
+                                          .id ==
+                                      2,
                               child: ElevatedButton(
                                 onPressed: () {
                                   Get.toNamed(
