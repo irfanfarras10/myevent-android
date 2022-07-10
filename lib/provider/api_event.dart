@@ -50,4 +50,13 @@ class ApiEvent {
       data: data,
     );
   }
+
+  Future<Map<String, dynamic>> publishEvent({
+    required int id,
+  }) {
+    return apiUtil.apiRequestPost(
+      'https://myevent-android-api.herokuapp.com/api/events/$id/publish',
+      {},
+    );
+  }
 }
