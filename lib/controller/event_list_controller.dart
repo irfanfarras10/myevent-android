@@ -57,6 +57,20 @@ class EventListController extends ApiController {
           }
         },
       );
+    } else if (eventStatus == 5) {
+      await apiEvent.getEventCancel().then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http401) {
+            isLoading.value = false;
+          }
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            final eventData = ViewEventListApiResponseModel.fromJson(response);
+            eventList = eventData.eventDataList!;
+            searchEventList.value = eventList;
+          }
+        },
+      );
     }
   }
 
