@@ -29,6 +29,12 @@ class ApiEvent {
     );
   }
 
+  Future<Map<String, dynamic>> getEventPublish() {
+    return apiUtil.apiRequestGet(
+      'https://myevent-android-api.herokuapp.com/api/events/published',
+    );
+  }
+
   Future<Map<String, dynamic>> getEventDetail({required int id}) {
     return apiUtil.apiRequestGet(
       'https://myevent-android-api.herokuapp.com/api/events/$id',
