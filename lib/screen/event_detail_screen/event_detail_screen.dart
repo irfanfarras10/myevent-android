@@ -13,6 +13,8 @@ import 'package:myevent_android/widget/loading_widget.dart';
 import 'package:myevent_android/widget/navigation_drawer_widget.dart';
 
 class EventDetailScreen extends StatelessWidget {
+  final secondaryMenu = <String>['Batalkan'];
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<EventDetailController>();
@@ -1028,6 +1030,27 @@ class EventDetailScreen extends StatelessWidget {
                     icon: Icon(Icons.delete),
                     tooltip: 'Hapus Event',
                   ),
+                ),
+                Visibility(
+                  visible: controller.eventData != null &&
+                      (controller.eventData!.eventStatus!.id == 2 ||
+                          controller.eventData!.eventStatus!.id == 3) &&
+                      !controller.isLoading.value,
+                  child: PopupMenuButton<String>(
+                      itemBuilder: (BuildContext context) {
+                    return secondaryMenu.map((String choice) {
+                      return PopupMenuItem<String>(
+                        child: Text(choice),
+                        value: choice,
+                      );
+                    }).toList();
+                  }, onSelected: (item) {
+                    switch (item) {
+                      case 'Batalkan':
+                        print('Home clicked');
+                        break;
+                    }
+                  }),
                 ),
               ],
             ),
