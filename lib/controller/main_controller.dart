@@ -23,16 +23,19 @@ class MainController extends GetxController {
     } else if (authState == AuthState.unauthorized) {
       initRoute = RouteName.signInScreen;
     } else {
+      String eventOrganizerId = JwtUtil().parseJwt(
+        pref.getString('myevent.auth.token')!,
+      )['sub'];
+      pref.setString('myevent.auth.token.subject', eventOrganizerId);
+
       //subscribe topic for notification
-      await FirebaseMessaging.instance
-          .subscribeToTopic("TopicName")
-          .then((value) => print('topik di subgerb'));
+      FirebaseMessaging.instance.subscribeToTopic(eventOrganizerId);
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         const AndroidNotificationChannel channel = AndroidNotificationChannel(
-          'high_importance_channel',
-          'High Importance Notifications',
-          'This channel is used for important notifications.',
+          'event_reminder',
+          'Pengingat event',
+          'Channel notifikasi untuk mengingatkan event H-3 dan H-1',
           importance: Importance.high,
           playSound: true,
         );
@@ -40,6 +43,24 @@ class MainController extends GetxController {
         AndroidNotification? android = message.notification?.android;
         final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
             FlutterLocalNotificationsPlugin();
+
+        Future onClickNotification(String? payload) async {
+          Get.offAllNamed(
+            RouteName.eventDetailScreen.replaceAll(':id', payload!),
+          );
+        }
+
+        var androidSettings =
+            AndroidInitializationSettings('@mipmap/ic_launcher');
+        var initSetttings = InitializationSettings(
+          android: androidSettings,
+        );
+
+        flutterLocalNotificationsPlugin.initialize(
+          initSetttings,
+          onSelectNotification: onClickNotification,
+        );
+
         // ignore: unnecessary_null_comparison
         if (notification != null && android != null) {
           flutterLocalNotificationsPlugin.show(
@@ -53,16 +74,14 @@ class MainController extends GetxController {
                 channel.description,
                 playSound: true,
                 icon: '@mipmap/ic_launcher',
+                styleInformation: BigTextStyleInformation(notification.body!),
               ),
             ),
+            payload: message.data['eventId'],
           );
         }
       });
 
-      String eventOrganizerId = JwtUtil().parseJwt(
-        pref.getString('myevent.auth.token')!,
-      )['sub'];
-      pref.setString('myevent.auth.token.subject', eventOrganizerId);
       initRoute = RouteName.mainScreen;
     }
     Get.offAllNamed(initRoute!);

@@ -6,13 +6,12 @@ import 'package:get/get.dart';
 import 'package:myevent_android/controller/main_binding.dart';
 import 'package:myevent_android/route/app_pages.dart';
 import 'package:myevent_android/route/route_name.dart';
-import 'package:myevent_android/util/api_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'high_importance_channel',
-  'High Importance Notifications',
-  'This channel is used for important notifications.',
+  'event_reminder',
+  'Pengingat event',
+  'Channel notifikasi untuk mengingatkan event H-3 dan H-1',
   importance: Importance.high,
   playSound: true,
 );
@@ -77,6 +76,7 @@ class _MyEventAppState extends State<MyEventApp> {
               channel.description,
               playSound: true,
               icon: '@mipmap/ic_launcher',
+              styleInformation: BigTextStyleInformation(notification.body!),
             ),
           ),
         );
@@ -85,19 +85,10 @@ class _MyEventAppState extends State<MyEventApp> {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('notifikasi di klik');
-      RemoteNotification notification = message.notification!;
-      AndroidNotification? android = message.notification?.android;
+      // RemoteNotification notification = message.notification!;
+      // AndroidNotification? android = message.notification?.android;
       // ignore: unnecessary_null_comparison
-      if (notification != null && android != null) {
-        showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text(notification.title!),
-                content: Text('ada notif'),
-              );
-            });
-      }
+      print(message.data);
     });
   }
 
@@ -109,7 +100,6 @@ class _MyEventAppState extends State<MyEventApp> {
         fontFamily: 'Inter',
       ),
       debugShowCheckedModeBanner: false,
-      navigatorKey: alice.getNavigatorKey(),
       getPages: AppPages.pages,
       initialBinding: MainBinding(),
       defaultTransition: Transition.rightToLeftWithFade,

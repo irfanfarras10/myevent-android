@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
@@ -169,6 +170,9 @@ class ProfileController extends ApiController {
       barrierDismissible: false,
       onConfirm: () async {
         final prefs = await SharedPreferences.getInstance();
+        FirebaseMessaging.instance.unsubscribeFromTopic(
+          prefs.getString('myevent.auth.token.subject')!,
+        );
         prefs.remove('myevent.auth.token');
         Get.offAllNamed(RouteName.signInScreen);
       },

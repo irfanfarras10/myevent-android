@@ -27,7 +27,7 @@ dependencies:
   shared_preferences: ^2.0.6
   get: 4.5.1
   dio: ^4.0.6
-  alice: 0.2.0
+  # alice: 0.2.0
   introduction_screen: ^3.0.2
   flutter_svg: ^0.21.0
   shimmer: ^2.0.0
