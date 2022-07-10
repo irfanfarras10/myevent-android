@@ -5,6 +5,7 @@ import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/screen/draft_event_screen/draft_event_screen.dart';
+import 'package:myevent_android/screen/publish_event_screen/publish_event_screen.dart';
 
 class EventScreen extends StatelessWidget {
   final controller = Get.put(EventListController(), tag: 'draft');
@@ -60,7 +61,7 @@ class EventScreen extends StatelessWidget {
             body: TabBarView(
               children: [
                 DraftEventScreen(),
-                Container(),
+                PublishEventScreen(),
                 Container(),
                 Container(),
                 Container(),

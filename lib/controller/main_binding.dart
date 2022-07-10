@@ -58,6 +58,11 @@ class MainBinding implements Bindings {
       tag: 'draft',
     );
     Get.lazyPut(
+      () => EventListController(),
+      fenix: true,
+      tag: 'publish',
+    );
+    Get.lazyPut(
       () => AgendaController(),
       fenix: true,
     );

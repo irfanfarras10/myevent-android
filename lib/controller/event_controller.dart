@@ -216,14 +216,16 @@ class EventController extends ApiController {
     showDatePicker(
       context: Get.key.currentContext!,
       initialDate: dateEventStart == null ? DateTime.now() : dateEventStart!,
-      firstDate: DateTime.now(),
+      firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     ).then((date) {
-      dateEventStart = date;
-      dateEventStartController.text =
-          '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(dateEventStart!)}';
-      validateDateEvent();
-      setTimeEventStart();
+      if (date != null) {
+        dateEventStart = date;
+        dateEventStartController.text =
+            '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(dateEventStart!)}';
+        validateDateEvent();
+        setTimeEventStart();
+      }
     });
   }
 
@@ -231,13 +233,15 @@ class EventController extends ApiController {
     showDatePicker(
       context: Get.key.currentContext!,
       initialDate: dateEventEnd == null ? DateTime.now() : dateEventEnd!,
-      firstDate: DateTime.now(),
+      firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     ).then((date) {
-      dateEventEnd = date;
-      dateEventEndController.text =
-          '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(dateEventEnd!)}';
-      validateDateEvent();
+      if (date != null) {
+        dateEventEnd = date;
+        dateEventEndController.text =
+            '${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(dateEventEnd!)}';
+        validateDateEvent();
+      }
     });
   }
 
@@ -247,13 +251,15 @@ class EventController extends ApiController {
       initialTime: TimeOfDay.now(),
     ).then(
       (time) {
-        timeEventStart = time;
-        timeEventStartController.text =
-            MaterialLocalizations.of(Get.key.currentContext!)
-                .formatTimeOfDay(time!);
+        if (time != null) {
+          timeEventStart = time;
+          timeEventStartController.text =
+              MaterialLocalizations.of(Get.key.currentContext!)
+                  .formatTimeOfDay(time);
 
-        validateTimeEvent();
-        setTimeEventStart();
+          validateTimeEvent();
+          setTimeEventStart();
+        }
       },
     );
   }
@@ -264,12 +270,14 @@ class EventController extends ApiController {
       initialTime: TimeOfDay.now(),
     ).then(
       (time) {
-        timeEventEnd = time;
-        timeEventEndController.text =
-            MaterialLocalizations.of(Get.key.currentContext!)
-                .formatTimeOfDay(time!);
-        validateTimeEvent();
-        setTimeEventEnd();
+        if (time != null) {
+          timeEventEnd = time;
+          timeEventEndController.text =
+              MaterialLocalizations.of(Get.key.currentContext!)
+                  .formatTimeOfDay(time);
+          validateTimeEvent();
+          setTimeEventEnd();
+        }
       },
     );
   }
@@ -496,6 +504,7 @@ class EventController extends ApiController {
         if (apiResponseState.value == ApiResponseState.http2xx) {
           createEventApiResponse =
               CreateEventApiResponseModel.fromJson(response);
+          print(createEventApiResponse.eventId);
         }
         Get.defaultDialog(
           titleStyle: TextStyle(

@@ -29,6 +29,12 @@ class ApiEvent {
     );
   }
 
+  Future<Map<String, dynamic>> getEventPublish() {
+    return apiUtil.apiRequestGet(
+      'https://myevent-android-api.herokuapp.com/api/events/published',
+    );
+  }
+
   Future<Map<String, dynamic>> getEventDetail({required int id}) {
     return apiUtil.apiRequestGet(
       'https://myevent-android-api.herokuapp.com/api/events/$id',
@@ -48,6 +54,15 @@ class ApiEvent {
     return apiUtil.apiRequestMultipartPut(
       url: 'https://myevent-android-api.herokuapp.com/api/events/update/$id',
       data: data,
+    );
+  }
+
+  Future<Map<String, dynamic>> publishEvent({
+    required int id,
+  }) {
+    return apiUtil.apiRequestPost(
+      'https://myevent-android-api.herokuapp.com/api/events/$id/publish',
+      {},
     );
   }
 }
