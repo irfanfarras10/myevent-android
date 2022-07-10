@@ -65,4 +65,12 @@ class ApiEvent {
       {},
     );
   }
+
+  Future<Map<String, dynamic>> cancelEvent(
+      {required int id, required Map<String, dynamic> data}) {
+    return apiUtil.apiRequestPost(
+      'https://myevent-android-api.herokuapp.com/api/events/$id/cancel',
+      data,
+    );
+  }
 }
