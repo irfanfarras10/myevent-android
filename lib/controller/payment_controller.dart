@@ -345,7 +345,7 @@ class PaymentController extends ApiController {
             Get.back();
             Get.back();
             Get.back(result: true);
-            if (eventData != null) {
+            if (eventData == null) {
               Get.toNamed(
                 RouteName.createEventContactPersonScreen.replaceAll(
                   ':id',
