@@ -1076,12 +1076,11 @@ class EventDetailScreen extends StatelessWidget {
                                         TextFormField(
                                           controller: controller
                                               .cancelTextEditingController,
-                                          textInputAction:
-                                              TextInputAction.done,
+                                          textInputAction: TextInputAction.done,
                                           keyboardType: TextInputType.name,
                                           onChanged: (String message) {
-                                            controller.validateCancelMessage(
-                                                message);
+                                            controller
+                                                .validateCancelMessage(message);
                                           },
                                           decoration: InputDecoration(
                                             labelText: 'Alasan Pembatalan',
@@ -1095,14 +1094,14 @@ class EventDetailScreen extends StatelessWidget {
                                             ),
                                             border: OutlineInputBorder(
                                               borderSide: const BorderSide(
-                                                color: MyEventColor
-                                                    .secondaryColor,
+                                                color:
+                                                    MyEventColor.secondaryColor,
                                               ),
                                             ),
                                             enabledBorder: OutlineInputBorder(
                                               borderSide: const BorderSide(
-                                                color: MyEventColor
-                                                    .secondaryColor,
+                                                color:
+                                                    MyEventColor.secondaryColor,
                                               ),
                                             ),
                                             focusedBorder: OutlineInputBorder(
@@ -1119,13 +1118,12 @@ class EventDetailScreen extends StatelessWidget {
                                         ),
                                         SizedBox(
                                           height: 60.0,
-                                          width: MediaQuery.of(context)
-                                              .size
-                                              .width,
+                                          width:
+                                              MediaQuery.of(context).size.width,
                                           child: ElevatedButton(
                                             onPressed: controller
                                                     .isCancelButtonValid.value
-                                                ? () {}
+                                                ? controller.cancelEvent
                                                 : null,
                                             style: ButtonStyle(
                                               backgroundColor:
@@ -1133,8 +1131,7 @@ class EventDetailScreen extends StatelessWidget {
                                                       .resolveWith<Color>(
                                                 (states) {
                                                   if (states.contains(
-                                                      MaterialState
-                                                          .disabled)) {
+                                                      MaterialState.disabled)) {
                                                     return Colors
                                                         .amber.shade300;
                                                   }
@@ -1146,8 +1143,8 @@ class EventDetailScreen extends StatelessWidget {
                                               'Konfirmasi Pembatalan',
                                               style: TextStyle(
                                                 fontSize: 17.0,
-                                                color: MyEventColor
-                                                    .secondaryColor,
+                                                color:
+                                                    MyEventColor.secondaryColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),

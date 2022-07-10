@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
+import 'package:myevent_android/model/api_request/cancel_event_api_request_model.dart';
 import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -289,6 +290,7 @@ class EventDetailController extends ApiController {
   }
 
   Future<void> doPublishEvent() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     Get.dialog(
       AlertDialog(
         contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
@@ -327,6 +329,135 @@ class EventDetailController extends ApiController {
                   Icons.check,
                   size: 50.0,
                   color: Colors.green,
+                ),
+              ],
+            ),
+            textConfirm: 'OK',
+            confirmTextColor: MyEventColor.secondaryColor,
+            barrierDismissible: false,
+            onConfirm: () {
+              Get.back();
+              Get.back();
+              loadData();
+            },
+          );
+        } else {
+          Get.defaultDialog(
+            titleStyle: TextStyle(
+              fontSize: 0.0,
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Terjadi Kesalahan',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+                Icon(
+                  Icons.close,
+                  size: 50.0,
+                  color: Colors.red,
+                ),
+              ],
+            ),
+            textConfirm: 'OK',
+            confirmTextColor: MyEventColor.secondaryColor,
+            barrierDismissible: false,
+            onConfirm: () {
+              Get.back();
+              Get.back();
+              loadData();
+            },
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> cancelEvent() async {
+    Get.back();
+
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Membatalkan Event...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    apiEvent
+        .cancelEvent(
+      id: eventId,
+      data: CancelEventApiRequestModel.fromJson({
+        'message': cancelTextEditingController.text,
+      }).toJson(),
+    )
+        .then(
+      (response) {
+        checkApiResponse(response);
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          Get.defaultDialog(
+            titleStyle: TextStyle(
+              fontSize: 0.0,
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Event Berhasil di Batalkan',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+                Icon(
+                  Icons.check,
+                  size: 50.0,
+                  color: Colors.green,
+                ),
+              ],
+            ),
+            textConfirm: 'OK',
+            confirmTextColor: MyEventColor.secondaryColor,
+            barrierDismissible: false,
+            onConfirm: () {
+              Get.back();
+              Get.back();
+              loadData();
+            },
+          );
+        } else {
+          Get.defaultDialog(
+            titleStyle: TextStyle(
+              fontSize: 0.0,
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Terjadi Kesalahan',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+                Icon(
+                  Icons.close,
+                  size: 50.0,
+                  color: Colors.red,
                 ),
               ],
             ),
