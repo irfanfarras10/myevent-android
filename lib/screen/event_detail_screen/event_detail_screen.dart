@@ -388,51 +388,58 @@ class EventDetailScreen extends StatelessWidget {
                             SizedBox(
                               height: 30.0,
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Get.toNamed(
-                                  RouteName.createEventTicketScreen.replaceAll(
-                                    ':id',
-                                    controller.eventData!.id!.toString(),
-                                  ),
-                                  arguments: {
-                                    'dateEventStart':
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                      controller.eventData!.dateEventStart!,
+                            Visibility(
+                              visible:
+                                  controller.eventData!.eventStatus!.id == 1
+                                      ? true
+                                      : false,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.toNamed(
+                                    RouteName.createEventTicketScreen
+                                        .replaceAll(
+                                      ':id',
+                                      controller.eventData!.id!.toString(),
                                     ),
-                                    'dateEventEnd':
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                      controller.eventData!.dateEventEnd!,
+                                    arguments: {
+                                      'dateEventStart':
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                        controller.eventData!.dateEventStart!,
+                                      ),
+                                      'dateEventEnd':
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                        controller.eventData!.dateEventEnd!,
+                                      ),
+                                      'canEdit':
+                                          controller.eventData!.ticket!.isEmpty
+                                              ? false
+                                              : true,
+                                    },
+                                  )!
+                                      .then((refresh) {
+                                    if (refresh) {
+                                      controller.loadData();
+                                    }
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Edit',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
                                     ),
-                                    'canEdit':
-                                        controller.eventData!.ticket!.isEmpty
-                                            ? false
-                                            : true,
-                                  },
-                                )!
-                                    .then((refresh) {
-                                  if (refresh) {
-                                    controller.loadData();
-                                  }
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Edit',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: MyEventColor.secondaryColor,
+                                    SizedBox(
+                                      width: 5.0,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Icon(
-                                    Icons.edit,
-                                    size: 16.5,
-                                  ),
-                                ],
+                                    Icon(
+                                      Icons.edit,
+                                      size: 16.5,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -765,25 +772,31 @@ class EventDetailScreen extends StatelessWidget {
                             SizedBox(
                               height: 30.0,
                             ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Tambah',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: MyEventColor.secondaryColor,
+                            Visibility(
+                              visible:
+                                  controller.eventData!.eventStatus!.id == 1
+                                      ? true
+                                      : false,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Tambah',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Icon(
-                                    Icons.add,
-                                    size: 16.5,
-                                  ),
-                                ],
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Icon(
+                                      Icons.add,
+                                      size: 16.5,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -872,46 +885,52 @@ class EventDetailScreen extends StatelessWidget {
                             SizedBox(
                               height: 30.0,
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Get.toNamed(
-                                  RouteName.createEventContactPersonScreen
-                                      .replaceAll(
-                                    ':id',
-                                    controller.eventData!.id!.toString(),
-                                  ),
-                                  arguments: {
-                                    'canEdit': controller.eventData!
-                                            .eventContactPerson!.isEmpty
-                                        ? false
-                                        : true,
-                                  },
-                                )!
-                                    .then(
-                                  (refresh) {
-                                    if (refresh) {
-                                      controller.loadData();
-                                    }
-                                  },
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Edit',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: MyEventColor.secondaryColor,
+                            Visibility(
+                              visible:
+                                  controller.eventData!.eventStatus!.id == 1
+                                      ? true
+                                      : false,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.toNamed(
+                                    RouteName.createEventContactPersonScreen
+                                        .replaceAll(
+                                      ':id',
+                                      controller.eventData!.id!.toString(),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Icon(
-                                    Icons.edit,
-                                    size: 16.5,
-                                  ),
-                                ],
+                                    arguments: {
+                                      'canEdit': controller.eventData!
+                                              .eventContactPerson!.isEmpty
+                                          ? false
+                                          : true,
+                                    },
+                                  )!
+                                      .then(
+                                    (refresh) {
+                                      if (refresh) {
+                                        controller.loadData();
+                                      }
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Edit',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Icon(
+                                      Icons.edit,
+                                      size: 16.5,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
