@@ -1,8 +1,10 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/route/route_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final ViewEventDetailApiResponseModel? eventData;
@@ -56,22 +58,29 @@ class NavigationDrawerWidget extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: Icon(Icons.dashboard, color: MyEventColor.secondaryColor),
-            title: Text('Dashboard'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.people,
-              color: MyEventColor.secondaryColor,
+          Visibility(
+            visible: eventData!.eventStatus!.id! != 1,
+            child: ListTile(
+              leading:
+                  Icon(Icons.dashboard, color: MyEventColor.secondaryColor),
+              title: Text('Dashboard'),
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
-            title: Text('Peserta'),
-            onTap: () {
-              Navigator.pop(context);
-            },
+          ),
+          Visibility(
+            visible: eventData!.eventStatus!.id! != 1,
+            child: ListTile(
+              leading: Icon(
+                Icons.people,
+                color: MyEventColor.secondaryColor,
+              ),
+              title: Text('Peserta'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
           ListTile(
             leading: Icon(
@@ -95,22 +104,28 @@ class NavigationDrawerWidget extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          ListTile(
-            leading: Icon(Icons.share, color: MyEventColor.secondaryColor),
-            title: Text('Promosi Event'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.file_copy_sharp,
-              color: MyEventColor.secondaryColor,
+          Visibility(
+            visible: eventData!.eventStatus!.id! != 1,
+            child: ListTile(
+              leading: Icon(Icons.share, color: MyEventColor.secondaryColor),
+              title: Text('Promosi Event'),
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
-            title: Text('Bagikan File'),
-            onTap: () {
-              Navigator.pop(context);
-            },
+          ),
+          Visibility(
+            visible: eventData!.eventStatus!.id! != 1,
+            child: ListTile(
+              leading: Icon(
+                Icons.file_copy_sharp,
+                color: MyEventColor.secondaryColor,
+              ),
+              title: Text('Bagikan File'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
           Divider(),
           ListTile(
@@ -124,7 +139,22 @@ class NavigationDrawerWidget extends StatelessWidget {
             leading: Icon(Icons.logout, color: MyEventColor.secondaryColor),
             title: Text('Keluar'),
             onTap: () {
-              Navigator.pop(context);
+              Get.defaultDialog(
+                title: 'Keluar Akun',
+                content: Text('Apakah Anda Ingin keluar akun?'),
+                textConfirm: 'Ya',
+                textCancel: 'Tidak',
+                confirmTextColor: MyEventColor.secondaryColor,
+                barrierDismissible: false,
+                onConfirm: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  FirebaseMessaging.instance.unsubscribeFromTopic(
+                    prefs.getString('myevent.auth.token.subject')!,
+                  );
+                  prefs.remove('myevent.auth.token');
+                  Get.offAllNamed(RouteName.signInScreen);
+                },
+              );
             },
           ),
         ],
