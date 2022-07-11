@@ -41,6 +41,12 @@ class ApiEvent {
     );
   }
 
+  Future<Map<String, dynamic>> getEventPass() {
+    return apiUtil.apiRequestGet(
+      'https://myevent-android-api.herokuapp.com/api/events/passed',
+    );
+  }
+
   Future<Map<String, dynamic>> getEventCancel() {
     return apiUtil.apiRequestGet(
       'https://myevent-android-api.herokuapp.com/api/events/cancel',
