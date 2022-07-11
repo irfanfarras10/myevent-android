@@ -112,28 +112,32 @@ class GuestScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            trailing: IconButton(
-                              onPressed: () async {
-                                Get.delete<GuestController>();
-                                await Get.toNamed(
-                                  RouteName.createGuestScreen.replaceAll(
-                                    ':id',
-                                    controller.eventData!.id!.toString(),
-                                  ),
-                                  arguments: {
-                                    'canEdit': true,
-                                    'guestIndex': index,
-                                  },
-                                )!
-                                    .then((refresh) {
-                                  if (refresh) {
-                                    controller.loadData();
-                                  }
-                                });
-                              },
-                              icon: Icon(
-                                Icons.edit,
-                                color: MyEventColor.secondaryColor,
+                            trailing: Visibility(
+                              visible:
+                                  controller.eventData!.eventStatus!.id == 1,
+                              child: IconButton(
+                                onPressed: () async {
+                                  Get.delete<GuestController>();
+                                  await Get.toNamed(
+                                    RouteName.createGuestScreen.replaceAll(
+                                      ':id',
+                                      controller.eventData!.id!.toString(),
+                                    ),
+                                    arguments: {
+                                      'canEdit': true,
+                                      'guestIndex': index,
+                                    },
+                                  )!
+                                      .then((refresh) {
+                                    if (refresh) {
+                                      controller.loadData();
+                                    }
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: MyEventColor.secondaryColor,
+                                ),
                               ),
                             ),
                           );
