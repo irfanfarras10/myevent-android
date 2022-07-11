@@ -30,35 +30,38 @@ class GuestScreen extends StatelessWidget {
 
           body = SingleChildScrollView(
             child: controller.guestData.isEmpty
-                ? Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15.0),
-                      ),
-                      color: Colors.grey.shade200,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '0 Tamu Undangan',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.5,
-                            color: MyEventColor.secondaryColor,
-                          ),
+                ? Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15.0),
                         ),
-                        Text(
-                          'Event tidak mengundang tamu',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.5,
-                            color: MyEventColor.secondaryColor,
+                        color: Colors.grey.shade200,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '0 Tamu Undangan',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.5,
+                              color: MyEventColor.secondaryColor,
+                            ),
                           ),
-                        )
-                      ],
+                          Text(
+                            'Event tidak mengundang tamu',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.5,
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   )
                 : Column(
@@ -149,7 +152,8 @@ class GuestScreen extends StatelessWidget {
           drawer: controller.isLoading.value
               ? null
               : NavigationDrawerWidget(eventData: controller.eventData),
-          floatingActionButton: controller.isLoading.value
+          floatingActionButton: controller.isLoading.value &&
+                  controller.eventData!.eventStatus!.id == 1
               ? null
               : FloatingActionButton(
                   onPressed: () {
