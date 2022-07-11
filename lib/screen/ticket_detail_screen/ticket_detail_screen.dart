@@ -314,7 +314,8 @@ class TicketDetailScreen extends StatelessWidget {
             ),
             actions: [
               Visibility(
-                visible: !controller.isLoading.value,
+                visible: !controller.isLoading.value &&
+                    controller.eventData!.eventStatus!.id == 1,
                 child: IconButton(
                   onPressed: () {
                     Get.toNamed(
