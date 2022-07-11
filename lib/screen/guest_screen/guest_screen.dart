@@ -139,7 +139,7 @@ class GuestScreen extends StatelessWidget {
                 color: MyEventColor.secondaryColor,
               ),
             ),
-            actions: controller.isLoading.value
+            actions: controller.isLoading.value || controller.guestData.isEmpty
                 ? null
                 : [
                     IconButton(
