@@ -14,7 +14,7 @@ class CreateGuestScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              'Tambah Tamu',
+              'Tamu',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: MyEventColor.secondaryColor,

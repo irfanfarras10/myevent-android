@@ -780,13 +780,18 @@ class EventDetailScreen extends StatelessWidget {
                                       ? true
                                       : false,
                               child: ElevatedButton(
-                                onPressed: () {
-                                  Get.toNamed(
+                                onPressed: () async {
+                                  await Get.toNamed(
                                     RouteName.createGuestScreen.replaceAll(
                                       ':id',
                                       controller.eventData!.id!.toString(),
                                     ),
-                                  );
+                                  )!
+                                      .then((refresh) {
+                                    if (refresh) {
+                                      controller.loadData();
+                                    }
+                                  });
                                 },
                                 child: Row(
                                   children: [

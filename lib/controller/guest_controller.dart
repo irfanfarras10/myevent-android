@@ -177,7 +177,7 @@ class GuestController extends ApiController {
           children: [
             CircularProgressIndicator(),
             SizedBox(width: 15.0),
-            Text('Mengirim undangan ...'),
+            Text('Menyimpan Data ...'),
           ],
         ),
       ),
