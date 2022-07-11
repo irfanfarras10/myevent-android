@@ -9,6 +9,7 @@ import 'package:myevent_android/controller/guest_controller.dart';
 import 'package:myevent_android/controller/main_controller.dart';
 import 'package:myevent_android/controller/payment_controller.dart';
 import 'package:myevent_android/controller/profile_controller.dart';
+import 'package:myevent_android/controller/sharing_file_controller.dart';
 import 'package:myevent_android/controller/ticket_controller.dart';
 
 class MainBinding implements Bindings {
@@ -59,6 +60,26 @@ class MainBinding implements Bindings {
       tag: 'draft',
     );
     Get.lazyPut(
+      () => EventListController(),
+      fenix: true,
+      tag: 'publish',
+    );
+    Get.lazyPut(
+      () => EventListController(),
+      fenix: true,
+      tag: 'live',
+    );
+    Get.lazyPut(
+      () => EventListController(),
+      fenix: true,
+      tag: 'pass',
+    );
+    Get.lazyPut(
+      () => EventListController(),
+      fenix: true,
+      tag: 'cancel',
+    );
+    Get.lazyPut(
       () => AgendaController(),
       fenix: true,
     );
@@ -68,6 +89,10 @@ class MainBinding implements Bindings {
     );
     Get.lazyPut(
       () => GuestController(),
+      fenix: true,
+    );
+    Get.lazyPut(
+      () => SharingFileController(),
       fenix: true,
     );
   }

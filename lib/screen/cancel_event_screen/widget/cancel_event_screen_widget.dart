@@ -8,10 +8,10 @@ import 'package:myevent_android/model/api_response/view_event_list_api_response_
 import 'package:myevent_android/route/route_name.dart';
 import 'package:myevent_android/util/location_util.dart';
 
-class DraftEventScreenCardWidget extends StatelessWidget {
-  final controller = Get.put(EventListController(), tag: 'draft');
+class CancelEventScreenCardWidget extends StatelessWidget {
+  final controller = Get.put(EventListController(), tag: 'cancel');
   final EventDataList? data;
-  DraftEventScreenCardWidget({
+  CancelEventScreenCardWidget({
     Key? key,
     required this.data,
   }) : super(key: key);
@@ -219,6 +219,119 @@ class DraftEventScreenCardWidget extends StatelessWidget {
                 height: 1.0,
                 color: Colors.black26,
               ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        0.0,
+                        15.0,
+                        0.0,
+                        15.0,
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed(
+                            RouteName.ticketDetailScreen.replaceAll(
+                              ':id',
+                              data!.id!.toString(),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Icon(
+                                Icons.local_activity,
+                                color: MyEventColor.secondaryColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(
+                                'Tiket',
+                                style: TextStyle(
+                                  color: MyEventColor.secondaryColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                            EdgeInsets.all(8.0),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(
+                            Colors.white,
+                          ),
+                          elevation: MaterialStateProperty.all(0.0),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        0.0,
+                        15.0,
+                        0.0,
+                        15.0,
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Icon(
+                                Icons.people,
+                                color: MyEventColor.secondaryColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(
+                                'Peserta',
+                                style: TextStyle(
+                                  color: MyEventColor.secondaryColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                            EdgeInsets.all(8.0),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(
+                            Colors.white,
+                          ),
+                          elevation: MaterialStateProperty.all(0.0),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

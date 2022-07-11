@@ -1,9 +1,7 @@
-import 'package:alice/alice.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final ApiUtil apiUtil = ApiUtil();
-final Alice alice = Alice();
 
 class ApiUtil {
   Future<String?> _getAuthToken() async {
@@ -18,8 +16,6 @@ class ApiUtil {
     dio.options.headers['Authorization'] = 'Bearer ${await _getAuthToken()}';
     dio.options.headers['Content-Type'] = 'application/json';
     dio.options.headers['Accept'] = 'application/json';
-    // dio.options.headers['Accept-Encoding'] = 'gzip, deflate, br';
-    dio.interceptors.add(alice.getDioInterceptor());
     return dio;
   }
 

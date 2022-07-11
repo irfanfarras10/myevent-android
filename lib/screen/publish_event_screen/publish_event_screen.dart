@@ -4,25 +4,26 @@ import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
-import 'package:myevent_android/screen/draft_event_screen/widget/draft_event_screen_card_widget.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
 
-class DraftEventScreen extends StatefulWidget {
-  const DraftEventScreen({
+import 'widget/publish_event_screen_card_widget.dart';
+
+class PublishEventScreen extends StatefulWidget {
+  const PublishEventScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<DraftEventScreen> createState() => _DraftEventScreenState();
+  State<PublishEventScreen> createState() => _PublishEventScreenState();
 }
 
-class _DraftEventScreenState extends State<DraftEventScreen> {
-  final controller = Get.put(EventListController(), tag: 'draft');
+class _PublishEventScreenState extends State<PublishEventScreen> {
+  final controller = Get.put(EventListController(), tag: 'publish');
 
   @override
   void initState() {
-    controller.eventStatus = 1;
+    controller.eventStatus = 2;
     controller.loadData();
     super.initState();
   }
@@ -30,7 +31,7 @@ class _DraftEventScreenState extends State<DraftEventScreen> {
   @override
   void dispose() {
     controller.setSearchMode(false);
-    Get.delete<EventListController>(tag: 'draft');
+    Get.delete<EventListController>(tag: 'publish');
     super.dispose();
   }
 
@@ -101,7 +102,7 @@ class _DraftEventScreenState extends State<DraftEventScreen> {
                                 // ignore: invalid_use_of_protected_member
                                 controller.searchEventList.value.length,
                                 (index) {
-                                  return DraftEventScreenCardWidget(
+                                  return PublishEventScreenCardWidget(
                                     data: controller.searchEventList[index],
                                   );
                                 },

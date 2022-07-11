@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
+import 'package:myevent_android/model/api_request/cancel_event_api_request_model.dart';
 import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/provider/api_event.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,6 +12,13 @@ class EventDetailController extends ApiController {
   RxBool isLoading = RxBool(true);
   final eventId = int.parse(Get.parameters['id']!);
   ViewEventDetailApiResponseModel? eventData;
+  RxBool isCancelButtonValid = RxBool(false);
+
+  TextEditingController cancelTextEditingController = TextEditingController();
+  RxnString cancelErrorMessage = RxnString();
+
+  TextEditingController registrationLinkTextEditingController =
+      TextEditingController();
 
   @override
   void onInit() {
@@ -20,6 +29,16 @@ class EventDetailController extends ApiController {
   @override
   void resetState() {
     isLoading.value = true;
+  }
+
+  void validateCancelMessage(String message) {
+    if (message.isEmpty) {
+      isCancelButtonValid.value = false;
+      cancelErrorMessage.value = 'Harap masukkan alasan pembatalan';
+    } else {
+      isCancelButtonValid.value = true;
+      cancelErrorMessage.value = null;
+    }
   }
 
   Future<void> loadData() async {
@@ -103,7 +122,49 @@ class EventDetailController extends ApiController {
           height: 60.0,
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () async {
+              //free event
+              if (eventData!.ticket!.isNotEmpty &&
+                  eventData!.eventPaymentCategory!.id == 1 &&
+                  eventData!.eventContactPerson!.isNotEmpty) {
+                doPublishEvent();
+              } else if (eventData!.ticket!.isNotEmpty &&
+                  eventData!.eventPaymentCategory!.id == 2 &&
+                  eventData!.eventPayment!.isNotEmpty &&
+                  eventData!.eventContactPerson!.isNotEmpty) {
+                doPublishEvent();
+              } else {
+                Get.defaultDialog(
+                  titleStyle: TextStyle(
+                    fontSize: 0.0,
+                  ),
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Lengkapi data event sebelum publish',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          color: MyEventColor.secondaryColor,
+                        ),
+                      ),
+                      Icon(
+                        Icons.close,
+                        size: 50.0,
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                  textConfirm: 'OK',
+                  confirmTextColor: MyEventColor.secondaryColor,
+                  barrierDismissible: false,
+                  onConfirm: () {
+                    Get.back();
+                  },
+                );
+              }
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                 (states) {
@@ -116,6 +177,148 @@ class EventDetailController extends ApiController {
             ),
             child: Text(
               'Publish Event',
+              style: TextStyle(
+                fontSize: 17.0,
+                color: MyEventColor.secondaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    if (!isLoading.value && eventData!.eventStatus!.id == 2) {
+      bottomButton = Container(
+        padding: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 6.0,
+              offset: Offset(0.0, 3.0),
+              color: Colors.black26,
+            ),
+          ],
+        ),
+        child: SizedBox(
+          height: 60.0,
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () async {
+              generateRegistrationLink();
+              Get.dialog(
+                AlertDialog(
+                  title: Text(
+                    'Link Registrasi Peserta',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: MyEventColor.secondaryColor,
+                    ),
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: registrationLinkTextEditingController,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.name,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          fillColor: MyEventColor.primaryColor,
+                          labelStyle: TextStyle(
+                            color: MyEventColor.secondaryColor,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Clipboard.setData(
+                                ClipboardData(
+                                  text: registrationLinkTextEditingController
+                                      .text,
+                                ),
+                              );
+                              Get.defaultDialog(
+                                titleStyle: TextStyle(
+                                  fontSize: 0.0,
+                                ),
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Link Berhasil Di Copy',
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.check,
+                                      size: 50.0,
+                                      color: Colors.green,
+                                    ),
+                                  ],
+                                ),
+                                textConfirm: 'OK',
+                                confirmTextColor: MyEventColor.secondaryColor,
+                                barrierDismissible: false,
+                                onConfirm: () {
+                                  Get.back();
+                                },
+                              );
+                            },
+                            child: Text('Copy Link'),
+                          ),
+                          SizedBox(width: 10.0),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await launch(
+                                registrationLinkTextEditingController.text,
+                              );
+                            },
+                            child: Text('Buka'),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return Colors.amber.shade300;
+                  }
+                  return Colors.amber;
+                },
+              ),
+            ),
+            child: Text(
+              'Link Registrasi Peserta',
               style: TextStyle(
                 fontSize: 17.0,
                 color: MyEventColor.secondaryColor,
@@ -230,5 +433,204 @@ class EventDetailController extends ApiController {
         );
       },
     );
+  }
+
+  Future<void> doPublishEvent() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Mempublish Event...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    await apiEvent.publishEvent(id: eventData!.id!).then(
+      (response) {
+        checkApiResponse(response);
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          Get.defaultDialog(
+            titleStyle: TextStyle(
+              fontSize: 0.0,
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Event Berhasil di Publish',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+                Icon(
+                  Icons.check,
+                  size: 50.0,
+                  color: Colors.green,
+                ),
+              ],
+            ),
+            textConfirm: 'OK',
+            confirmTextColor: MyEventColor.secondaryColor,
+            barrierDismissible: false,
+            onConfirm: () {
+              Get.back();
+              Get.back();
+              loadData();
+            },
+          );
+        } else {
+          Get.defaultDialog(
+            titleStyle: TextStyle(
+              fontSize: 0.0,
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Terjadi Kesalahan',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+                Icon(
+                  Icons.close,
+                  size: 50.0,
+                  color: Colors.red,
+                ),
+              ],
+            ),
+            textConfirm: 'OK',
+            confirmTextColor: MyEventColor.secondaryColor,
+            barrierDismissible: false,
+            onConfirm: () {
+              Get.back();
+              Get.back();
+              loadData();
+            },
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> cancelEvent() async {
+    Get.back();
+
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Membatalkan Event...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    apiEvent
+        .cancelEvent(
+      id: eventId,
+      data: CancelEventApiRequestModel.fromJson({
+        'message': cancelTextEditingController.text,
+      }).toJson(),
+    )
+        .then(
+      (response) {
+        checkApiResponse(response);
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          Get.defaultDialog(
+            titleStyle: TextStyle(
+              fontSize: 0.0,
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Event Berhasil di Batalkan',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+                Icon(
+                  Icons.check,
+                  size: 50.0,
+                  color: Colors.green,
+                ),
+                Text(
+                  'Informasi pembatalan akan segera dikirimkan ke e-mail peserta',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+              ],
+            ),
+            textConfirm: 'OK',
+            confirmTextColor: MyEventColor.secondaryColor,
+            barrierDismissible: false,
+            onConfirm: () {
+              Get.back();
+              Get.back();
+              loadData();
+            },
+          );
+        } else {
+          Get.defaultDialog(
+            titleStyle: TextStyle(
+              fontSize: 0.0,
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Terjadi Kesalahan',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+                Icon(
+                  Icons.close,
+                  size: 50.0,
+                  color: Colors.red,
+                ),
+              ],
+            ),
+            textConfirm: 'OK',
+            confirmTextColor: MyEventColor.secondaryColor,
+            barrierDismissible: false,
+            onConfirm: () {
+              Get.back();
+              Get.back();
+              loadData();
+            },
+          );
+        }
+      },
+    );
+  }
+
+  void generateRegistrationLink() {
+    String registrationLink = 'https://myevent-web.herokuapp.com/event/';
+    registrationLink += eventData!.id!.toString();
+    registrationLinkTextEditingController.text = registrationLink;
   }
 }

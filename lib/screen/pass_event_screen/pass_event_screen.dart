@@ -4,25 +4,25 @@ import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
-import 'package:myevent_android/screen/draft_event_screen/widget/draft_event_screen_card_widget.dart';
+import 'package:myevent_android/screen/pass_event_screen/widget/pass_event_screen_card_widget.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
 
-class DraftEventScreen extends StatefulWidget {
-  const DraftEventScreen({
+class PassEventScreen extends StatefulWidget {
+  const PassEventScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<DraftEventScreen> createState() => _DraftEventScreenState();
+  State<PassEventScreen> createState() => _PassEventScreenState();
 }
 
-class _DraftEventScreenState extends State<DraftEventScreen> {
-  final controller = Get.put(EventListController(), tag: 'draft');
+class _PassEventScreenState extends State<PassEventScreen> {
+  final controller = Get.put(EventListController(), tag: 'pass');
 
   @override
   void initState() {
-    controller.eventStatus = 1;
+    controller.eventStatus = 4;
     controller.loadData();
     super.initState();
   }
@@ -30,7 +30,7 @@ class _DraftEventScreenState extends State<DraftEventScreen> {
   @override
   void dispose() {
     controller.setSearchMode(false);
-    Get.delete<EventListController>(tag: 'draft');
+    Get.delete<EventListController>(tag: 'pass');
     super.dispose();
   }
 
@@ -101,7 +101,7 @@ class _DraftEventScreenState extends State<DraftEventScreen> {
                                 // ignore: invalid_use_of_protected_member
                                 controller.searchEventList.value.length,
                                 (index) {
-                                  return DraftEventScreenCardWidget(
+                                  return PassEventScreenCardWidget(
                                     data: controller.searchEventList[index],
                                   );
                                 },
