@@ -34,6 +34,7 @@ class CreateGuestScreen extends StatelessWidget {
                 onChanged: (String name) {
                   controller.validateName(name);
                 },
+                readOnly: controller.eventData!.eventStatus!.id != 1,
                 decoration: InputDecoration(
                   labelText: 'Nama',
                   errorText: controller.nameErrorMessage.value,
@@ -68,6 +69,7 @@ class CreateGuestScreen extends StatelessWidget {
                 onChanged: (String email) {
                   controller.validateEmail(email);
                 },
+                readOnly: controller.eventData!.eventStatus!.id != 1,
                 decoration: InputDecoration(
                   labelText: 'E-Mail',
                   errorText: controller.emailErrorMessage.value,
@@ -102,6 +104,7 @@ class CreateGuestScreen extends StatelessWidget {
                 onChanged: (String number) {
                   controller.validatePhoneNumber(number);
                 },
+                readOnly: controller.eventData!.eventStatus!.id != 1,
                 decoration: InputDecoration(
                   labelText: 'Nomor HP',
                   errorText: controller.phoneNumberErrorMessage.value,
@@ -169,31 +172,34 @@ class CreateGuestScreen extends StatelessWidget {
                   child: SizedBox(
                     height: 60.0,
                     width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed:
-                          controller.isAllDataValid && !controller.canEdit
-                              ? controller.createGuest
-                              : controller.isAllDataValid && controller.canEdit
-                                  ? () => controller
-                                      .updateGuest(Get.arguments['guestIndex'])
-                                  : null,
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (states) {
-                            if (states.contains(MaterialState.disabled)) {
-                              return Colors.amber.shade300;
-                            }
-                            return Colors.amber;
-                          },
+                    child: Visibility(
+                      visible: controller.eventData!.eventStatus!.id == 1,
+                      child: ElevatedButton(
+                        onPressed: controller.isAllDataValid &&
+                                !controller.canEdit
+                            ? controller.createGuest
+                            : controller.isAllDataValid && controller.canEdit
+                                ? () => controller
+                                    .updateGuest(Get.arguments['guestIndex'])
+                                : null,
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                            (states) {
+                              if (states.contains(MaterialState.disabled)) {
+                                return Colors.amber.shade300;
+                              }
+                              return Colors.amber;
+                            },
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        'Simpan',
-                        style: TextStyle(
-                          fontSize: 17.0,
-                          color: MyEventColor.secondaryColor,
-                          fontWeight: FontWeight.bold,
+                        child: Text(
+                          'Simpan',
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            color: MyEventColor.secondaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),

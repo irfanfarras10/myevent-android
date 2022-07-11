@@ -91,6 +91,19 @@ class GuestScreen extends StatelessWidget {
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           return ListTile(
+                            onTap: () {
+                              Get.delete<GuestController>();
+                              Get.toNamed(
+                                RouteName.createGuestScreen.replaceAll(
+                                  ':id',
+                                  controller.eventData!.id!.toString(),
+                                ),
+                                arguments: {
+                                  'canEdit': true,
+                                  'guestIndex': index,
+                                },
+                              );
+                            },
                             leading: Icon(Icons.person),
                             title: Text(
                               controller.guestData[index].name!,
