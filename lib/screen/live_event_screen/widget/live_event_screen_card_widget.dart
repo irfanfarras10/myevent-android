@@ -231,56 +231,6 @@ class LiveEventScreenCardWidget extends StatelessWidget {
                         15.0,
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Icon(
-                                Icons.dashboard,
-                                color: MyEventColor.secondaryColor,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Text(
-                                'Dasbor',
-                                style: TextStyle(
-                                  color: MyEventColor.secondaryColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
-                            EdgeInsets.all(8.0),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.white,
-                          ),
-                          elevation: MaterialStateProperty.all(0.0),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        0.0,
-                        15.0,
-                        0.0,
-                        15.0,
-                      ),
-                      child: ElevatedButton(
                         onPressed: () {
                           Get.toNamed(
                             RouteName.ticketDetailScreen.replaceAll(
@@ -357,56 +307,6 @@ class LiveEventScreenCardWidget extends StatelessWidget {
                                   color: MyEventColor.secondaryColor,
                                 ),
                                 textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
-                            EdgeInsets.all(8.0),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.white,
-                          ),
-                          elevation: MaterialStateProperty.all(0.0),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        0.0,
-                        15.0,
-                        0.0,
-                        15.0,
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Icon(
-                                Icons.share,
-                                color: MyEventColor.secondaryColor,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Text(
-                                'Bagikan',
-                                style: TextStyle(
-                                  color: MyEventColor.secondaryColor,
-                                ),
                               ),
                             ),
                           ],

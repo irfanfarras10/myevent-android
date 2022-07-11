@@ -61,17 +61,6 @@ class NavigationDrawerWidget extends StatelessWidget {
           Visibility(
             visible: eventData!.eventStatus!.id! != 1,
             child: ListTile(
-              leading:
-                  Icon(Icons.dashboard, color: MyEventColor.secondaryColor),
-              title: Text('Dashboard'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-          Visibility(
-            visible: eventData!.eventStatus!.id! != 1,
-            child: ListTile(
               leading: Icon(
                 Icons.people,
                 color: MyEventColor.secondaryColor,
