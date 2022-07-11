@@ -18,6 +18,14 @@ class GuestController extends ApiController {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
 
+  RxBool isNameValid = RxBool(false);
+  RxBool isEmailValid = RxBool(false);
+  RxBool isPhoneNumberValid = RxBool(false);
+
+  RxnString nameErrorMessage = RxnString();
+  RxnString emailErrorMessage = RxnString();
+  RxnString phoneNumberErrorMessage = RxnString();
+
   @override
   void onInit() {
     loadData();
@@ -28,6 +36,46 @@ class GuestController extends ApiController {
   void resetState() {
     guestData.clear();
     isLoading.value = true;
+  }
+
+  bool get isAllDataValid {
+    return isNameValid.value && isEmailValid.value && isPhoneNumberValid.value;
+  }
+
+  void validateName(String name) {
+    if (name.isEmpty) {
+      isNameValid.value = false;
+      nameErrorMessage.value = 'Nama harus diisi';
+    } else {
+      isNameValid.value = true;
+      nameErrorMessage.value = null;
+    }
+  }
+
+  void validateEmail(String email) {
+    if (email.isEmpty) {
+      isEmailValid.value = false;
+      emailErrorMessage.value = 'Email harus diisi';
+    } else if (!email.isEmail) {
+      isEmailValid.value = false;
+      emailErrorMessage.value = 'Email tidak valid';
+    } else {
+      isEmailValid.value = true;
+      emailErrorMessage.value = null;
+    }
+  }
+
+  void validatePhoneNumber(String phoneNumber) {
+    if (phoneNumber.isEmpty) {
+      isPhoneNumberValid.value = false;
+      phoneNumberErrorMessage.value = 'Nomor telepon harus diisi';
+    } else if (!phoneNumber.isPhoneNumber) {
+      isPhoneNumberValid.value = false;
+      phoneNumberErrorMessage.value = 'Nomor HP tidak valid';
+    } else {
+      isPhoneNumberValid.value = true;
+      phoneNumberErrorMessage.value = null;
+    }
   }
 
   Future<void> loadData() async {
