@@ -1,9 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/model/api_response/view_event_detail_api_response_model.dart';
 import 'package:myevent_android/route/route_name.dart';
+import 'package:myevent_android/util/location_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
@@ -103,13 +106,14 @@ class NavigationDrawerWidget extends StatelessWidget {
           ),
           Visibility(
             visible: eventData!.eventStatus!.id! != 1 &&
+                eventData!.eventStatus!.id != 3 &&
                 eventData!.eventStatus!.id != 4 &&
                 eventData!.eventStatus!.id != 5,
             child: ListTile(
               leading: Icon(Icons.share, color: MyEventColor.secondaryColor),
               title: Text('Promosi Event'),
               onTap: () {
-                Navigator.pop(context);
+                promoteEvent(eventData!);
               },
             ),
           ),
@@ -165,6 +169,61 @@ class NavigationDrawerWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  String _parseEventDate(int dateEventStart, int dateEventEnd) {
+    String? dateTimeEvent;
+    String dateEventStartString = DateFormat('d MMMM yyyy', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(dateEventStart),
+    );
+    String dateEventEndString = DateFormat('d MMMM yyyy', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(dateEventEnd),
+    );
+    dateTimeEvent = '$dateEventStartString - $dateEventEndString';
+    return dateTimeEvent;
+  }
+
+  String _parseEventTime(int timeEventStart, int timeEventEnd) {
+    String? dateTimeEvent;
+    String timeEventStartString = DateFormat('HH:mm', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(timeEventStart),
+    );
+    String timeEventEndString = DateFormat('HH:mm', 'id_ID').format(
+      DateTime.fromMillisecondsSinceEpoch(timeEventEnd),
+    );
+    dateTimeEvent = '$timeEventStartString - $timeEventEndString';
+    return dateTimeEvent;
+  }
+
+  Future<void> promoteEvent(ViewEventDetailApiResponseModel data) async {
+    String location = await locationUtil.parseLocation(
+      data.eventVenueCategory,
+      data.venue!,
+    );
+    String baseTemplate = '';
+    baseTemplate +=
+        'Halo semua, ayo ikuti event ${data.name} untuk mengisi waktu luang Anda!';
+    baseTemplate += '\n';
+    baseTemplate += '\n';
+    baseTemplate += 'Deskripsi Event: ${data.description!}';
+    baseTemplate += '\n';
+    baseTemplate += '\n';
+    baseTemplate +=
+        'Tanggal Event: ${_parseEventDate(data.dateEventStart!, data.dateEventEnd!)}';
+    baseTemplate += '\n';
+    baseTemplate +=
+        'Waktu Event: ${_parseEventTime(data.timeEventStart!, data.timeEventEnd!)}';
+    baseTemplate += '\n';
+    baseTemplate += 'Lokasi Event: $location';
+    baseTemplate += '\n';
+    baseTemplate += '\n';
+    baseTemplate += 'Yuk daftarkan diri Anda melalui link di bawah ini';
+    await FlutterShare.share(
+      title: 'Promosi Event',
+      text: baseTemplate,
+      linkUrl: 'https://myevent-web.herokuapp.com/event/${data.id}',
+      chooserTitle: 'Promosi Event',
     );
   }
 }
