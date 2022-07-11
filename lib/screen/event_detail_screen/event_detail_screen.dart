@@ -780,7 +780,22 @@ class EventDetailScreen extends StatelessWidget {
                                       ? true
                                       : false,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  await Get.toNamed(
+                                    RouteName.createGuestScreen.replaceAll(
+                                      ':id',
+                                      controller.eventData!.id!.toString(),
+                                    ),
+                                    arguments: {
+                                      'canEdit': false,
+                                    },
+                                  )!
+                                      .then((refresh) {
+                                    if (refresh) {
+                                      controller.loadData();
+                                    }
+                                  });
+                                },
                                 child: Row(
                                   children: [
                                     Text(

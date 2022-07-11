@@ -243,6 +243,7 @@ class Ticket {
 }
 
 class EventGuest {
+  int? id;
   String? name;
   String? phoneNumber;
   String? email;
@@ -251,6 +252,7 @@ class EventGuest {
   EventGuest({this.name, this.phoneNumber, this.email, this.alreadyShared});
 
   EventGuest.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
     phoneNumber = json['phoneNumber'];
     email = json['email'];
@@ -263,6 +265,7 @@ class EventGuest {
     data['phoneNumber'] = this.phoneNumber;
     data['email'] = this.email;
     data['alreadyShared'] = this.alreadyShared;
+    data['id'] = this.id;
     return data;
   }
 }
