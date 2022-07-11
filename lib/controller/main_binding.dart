@@ -65,6 +65,11 @@ class MainBinding implements Bindings {
     Get.lazyPut(
       () => EventListController(),
       fenix: true,
+      tag: 'live',
+    );
+    Get.lazyPut(
+      () => EventListController(),
+      fenix: true,
       tag: 'cancel',
     );
     Get.lazyPut(

@@ -427,6 +427,13 @@ class EventDetailController extends ApiController {
                   size: 50.0,
                   color: Colors.green,
                 ),
+                Text(
+                  'Informasi pembatalan akan segera dikirimkan ke e-mail peserta',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
               ],
             ),
             textConfirm: 'OK',
