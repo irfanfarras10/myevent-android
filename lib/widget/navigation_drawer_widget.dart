@@ -115,7 +115,8 @@ class NavigationDrawerWidget extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: eventData!.eventStatus!.id! != 1,
+            visible: eventData!.eventStatus!.id! != 1 &&
+                eventData!.eventStatus!.id != 2,
             child: ListTile(
               leading: Icon(
                 Icons.file_copy_sharp,
