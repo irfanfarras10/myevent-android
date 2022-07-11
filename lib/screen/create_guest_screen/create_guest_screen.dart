@@ -152,45 +152,53 @@ class CreateGuestScreen extends StatelessWidget {
               ),
             ),
           ),
-          bottomNavigationBar: Container(
-            padding: const EdgeInsets.all(15.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 6.0,
-                  offset: Offset(0.0, 3.0),
-                  color: Colors.black26,
-                ),
-              ],
-            ),
-            child: SizedBox(
-              height: 60.0,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed:
-                    controller.isAllDataValid ? controller.createGuest : null,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (states) {
-                      if (states.contains(MaterialState.disabled)) {
-                        return Colors.amber.shade300;
-                      }
-                      return Colors.amber;
-                    },
+          bottomNavigationBar: controller.isLoading.value
+              ? null
+              : Container(
+                  padding: const EdgeInsets.all(15.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 6.0,
+                        offset: Offset(0.0, 3.0),
+                        color: Colors.black26,
+                      ),
+                    ],
+                  ),
+                  child: SizedBox(
+                    height: 60.0,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed:
+                          controller.isAllDataValid && !controller.canEdit
+                              ? controller.createGuest
+                              : controller.isAllDataValid && controller.canEdit
+                                  ? () => controller
+                                      .updateGuest(Get.arguments['guestIndex'])
+                                  : null,
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (states) {
+                            if (states.contains(MaterialState.disabled)) {
+                              return Colors.amber.shade300;
+                            }
+                            return Colors.amber;
+                          },
+                        ),
+                      ),
+                      child: Text(
+                        'Simpan',
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          color: MyEventColor.secondaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                child: Text(
-                  'Simpan',
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    color: MyEventColor.secondaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ),
         );
       },
     );

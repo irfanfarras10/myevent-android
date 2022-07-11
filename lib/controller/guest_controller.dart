@@ -271,4 +271,104 @@ class GuestController extends ApiController {
       },
     );
   }
+
+  Future<void> updateGuest(int index) async {
+    final apiRequest = CreateEventGuestApiRequestModel.fromJson({
+      'name': nameController.text,
+      'phoneNumber': phoneNumberController.text,
+      'email': emailController.text,
+    });
+
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Menyimpan Data ...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    await apiGuest
+        .updateGuest(
+      data: apiRequest,
+      guestId: eventData!.eventGuest![index].id!,
+      eventId: _eventId,
+    )
+        .then(
+      (response) {
+        checkApiResponse(response);
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          Get.back();
+          Get.defaultDialog(
+            titleStyle: TextStyle(
+              fontSize: 0.0,
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Data Tersimpan',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+                Icon(
+                  Icons.check,
+                  size: 50.0,
+                  color: Colors.green,
+                ),
+              ],
+            ),
+            textConfirm: 'OK',
+            confirmTextColor: MyEventColor.secondaryColor,
+            barrierDismissible: false,
+            onConfirm: () {
+              Get.back();
+              Get.back(result: true);
+            },
+          );
+        } else {
+          Get.back();
+          Get.back();
+          Get.defaultDialog(
+            titleStyle: TextStyle(
+              fontSize: 0.0,
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Terjadi Kesalahan',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: MyEventColor.secondaryColor,
+                  ),
+                ),
+                Icon(
+                  Icons.close,
+                  size: 50.0,
+                  color: Colors.red,
+                ),
+              ],
+            ),
+            textConfirm: 'OK',
+            confirmTextColor: MyEventColor.secondaryColor,
+            barrierDismissible: false,
+            onConfirm: () {
+              Get.back();
+            },
+          );
+        }
+      },
+    );
+  }
 }

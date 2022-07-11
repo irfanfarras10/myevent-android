@@ -29,4 +29,15 @@ class ApiGuest {
       data.toJson(),
     );
   }
+
+  Future<Map<String, dynamic>> updateGuest({
+    required CreateEventGuestApiRequestModel data,
+    required int eventId,
+    required int guestId,
+  }) async {
+    return apiUtil.apiRequestPut(
+      'https://myevent-android-api.herokuapp.com/api/events/$eventId/guest/$guestId',
+      data.toJson(),
+    );
+  }
 }
