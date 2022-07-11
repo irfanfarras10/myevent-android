@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
@@ -15,6 +16,9 @@ class EventDetailController extends ApiController {
 
   TextEditingController cancelTextEditingController = TextEditingController();
   RxnString cancelErrorMessage = RxnString();
+
+  TextEditingController registrationLinkTextEditingController =
+      TextEditingController();
 
   @override
   void onInit() {
@@ -173,6 +177,148 @@ class EventDetailController extends ApiController {
             ),
             child: Text(
               'Publish Event',
+              style: TextStyle(
+                fontSize: 17.0,
+                color: MyEventColor.secondaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    if (!isLoading.value && eventData!.eventStatus!.id == 2) {
+      bottomButton = Container(
+        padding: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 6.0,
+              offset: Offset(0.0, 3.0),
+              color: Colors.black26,
+            ),
+          ],
+        ),
+        child: SizedBox(
+          height: 60.0,
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () async {
+              generateRegistrationLink();
+              Get.dialog(
+                AlertDialog(
+                  title: Text(
+                    'Link Registrasi Peserta',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: MyEventColor.secondaryColor,
+                    ),
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: registrationLinkTextEditingController,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.name,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          fillColor: MyEventColor.primaryColor,
+                          labelStyle: TextStyle(
+                            color: MyEventColor.secondaryColor,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.secondaryColor,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: MyEventColor.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Clipboard.setData(
+                                ClipboardData(
+                                  text: registrationLinkTextEditingController
+                                      .text,
+                                ),
+                              );
+                              Get.defaultDialog(
+                                titleStyle: TextStyle(
+                                  fontSize: 0.0,
+                                ),
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Link Berhasil Di Copy',
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        color: MyEventColor.secondaryColor,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.check,
+                                      size: 50.0,
+                                      color: Colors.green,
+                                    ),
+                                  ],
+                                ),
+                                textConfirm: 'OK',
+                                confirmTextColor: MyEventColor.secondaryColor,
+                                barrierDismissible: false,
+                                onConfirm: () {
+                                  Get.back();
+                                },
+                              );
+                            },
+                            child: Text('Copy Link'),
+                          ),
+                          SizedBox(width: 10.0),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await launch(
+                                registrationLinkTextEditingController.text,
+                              );
+                            },
+                            child: Text('Buka'),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return Colors.amber.shade300;
+                  }
+                  return Colors.amber;
+                },
+              ),
+            ),
+            child: Text(
+              'Link Registrasi Peserta',
               style: TextStyle(
                 fontSize: 17.0,
                 color: MyEventColor.secondaryColor,
@@ -480,5 +626,11 @@ class EventDetailController extends ApiController {
         }
       },
     );
+  }
+
+  void generateRegistrationLink() {
+    String registrationLink = 'https://myevent-web.herokuapp.com/event/';
+    registrationLink += eventData!.id!.toString();
+    registrationLinkTextEditingController.text = registrationLink;
   }
 }
