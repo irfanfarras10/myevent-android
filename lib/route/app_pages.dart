@@ -7,6 +7,7 @@ import 'package:myevent_android/screen/edit_event_data_screen/edit_event_data_sc
 import 'package:myevent_android/screen/event_detail_screen/event_detail_screen.dart';
 import 'package:myevent_android/screen/main_screen/main_screen.dart';
 import 'package:myevent_android/screen/onboarding_screen/onboarding_screen.dart';
+import 'package:myevent_android/screen/share_file_screen/share_file_screen.dart';
 import 'package:myevent_android/screen/signin_screen/signin_screen.dart';
 import 'package:myevent_android/screen/signup_screen/signup_screen.dart';
 import 'package:myevent_android/screen/splash_screen/splash_screen.dart';
@@ -71,6 +72,10 @@ class AppPages {
     GetPage(
       name: RouteName.ticketDetailScreen,
       page: () => TicketDetailScreen(),
-    )
+    ),
+    GetPage(
+      name: RouteName.shareFileScreen,
+      page: () => ShareFileScreen(),
+    ),
   ];
 }

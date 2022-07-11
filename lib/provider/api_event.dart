@@ -91,4 +91,14 @@ class ApiEvent {
       data,
     );
   }
+
+  Future<Map<String, dynamic>> shareFile({
+    required int id,
+    required Map<String, dynamic> data,
+  }) {
+    return apiUtil.apiRequestMultipartPost(
+      url: 'https://myevent-android-api.herokuapp.com/api/events/$id/share',
+      data: data,
+    );
+  }
 }

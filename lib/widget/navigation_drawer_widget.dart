@@ -127,7 +127,12 @@ class NavigationDrawerWidget extends StatelessWidget {
               ),
               title: Text('Bagikan File'),
               onTap: () {
-                Navigator.pop(context);
+                Get.offAllNamed(
+                  RouteName.shareFileScreen.replaceAll(
+                    ':id',
+                    eventData!.id!.toString(),
+                  ),
+                );
               },
             ),
           ),

@@ -8,6 +8,7 @@ import 'package:myevent_android/controller/event_list_controller.dart';
 import 'package:myevent_android/controller/main_controller.dart';
 import 'package:myevent_android/controller/payment_controller.dart';
 import 'package:myevent_android/controller/profile_controller.dart';
+import 'package:myevent_android/controller/sharing_file_controller.dart';
 import 'package:myevent_android/controller/ticket_controller.dart';
 
 class MainBinding implements Bindings {
@@ -83,6 +84,10 @@ class MainBinding implements Bindings {
     );
     Get.lazyPut(
       () => EventDetailController(),
+      fenix: true,
+    );
+    Get.lazyPut(
+      () => SharingFileController(),
       fenix: true,
     );
   }
