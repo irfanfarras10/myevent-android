@@ -26,6 +26,8 @@ class GuestController extends ApiController {
   RxnString emailErrorMessage = RxnString();
   RxnString phoneNumberErrorMessage = RxnString();
 
+  final bool canEdit = Get.arguments['canEdit'];
+
   @override
   void onInit() {
     loadData();
@@ -34,8 +36,8 @@ class GuestController extends ApiController {
 
   @override
   void resetState() {
-    guestData.clear();
     isLoading.value = true;
+    guestData.clear();
   }
 
   bool get isAllDataValid {
@@ -90,6 +92,20 @@ class GuestController extends ApiController {
             isLoading.value = false;
             final data = ViewGuestListApiResponseModel.fromJson(guestResponse);
             guestData = data.listGuest!;
+
+            if (canEdit) {
+              nameController.text =
+                  eventData!.eventGuest![Get.arguments['guestIndex']].name!;
+              emailController.text =
+                  eventData!.eventGuest![Get.arguments['guestIndex']].email!;
+              phoneNumberController.text = eventData!
+                  .eventGuest![Get.arguments['guestIndex']].phoneNumber!
+                  .toString();
+
+              isNameValid.value = true;
+              isEmailValid.value = true;
+              isPhoneNumberValid.value = true;
+            }
           }
         });
       }

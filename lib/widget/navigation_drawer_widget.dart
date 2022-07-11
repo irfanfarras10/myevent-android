@@ -95,6 +95,9 @@ class NavigationDrawerWidget extends StatelessWidget {
                   ':id',
                   eventData!.id!.toString(),
                 ),
+                arguments: {
+                  'canEdit': false,
+                },
               );
             },
           ),

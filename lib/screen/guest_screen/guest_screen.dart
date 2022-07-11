@@ -113,7 +113,24 @@ class GuestScreen extends StatelessWidget {
                               ],
                             ),
                             trailing: IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                Get.delete<GuestController>();
+                                await Get.toNamed(
+                                  RouteName.createGuestScreen.replaceAll(
+                                    ':id',
+                                    controller.eventData!.id!.toString(),
+                                  ),
+                                  arguments: {
+                                    'canEdit': true,
+                                    'guestIndex': index,
+                                  },
+                                )!
+                                    .then((refresh) {
+                                  if (refresh) {
+                                    controller.loadData();
+                                  }
+                                });
+                              },
                               icon: Icon(
                                 Icons.edit,
                                 color: MyEventColor.secondaryColor,
@@ -139,7 +156,9 @@ class GuestScreen extends StatelessWidget {
                 color: MyEventColor.secondaryColor,
               ),
             ),
-            actions: controller.isLoading.value || controller.guestData.isEmpty
+            actions: controller.isLoading.value ||
+                    controller.guestData.isEmpty ||
+                    controller.eventData!.eventStatus!.id != 2
                 ? null
                 : [
                     IconButton(
@@ -152,12 +171,25 @@ class GuestScreen extends StatelessWidget {
           drawer: controller.isLoading.value
               ? null
               : NavigationDrawerWidget(eventData: controller.eventData),
-          floatingActionButton: controller.isLoading.value &&
-                  controller.eventData!.eventStatus!.id == 1
+          floatingActionButton: controller.isLoading.value ||
+                  controller.eventData!.eventStatus!.id != 1
               ? null
               : FloatingActionButton(
                   onPressed: () {
-                    Get.toNamed(RouteName.createGuestScreen);
+                    Get.toNamed(
+                      RouteName.createGuestScreen.replaceAll(
+                        ':id',
+                        controller.eventData!.id.toString(),
+                      ),
+                      arguments: {
+                        'canEdit': false,
+                      },
+                    )!
+                        .then((refresh) {
+                      if (refresh) {
+                        controller.loadData();
+                      }
+                    });
                   },
                   child: Icon(
                     Icons.add,
