@@ -30,15 +30,15 @@ class ShareFileScreen extends StatelessWidget {
           body = Column(
             children: [
               TextFormField(
-                //   controller: controller.nameController,
+                controller: controller.titleController,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.name,
-                // onChanged: (String name) {
-                //   controller.validateName(name);
-                // },
+                onChanged: (String title) {
+                  controller.setTitle(title);
+                },
                 decoration: InputDecoration(
                   labelText: 'Judul',
-                  // errorText: controller.nameErrorMessage.value,
+                  errorText: controller.titleErrorMessage.value,
                   fillColor: MyEventColor.primaryColor,
                   labelStyle: TextStyle(
                     color: MyEventColor.secondaryColor,
@@ -64,21 +64,18 @@ class ShareFileScreen extends StatelessWidget {
                 height: 15.0,
               ),
               TextFormField(
-                //   controller: controller.nameController,
+                controller: controller.fileLocationController,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.name,
-                // onChanged: (String name) {
-                //   controller.validateName(name);
-                // },
                 readOnly: true,
+                onTap: controller.setFile,
                 decoration: InputDecoration(
                   labelText: 'Upload File',
-                  // errorText: controller.nameErrorMessage.value,
                   fillColor: MyEventColor.primaryColor,
                   labelStyle: TextStyle(
                     color: MyEventColor.secondaryColor,
                   ),
-
+                  suffixIcon: Icon(Icons.upload_file),
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(
                       color: MyEventColor.secondaryColor,
@@ -100,21 +97,19 @@ class ShareFileScreen extends StatelessWidget {
                 height: 15.0,
               ),
               TextFormField(
-                //   controller: controller.nameController,
+                controller: controller.linkController,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.name,
-                // onChanged: (String name) {
-                //   controller.validateName(name);
-                // },
-                readOnly: true,
+                onChanged: (String link) {
+                  controller.setLink(link);
+                },
                 decoration: InputDecoration(
                   labelText: 'Link',
-                  // errorText: controller.nameErrorMessage.value,
+                  errorText: controller.linkErrorMessage.value,
                   fillColor: MyEventColor.primaryColor,
                   labelStyle: TextStyle(
                     color: MyEventColor.secondaryColor,
                   ),
-
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(
                       color: MyEventColor.secondaryColor,
@@ -136,21 +131,19 @@ class ShareFileScreen extends StatelessWidget {
                 height: 15.0,
               ),
               TextFormField(
-                //   controller: controller.nameController,
-                textInputAction: TextInputAction.next,
+                controller: controller.descriptionController,
+                textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.name,
-                // onChanged: (String name) {
-                //   controller.validateName(name);
-                // },
-                readOnly: true,
+                onChanged: (String description) {
+                  controller.setDescription(description);
+                },
                 decoration: InputDecoration(
                   labelText: 'Deskripsi',
-                  // errorText: controller.nameErrorMessage.value,
+                  errorText: controller.descriptionErrorMessage.value,
                   fillColor: MyEventColor.primaryColor,
                   labelStyle: TextStyle(
                     color: MyEventColor.secondaryColor,
                   ),
-
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(
                       color: MyEventColor.secondaryColor,
@@ -215,7 +208,9 @@ class ShareFileScreen extends StatelessWidget {
                     height: 60.0,
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: controller.isAllDataValid
+                          ? controller.shareFile
+                          : null,
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.resolveWith<Color>(
