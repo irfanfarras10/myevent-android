@@ -389,7 +389,11 @@ class PublishEventScreenCardWidget extends StatelessWidget {
                         15.0,
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          controller.promoteEvent(
+                            data!,
+                          );
+                        },
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
