@@ -4,25 +4,25 @@ import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
 import 'package:myevent_android/controller/event_list_controller.dart';
-import 'package:myevent_android/screen/draft_event_screen/widget/draft_event_screen_card_widget.dart';
+import 'package:myevent_android/screen/live_event_screen/widget/live_event_screen_card_widget.dart';
 import 'package:myevent_android/widget/http_error_widget.dart';
 import 'package:myevent_android/widget/loading_widget.dart';
 
-class DraftEventScreen extends StatefulWidget {
-  const DraftEventScreen({
+class LiveEventScreen extends StatefulWidget {
+  const LiveEventScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<DraftEventScreen> createState() => _DraftEventScreenState();
+  State<LiveEventScreen> createState() => _LiveEventScreenState();
 }
 
-class _DraftEventScreenState extends State<DraftEventScreen> {
-  final controller = Get.put(EventListController(), tag: 'draft');
+class _LiveEventScreenState extends State<LiveEventScreen> {
+  final controller = Get.put(EventListController(), tag: 'live');
 
   @override
   void initState() {
-    controller.eventStatus = 1;
+    controller.eventStatus = 3;
     controller.loadData();
     super.initState();
   }
@@ -101,7 +101,7 @@ class _DraftEventScreenState extends State<DraftEventScreen> {
                                 // ignore: invalid_use_of_protected_member
                                 controller.searchEventList.value.length,
                                 (index) {
-                                  return DraftEventScreenCardWidget(
+                                  return LiveEventScreenCardWidget(
                                     data: controller.searchEventList[index],
                                   );
                                 },

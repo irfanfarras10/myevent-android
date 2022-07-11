@@ -29,6 +29,30 @@ class ApiEvent {
     );
   }
 
+  Future<Map<String, dynamic>> getEventPublish() {
+    return apiUtil.apiRequestGet(
+      'https://myevent-android-api.herokuapp.com/api/events/published',
+    );
+  }
+
+  Future<Map<String, dynamic>> getEventLive() {
+    return apiUtil.apiRequestGet(
+      'https://myevent-android-api.herokuapp.com/api/events/live',
+    );
+  }
+
+  Future<Map<String, dynamic>> getEventPass() {
+    return apiUtil.apiRequestGet(
+      'https://myevent-android-api.herokuapp.com/api/events/passed',
+    );
+  }
+
+  Future<Map<String, dynamic>> getEventCancel() {
+    return apiUtil.apiRequestGet(
+      'https://myevent-android-api.herokuapp.com/api/events/cancel',
+    );
+  }
+
   Future<Map<String, dynamic>> getEventDetail({required int id}) {
     return apiUtil.apiRequestGet(
       'https://myevent-android-api.herokuapp.com/api/events/$id',
@@ -48,6 +72,23 @@ class ApiEvent {
     return apiUtil.apiRequestMultipartPut(
       url: 'https://myevent-android-api.herokuapp.com/api/events/update/$id',
       data: data,
+    );
+  }
+
+  Future<Map<String, dynamic>> publishEvent({
+    required int id,
+  }) {
+    return apiUtil.apiRequestPost(
+      'https://myevent-android-api.herokuapp.com/api/events/$id/publish',
+      {},
+    );
+  }
+
+  Future<Map<String, dynamic>> cancelEvent(
+      {required int id, required Map<String, dynamic> data}) {
+    return apiUtil.apiRequestPost(
+      'https://myevent-android-api.herokuapp.com/api/events/$id/cancel',
+      data,
     );
   }
 }

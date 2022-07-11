@@ -10,11 +10,7 @@ class EventListController extends ApiController {
   List<EventDataList> eventList = [];
   RxList<EventDataList> searchEventList = RxList();
 
-  @override
-  void onInit() {
-    loadData();
-    super.onInit();
-  }
+  int eventStatus = 1;
 
   @override
   void resetState() {
@@ -33,19 +29,77 @@ class EventListController extends ApiController {
 
   Future<void> loadData() async {
     resetState();
-    await apiEvent.getEventDraft().then(
-      (response) {
-        checkApiResponse(response);
-        if (apiResponseState.value != ApiResponseState.http401) {
-          isLoading.value = false;
-        }
-        if (apiResponseState.value == ApiResponseState.http2xx) {
-          final eventData = ViewEventListApiResponseModel.fromJson(response);
-          eventList = eventData.eventDataList!;
-          searchEventList.value = eventList;
-        }
-      },
-    );
+    if (eventStatus == 1) {
+      await apiEvent.getEventDraft().then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http401) {
+            isLoading.value = false;
+          }
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            final eventData = ViewEventListApiResponseModel.fromJson(response);
+            eventList = eventData.eventDataList!;
+            searchEventList.value = eventList;
+          }
+        },
+      );
+    } else if (eventStatus == 2) {
+      await apiEvent.getEventPublish().then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http401) {
+            isLoading.value = false;
+          }
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            final eventData = ViewEventListApiResponseModel.fromJson(response);
+            eventList = eventData.eventDataList!;
+            searchEventList.value = eventList;
+          }
+        },
+      );
+    } else if (eventStatus == 3) {
+      await apiEvent.getEventLive().then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http401) {
+            isLoading.value = false;
+          }
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            final eventData = ViewEventListApiResponseModel.fromJson(response);
+            eventList = eventData.eventDataList!;
+            searchEventList.value = eventList;
+          }
+        },
+      );
+    } else if (eventStatus == 4) {
+      await apiEvent.getEventPass().then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http401) {
+            isLoading.value = false;
+          }
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            final eventData = ViewEventListApiResponseModel.fromJson(response);
+            eventList = eventData.eventDataList!;
+            searchEventList.value = eventList;
+          }
+        },
+      );
+    } else if (eventStatus == 5) {
+      await apiEvent.getEventCancel().then(
+        (response) {
+          checkApiResponse(response);
+          if (apiResponseState.value != ApiResponseState.http401) {
+            isLoading.value = false;
+          }
+          if (apiResponseState.value == ApiResponseState.http2xx) {
+            final eventData = ViewEventListApiResponseModel.fromJson(response);
+            eventList = eventData.eventDataList!;
+            searchEventList.value = eventList;
+          }
+        },
+      );
+    }
   }
 
   void searchEvent(String keyword) {

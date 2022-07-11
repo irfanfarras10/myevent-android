@@ -108,30 +108,6 @@ class OnboardingScreen extends StatelessWidget {
       ),
     ),
     PageViewModel(
-      title: 'Dashboard',
-      body: 'Pantau progress event dengan mudah dan cepat',
-      image: SvgPicture.asset(
-        'assets/images/onboarding_screen/dashboard.svg',
-        height: 200.0,
-      ),
-      decoration: PageDecoration(
-        titleTextStyle: TextStyle(
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-          color: MyEventColor.primaryColor,
-        ),
-        bodyTextStyle: TextStyle(
-          fontSize: 15.0,
-          fontWeight: FontWeight.w500,
-          color: MyEventColor.secondaryColor,
-        ),
-        contentMargin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-        imagePadding: EdgeInsets.only(top: 250.0),
-        imageFlex: 0,
-        imageAlignment: Alignment.bottomCenter,
-      ),
-    ),
-    PageViewModel(
       title: 'Notifikasi',
       body: 'Dapatkan pengingat notifikasi secara langsung',
       image: SvgPicture.asset(

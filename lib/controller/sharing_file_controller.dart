@@ -9,6 +9,12 @@ class SharingFileController extends ApiController {
   final _eventId = int.parse(Get.parameters['id']!);
 
   @override
+  void onInit() {
+    loadData();
+    super.onInit();
+  }
+
+  @override
   void resetState() {
     isLoading.value = true;
   }
