@@ -105,7 +105,9 @@ class NavigationDrawerWidget extends StatelessWidget {
             },
           ),
           Visibility(
-            visible: eventData!.eventStatus!.id! != 1,
+            visible: eventData!.eventStatus!.id! != 1 &&
+                eventData!.eventStatus!.id != 4 &&
+                eventData!.eventStatus!.id != 5,
             child: ListTile(
               leading: Icon(Icons.share, color: MyEventColor.secondaryColor),
               title: Text('Promosi Event'),
@@ -116,7 +118,8 @@ class NavigationDrawerWidget extends StatelessWidget {
           ),
           Visibility(
             visible: eventData!.eventStatus!.id! != 1 &&
-                eventData!.eventStatus!.id != 2,
+                eventData!.eventStatus!.id != 2 &&
+                eventData!.eventStatus!.id != 5,
             child: ListTile(
               leading: Icon(
                 Icons.file_copy_sharp,
