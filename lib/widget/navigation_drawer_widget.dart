@@ -70,7 +70,12 @@ class NavigationDrawerWidget extends StatelessWidget {
               ),
               title: Text('Peserta'),
               onTap: () {
-                Navigator.pop(context);
+                Get.offAllNamed(
+                  RouteName.participantScreen.replaceAll(
+                    ':id',
+                    eventData!.id!.toString(),
+                  ),
+                );
               },
             ),
           ),
