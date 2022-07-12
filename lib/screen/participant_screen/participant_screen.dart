@@ -108,6 +108,145 @@ class ParticipantScreen extends StatelessWidget {
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
                                     return ListTile(
+                                      onTap: () {
+                                        Get.dialog(
+                                          AlertDialog(
+                                            title: Text(
+                                              'Data Peserta',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    MyEventColor.secondaryColor,
+                                                fontSize: 16.5,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                TextFormField(
+                                                  initialValue: controller
+                                                      .dataList[index].name,
+                                                  readOnly: true,
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Nama',
+                                                    fillColor: MyEventColor
+                                                        .primaryColor,
+                                                    labelStyle: TextStyle(
+                                                      color: MyEventColor
+                                                          .secondaryColor,
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: MyEventColor
+                                                            .secondaryColor,
+                                                      ),
+                                                    ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: MyEventColor
+                                                            .secondaryColor,
+                                                      ),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: MyEventColor
+                                                            .primaryColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 15.0,
+                                                ),
+                                                TextFormField(
+                                                  initialValue: controller
+                                                      .dataList[index].email,
+                                                  readOnly: true,
+                                                  decoration: InputDecoration(
+                                                    labelText: 'E-Mail',
+                                                    fillColor: MyEventColor
+                                                        .primaryColor,
+                                                    labelStyle: TextStyle(
+                                                      color: MyEventColor
+                                                          .secondaryColor,
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: MyEventColor
+                                                            .secondaryColor,
+                                                      ),
+                                                    ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: MyEventColor
+                                                            .secondaryColor,
+                                                      ),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: MyEventColor
+                                                            .primaryColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 15.0,
+                                                ),
+                                                TextFormField(
+                                                  initialValue: controller
+                                                      .dataList[index]
+                                                      .phoneNumber,
+                                                  readOnly: true,
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Nomor HP',
+                                                    fillColor: MyEventColor
+                                                        .primaryColor,
+                                                    labelStyle: TextStyle(
+                                                      color: MyEventColor
+                                                          .secondaryColor,
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: MyEventColor
+                                                            .secondaryColor,
+                                                      ),
+                                                    ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: MyEventColor
+                                                            .secondaryColor,
+                                                      ),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: MyEventColor
+                                                            .primaryColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
                                       title: Text(
                                           controller.dataList[index].name!),
                                       subtitle: Text(
