@@ -17,5 +17,6 @@ class RouteName {
   static const guestScreen = '/events/:id/guest';
   static const createGuestScreen = '/events/:id/guest/create';
   static const dashboardScreen = '/events/:id/dashboard';
-  static const shareFileScreen = '/evetns/:id/share';
+  static const shareFileScreen = '/events/:id/share';
+  static const participantScreen = '/events/:id/participant';
 }

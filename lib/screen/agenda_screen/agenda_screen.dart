@@ -345,39 +345,45 @@ class AgendaScreen extends StatelessWidget {
                                                 SizedBox(
                                                   height: 30.0,
                                                 ),
-                                                SizedBox(
-                                                  width: double.infinity,
-                                                  height: 60.0,
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      controller.writeIcsFile(
-                                                        events[index],
-                                                      );
-                                                    },
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color>(
-                                                        (states) {
-                                                          if (states.contains(
-                                                              MaterialState
-                                                                  .disabled)) {
-                                                            return Colors
-                                                                .amber.shade300;
-                                                          }
-                                                          return Colors.amber;
-                                                        },
+                                                Visibility(
+                                                  visible:
+                                                      events[index].color ==
+                                                          Colors.blue,
+                                                  child: SizedBox(
+                                                    width: double.infinity,
+                                                    height: 60.0,
+                                                    child: ElevatedButton(
+                                                      onPressed: () {
+                                                        controller.writeIcsFile(
+                                                          events[index],
+                                                        );
+                                                      },
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .resolveWith<
+                                                                    Color>(
+                                                          (states) {
+                                                            if (states.contains(
+                                                                MaterialState
+                                                                    .disabled)) {
+                                                              return Colors
+                                                                  .amber
+                                                                  .shade300;
+                                                            }
+                                                            return Colors.amber;
+                                                          },
+                                                        ),
                                                       ),
-                                                    ),
-                                                    child: Text(
-                                                      'Unduh File Kalender (iCS)',
-                                                      style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color: MyEventColor
-                                                            .secondaryColor,
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                                      child: Text(
+                                                        'Unduh File Kalender (iCS)',
+                                                        style: TextStyle(
+                                                          fontSize: 14.0,
+                                                          color: MyEventColor
+                                                              .secondaryColor,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -385,55 +391,62 @@ class AgendaScreen extends StatelessWidget {
                                                 SizedBox(
                                                   height: 15.0,
                                                 ),
-                                                SizedBox(
-                                                  width: double.infinity,
-                                                  height: 60.0,
-                                                  child: ElevatedButton(
-                                                    onPressed: () => controller
-                                                        .createEventToGoogleCalendar(
-                                                      events[index],
-                                                    ),
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  Color>(
-                                                        (states) {
-                                                          return Colors.white;
-                                                        },
+                                                Visibility(
+                                                  visible:
+                                                      events[index].color ==
+                                                          Colors.blue,
+                                                  child: SizedBox(
+                                                    width: double.infinity,
+                                                    height: 60.0,
+                                                    child: ElevatedButton(
+                                                      onPressed: () => controller
+                                                          .createEventToGoogleCalendar(
+                                                        events[index],
                                                       ),
-                                                      elevation:
-                                                          MaterialStateProperty
-                                                              .resolveWith<
-                                                                  double>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                          return 0; // Defer to the widget's default.
-                                                        },
-                                                      ),
-                                                      shape: MaterialStateProperty
-                                                          .all<
-                                                              RoundedRectangleBorder>(
-                                                        RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(
-                                                                4.5),
-                                                          ),
-                                                          side: BorderSide(
-                                                            color: Colors.amber,
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .resolveWith<
+                                                                    Color>(
+                                                          (states) {
+                                                            return Colors.white;
+                                                          },
+                                                        ),
+                                                        elevation:
+                                                            MaterialStateProperty
+                                                                .resolveWith<
+                                                                    double>(
+                                                          (Set<MaterialState>
+                                                              states) {
+                                                            return 0; // Defer to the widget's default.
+                                                          },
+                                                        ),
+                                                        shape: MaterialStateProperty
+                                                            .all<
+                                                                RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  4.5),
+                                                            ),
+                                                            side: BorderSide(
+                                                              color:
+                                                                  Colors.amber,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    child: Text(
-                                                      'Tambahkan Event Ke Google Calendar ',
-                                                      style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color: MyEventColor
-                                                            .secondaryColor,
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                                      child: Text(
+                                                        'Tambahkan Event Ke Google Calendar ',
+                                                        style: TextStyle(
+                                                          fontSize: 14.0,
+                                                          color: MyEventColor
+                                                              .secondaryColor,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
