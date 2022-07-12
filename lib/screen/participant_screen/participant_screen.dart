@@ -806,6 +806,46 @@ class ParticipantScreen extends StatelessWidget {
           drawer: controller.isLoading.value
               ? null
               : NavigationDrawerWidget(eventData: controller.eventData),
+          bottomNavigationBar: Container(
+            padding: const EdgeInsets.all(15.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 6.0,
+                  offset: Offset(0.0, 3.0),
+                  color: Colors.black26,
+                ),
+              ],
+            ),
+            child: SizedBox(
+              height: 60.0,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  controller.downloadParticipantReport();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (states) {
+                      if (states.contains(MaterialState.disabled)) {
+                        return Colors.amber.shade300;
+                      }
+                      return Colors.amber;
+                    },
+                  ),
+                ),
+                child: Text(
+                  'Unduh File Laporan Peserta',
+                  style: TextStyle(
+                    fontSize: 17.0,
+                    color: MyEventColor.secondaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
         );
       },
     );

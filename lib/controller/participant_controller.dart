@@ -327,4 +327,55 @@ class ParticipantController extends ApiController {
       rejectionReasonErrorMessage.value = null;
     }
   }
+
+  Future<void> downloadParticipantReport() async {
+    Get.dialog(
+      AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 15.0),
+            Text('Mengunduh Laporan Peserta ...'),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+    await apiParticipant.downloadParticipantReport(eventId: _eventId).then(
+      (value) {
+        Get.defaultDialog(
+          titleStyle: TextStyle(
+            fontSize: 0.0,
+          ),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Laporan Berhasil Di Download',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: MyEventColor.secondaryColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Icon(
+                Icons.check,
+                size: 50.0,
+                color: Colors.green,
+              ),
+            ],
+          ),
+          textConfirm: 'OK',
+          confirmTextColor: MyEventColor.secondaryColor,
+          barrierDismissible: false,
+          onConfirm: () {
+            Get.back();
+          },
+        );
+      },
+    );
+  }
 }

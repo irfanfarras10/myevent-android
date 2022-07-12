@@ -116,4 +116,17 @@ class ApiUtil {
       return _handleDioError(error);
     }
   }
+
+  Future apiRequestDownload({
+    required String url,
+  }) async {
+    try {
+      final httpClient = await _getDioClient();
+      final response = await httpClient.download(url,
+          '/storage/emulated/0/Download/Laporan Peserta ${DateTime.now().millisecondsSinceEpoch}.xlsx');
+      return response;
+    } on DioError catch (error) {
+      return _handleDioError(error);
+    }
+  }
 }

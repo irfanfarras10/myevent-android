@@ -46,4 +46,11 @@ class ApiParticipant {
       },
     );
   }
+
+  Future downloadParticipantReport({required int eventId}) {
+    return apiUtil.apiRequestDownload(
+      url:
+          'https://myevent-android-api.herokuapp.com/api/events/$eventId/participants/download',
+    );
+  }
 }
