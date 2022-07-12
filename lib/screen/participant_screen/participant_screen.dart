@@ -25,143 +25,125 @@ class ParticipantScreen extends StatelessWidget {
             );
           }
 
-          body = Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: 60.0,
-                        child: TextButton(
-                          onPressed: () {
-                            controller.menuCategoryIndex.value = 0;
-                          },
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.people_alt),
-                              Text('Registrasi'),
-                            ],
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              controller.menuCategoryIndex.value == 0
-                                  ? Colors.amber
-                                  : Colors.grey.shade400,
+          body = GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            child: RefreshIndicator(
+              onRefresh: controller.loadParticipantData,
+              child: ListView(
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(15.0),
+                children: [
+                  controller.eventData!.eventStatus!.id == 2 &&
+                          controller.menuSubCategoryIndex.value != 1
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ActionChip(
+                              label: Text('Terdaftar'),
+                              onPressed: () {
+                                controller.publishRegistrationIndex.value = 0;
+                                controller.loadParticipantData();
+                              },
+                              backgroundColor:
+                                  controller.publishRegistrationIndex.value == 0
+                                      ? Colors.amber
+                                      : Colors.grey.shade400,
                             ),
-                            foregroundColor: MaterialStateProperty.all(
-                              MyEventColor.secondaryColor,
+                            SizedBox(
+                              width: 15.0,
                             ),
-                          ),
+                            ActionChip(
+                              label: Text('Konfirmasi Pembayaran'),
+                              onPressed: () {
+                                controller.publishRegistrationIndex.value = 1;
+                                controller.loadParticipantData();
+                              },
+                              backgroundColor:
+                                  controller.publishRegistrationIndex.value == 1
+                                      ? Colors.amber
+                                      : Colors.grey.shade400,
+                            ),
+                          ],
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Visibility(
+                    visible: !controller.isLoadingParticipantData.value,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Cari berdasarkan nama peserta',
+                        hintStyle: TextStyle(
+                          color: MyEventColor.secondaryColor,
+                        ),
+                        border: OutlineInputBorder(),
+                        suffixIcon: Icon(
+                          Icons.search,
                         ),
                       ),
+                      onChanged: (keyword) {
+                        controller.searchEvent(keyword);
+                      },
                     ),
-                    SizedBox(
-                      width: 15.0,
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        height: 60.0,
-                        child: TextButton(
-                          onPressed: controller.eventData!.eventStatus!.id == 2
-                              ? null
-                              : () {
-                                  controller.menuCategoryIndex.value = 1;
-                                },
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.emoji_people_rounded),
-                              Text('Absensi'),
-                            ],
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              controller.menuCategoryIndex.value == 1
-                                  ? Colors.amber
-                                  : Colors.grey.shade400,
-                            ),
-                            foregroundColor: MaterialStateProperty.all(
-                              MyEventColor.secondaryColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 10.0),
-                controller.eventData!.eventStatus!.id == 2 &&
-                        controller.menuSubCategoryIndex.value != 1
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ActionChip(
-                            label: Text('Terdaftar'),
-                            onPressed: () {
-                              controller.publishRegistrationIndex.value = 0;
-                            },
-                            backgroundColor:
-                                controller.publishRegistrationIndex.value == 0
-                                    ? Colors.amber
-                                    : Colors.grey.shade400,
-                          ),
-                          SizedBox(
-                            width: 15.0,
-                          ),
-                          ActionChip(
-                            label: Text('Konfirmasi Pembayaran'),
-                            onPressed: () {
-                              controller.publishRegistrationIndex.value = 1;
-                            },
-                            backgroundColor:
-                                controller.publishRegistrationIndex.value == 1
-                                    ? Colors.amber
-                                    : Colors.grey.shade400,
-                          ),
-                        ],
-                      )
-                    : Container(),
-                !controller.isLoadingParticipantData.value
-                    ? controller.participantData!.listParticipant != null &&
-                            controller
-                                .participantData!.listParticipant!.isNotEmpty
-                        ? Expanded(
-                            child: ListView.separated(
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text('Jogn'),
-                                  subtitle: Text(
-                                    'jogn@gmail.com',
-                                    style: TextStyle(fontSize: 12.0),
+                  ),
+                  SizedBox(height: 15.0),
+                  !controller.isLoadingParticipantData.value
+                      ? controller.dataList.isNotEmpty
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${controller.dataList.length} Peserta',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.5,
                                   ),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider();
-                              },
-                              itemCount: controller
-                                  .participantData!.listParticipant!.length,
-                            ),
-                          )
-                        : Expanded(
-                            child: Center(
-                              child: Text(
-                                'Tidak Ada Data',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 15.0),
+                                ListView.separated(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(
+                                          controller.dataList[index].name!),
+                                      subtitle: Text(
+                                        controller.dataList[index].email!,
+                                        style: TextStyle(fontSize: 12.0),
+                                      ),
+                                      leading: Icon(Icons.person),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return Divider();
+                                  },
+                                  itemCount: controller.dataList.length,
+                                ),
+                              ],
+                            )
+                          : Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(20.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
+                                color: Colors.grey.shade200,
                               ),
-                            ),
-                          )
-                    : Expanded(
-                        child: Center(
+                              child: Text(
+                                'Tidak Ada Data Peserta',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                      : Center(
                           child: LoadingWidget(),
-                        ),
-                      ),
-              ],
+                        )
+                ],
+              ),
             ),
           );
         }

@@ -20,6 +20,8 @@ class ParticipantController extends ApiController {
 
   ViewParticipantApiResponseModel? participantData;
 
+  RxList<ListParticipant> dataList = RxList<ListParticipant>();
+
   @override
   void onInit() {
     loadData();
@@ -44,25 +46,65 @@ class ParticipantController extends ApiController {
             publishRegistrationIndex.value = 0;
           }
 
-          if (publishRegistrationIndex.value == 0) {
-            isLoadingParticipantData.value = true;
-            getWaitingConfirmationParticipant();
-          }
+          loadParticipantData();
         }
       },
     );
   }
 
-  Future<void> getWaitingConfirmationParticipant() async {
+  Future<void> loadParticipantData() async {
+    isLoadingParticipantData.value = true;
+    if (publishRegistrationIndex.value == 0) {
+      getConfirmedParticipant();
+    } else if (publishRegistrationIndex.value == 1) {
+      getWaitingParticipant();
+    }
+  }
+
+  Future<void> getWaitingParticipant() async {
     await apiParticipant.getParticipantWait(_eventId).then(
       (participantResponse) {
         checkApiResponse(participantResponse);
         if (apiResponseState.value == ApiResponseState.http2xx) {
           participantData =
               ViewParticipantApiResponseModel.fromJson(participantResponse);
+
+          dataList.value = participantData!.listParticipant!;
+
           isLoadingParticipantData.value = false;
         }
       },
     );
+  }
+
+  Future<void> getConfirmedParticipant() async {
+    await apiParticipant.getParticipantConfirmed(_eventId).then(
+      (participantResponse) {
+        checkApiResponse(participantResponse);
+        if (apiResponseState.value == ApiResponseState.http2xx) {
+          participantData =
+              ViewParticipantApiResponseModel.fromJson(participantResponse);
+
+          dataList.value = participantData!.listParticipant!;
+
+          isLoadingParticipantData.value = false;
+        }
+      },
+    );
+  }
+
+  void searchEvent(String keyword) {
+    if (keyword.isEmpty) {
+      dataList.value = participantData!.listParticipant!;
+    } else {
+      final searchList = dataList
+          .where(
+            (participant) => participant.name!
+                .toLowerCase()
+                .isCaseInsensitiveContainsAny(keyword),
+          )
+          .toList();
+      dataList.value = searchList;
+    }
   }
 }

@@ -8,4 +8,10 @@ class ApiParticipant {
       'https://myevent-android-api.herokuapp.com/api/events/$eventId/participants/wait',
     );
   }
+
+  Future<Map<String, dynamic>> getParticipantConfirmed(int eventId) {
+    return apiUtil.apiRequestGet(
+      'https://myevent-android-api.herokuapp.com/api/events/$eventId/participants/confirmed',
+    );
+  }
 }
