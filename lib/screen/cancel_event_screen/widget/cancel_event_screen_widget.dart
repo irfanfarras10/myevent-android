@@ -288,7 +288,14 @@ class CancelEventScreenCardWidget extends StatelessWidget {
                         15.0,
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed(
+                            RouteName.participantScreen.replaceAll(
+                              ':id',
+                              data!.id!.toString(),
+                            ),
+                          );
+                        },
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
