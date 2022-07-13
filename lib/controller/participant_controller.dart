@@ -337,7 +337,7 @@ class ParticipantController extends ApiController {
           children: [
             CircularProgressIndicator(),
             SizedBox(width: 15.0),
-            Text('Mengunduh Laporan Peserta ...'),
+            Text('Mengunduh Laporan ...'),
           ],
         ),
       ),
@@ -372,6 +372,7 @@ class ParticipantController extends ApiController {
           confirmTextColor: MyEventColor.secondaryColor,
           barrierDismissible: false,
           onConfirm: () {
+            Get.back();
             Get.back();
           },
         );
