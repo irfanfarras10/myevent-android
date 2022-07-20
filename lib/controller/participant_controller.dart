@@ -104,7 +104,7 @@ class ParticipantController extends ApiController {
           .where(
             (participant) => participant.name!
                 .toLowerCase()
-                .isCaseInsensitiveContainsAny(keyword),
+                .isCaseInsensitiveContainsAny(keyword.toLowerCase()),
           )
           .toList();
       dataList.value = searchList;

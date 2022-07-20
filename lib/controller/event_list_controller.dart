@@ -19,6 +19,7 @@ class EventListController extends ApiController {
   void resetState() {
     apiResponseState.value = null;
     eventList.clear();
+    searchEventList.clear();
     isLoading.value = true;
   }
 
@@ -106,12 +107,14 @@ class EventListController extends ApiController {
   }
 
   void searchEvent(String keyword) {
+    print(keyword);
     if (keyword.isEmpty) {
       searchEventList.value = eventList;
     } else {
       final searchEventData = eventList
           .where(
-            (eventData) => eventData.name!.toLowerCase().contains(keyword),
+            (eventData) =>
+                eventData.name!.toLowerCase().contains(keyword.toLowerCase()),
           )
           .toList();
       searchEventList.value = searchEventData;
