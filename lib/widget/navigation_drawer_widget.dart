@@ -167,6 +167,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                     prefs.getString('myevent.auth.token.subject')!,
                   );
                   prefs.remove('myevent.auth.token');
+                  prefs.remove('myevent.auth.token.subject');
                   Get.offAllNamed(RouteName.signInScreen);
                 },
               );
