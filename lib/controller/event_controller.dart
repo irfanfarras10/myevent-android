@@ -504,7 +504,6 @@ class EventController extends ApiController {
         if (apiResponseState.value == ApiResponseState.http2xx) {
           createEventApiResponse =
               CreateEventApiResponseModel.fromJson(response);
-          print(createEventApiResponse.eventId);
         }
         Get.defaultDialog(
           titleStyle: TextStyle(

@@ -8,6 +8,7 @@ import 'package:myevent_android/model/api_response/api_response_model.dart';
 import 'package:myevent_android/model/api_response/signin_api_response_model.dart';
 import 'package:myevent_android/provider/api_auth.dart';
 import 'package:myevent_android/route/route_name.dart';
+import 'package:myevent_android/util/jwt_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends ApiController {
@@ -165,6 +166,12 @@ class AuthController extends ApiController {
         } else {
           final pref = await SharedPreferences.getInstance();
           pref.setString('myevent.auth.token', signInApiResponse.token!);
+
+          String eventOrganizerId = JwtUtil().parseJwt(
+            pref.getString('myevent.auth.token')!,
+          )['sub'];
+          pref.setString('myevent.auth.token.subject', eventOrganizerId);
+
           Get.back();
           Get.offAllNamed(RouteName.mainScreen);
         }
