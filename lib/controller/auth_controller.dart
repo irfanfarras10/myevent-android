@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:myevent_android/colors/myevent_color.dart';
 import 'package:myevent_android/controller/api_controller.dart';
@@ -171,6 +173,63 @@ class AuthController extends ApiController {
             pref.getString('myevent.auth.token')!,
           )['sub'];
           pref.setString('myevent.auth.token.subject', eventOrganizerId);
+
+          //subscribe topic for notification
+          FirebaseMessaging.instance.subscribeToTopic(eventOrganizerId);
+
+          FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+            const AndroidNotificationChannel channel =
+                AndroidNotificationChannel(
+              'event_reminder',
+              'Pengingat event',
+              'Channel notifikasi untuk mengingatkan event H-3 dan H-1',
+              importance: Importance.high,
+              playSound: true,
+            );
+            RemoteNotification notification = message.notification!;
+            AndroidNotification? android = message.notification?.android;
+            final FlutterLocalNotificationsPlugin
+                flutterLocalNotificationsPlugin =
+                FlutterLocalNotificationsPlugin();
+
+            Future onClickNotification(String? payload) async {
+              Get.offAllNamed(
+                RouteName.eventDetailScreen.replaceAll(':id', payload!),
+              );
+            }
+
+            var androidSettings =
+                AndroidInitializationSettings('@mipmap/ic_launcher');
+            var initSetttings = InitializationSettings(
+              android: androidSettings,
+            );
+
+            flutterLocalNotificationsPlugin.initialize(
+              initSetttings,
+              onSelectNotification: onClickNotification,
+            );
+
+            // ignore: unnecessary_null_comparison
+            if (notification != null && android != null) {
+              flutterLocalNotificationsPlugin.show(
+                notification.hashCode,
+                notification.title,
+                notification.body,
+                NotificationDetails(
+                  android: AndroidNotificationDetails(
+                    channel.id,
+                    channel.name,
+                    channel.description,
+                    playSound: true,
+                    icon: '@mipmap/ic_launcher',
+                    styleInformation:
+                        BigTextStyleInformation(notification.body!),
+                  ),
+                ),
+                payload: message.data['eventId'],
+              );
+            }
+          });
 
           Get.back();
           Get.offAllNamed(RouteName.mainScreen);
